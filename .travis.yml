@@ -26,7 +26,6 @@ cache:
         - /home/travis/build/R2D2-2019/downloads
 
 before_script:
-    - mkdir downloads
     - wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2? -O ./downloads/gcc-arm-none-eabi.tar.bz2
     - tar -xvjf ./downloads/gcc-arm-none-eabi.tar.bz2
     - export PATH=$PATH:$PWD/gcc-arm-none-eabi-8-2018-q4-major/bin/ 
