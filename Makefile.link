@@ -11,6 +11,8 @@
 
 # add Catch
 SEARCH            += ../../../libraries/Catch2/single_include/catch2
+SEARCH            += ../../../modules/i2c-library/code
+
 
 # add hwlib
 HWLIB             ?= ../../../libraries/hwlib
