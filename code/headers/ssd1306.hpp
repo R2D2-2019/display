@@ -1,7 +1,7 @@
 #pragma once
 
-#include "headers/i2c_bus.hpp"
-#include "hwlib.hpp"
+#include <hwlib.hpp>
+#include <i2c_bus.hpp>
 
 namespace r2d2::display {
     enum class ssd1306_commands : uint8_t {

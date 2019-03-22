@@ -1,6 +1,6 @@
-#include "headers/i2c_bus.hpp"
-#include "headers/ssd1306_oled_unbuffered.hpp"
-#include "hwlib.hpp"
+#include <hwlib.hpp>
+#include <i2c_bus.hpp>
+#include <ssd1306_oled_unbuffered.hpp>
 int main(void) {
     // kill the watchdog
     WDT->WDT_MR = WDT_MR_WDDIS;

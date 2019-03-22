@@ -1,6 +1,6 @@
-#include "headers/i2c_bus.hpp"
-#include "hwlib.hpp"
-#include "ssd1306.hpp"
+#include <hwlib.hpp>
+#include <i2c_bus.hpp>
+#include <ssd1306.hpp>
 
 namespace r2d2::display {
     class ssd1306_oled_unbuffered : public r2d2::display::ssd1306_i2c_c,
