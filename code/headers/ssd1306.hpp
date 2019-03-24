@@ -42,7 +42,7 @@ namespace r2d2::display {
     /// value to send over i2c before a command
     constexpr uint8_t ssd1306_cmd_prefix = 0x80;
 
-    /// value to send over i2c before a command
+    /// value to send over i2c before data
     constexpr uint8_t ssd1306_data_prefix = 0x40;
 
     /// SSD1306 chip initialization
