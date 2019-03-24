@@ -9,7 +9,7 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := $(wildcard src/*.cpp) ../../../modules/i2c-library/code/src/i2c_bus.cpp
+SOURCES := $(wildcard src/*.cpp)
 
 # header files in this project
 HEADERS := $(wildcard headers/*.hpp)
