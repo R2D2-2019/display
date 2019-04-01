@@ -62,19 +62,13 @@ namespace r2d2::display {
                             hwlib::pin_out &dc, hwlib::pin_out &reset);
 
         /**
-         * @brief The pixel data accepted for each pixel
-         *
-         */
-        using pixel_data = st7735_c::pixel_data;
-
-        /**
          * @brief Directly write a pixel to the screen
          *
          * @param x
          * @param y
          * @param data
          */
-        void set_pixel(uint16_t x, uint16_t y, const pixel_data data) override;
+        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override;
 
         /**
          * @brief Directly write multiple pixels to the screen
@@ -86,7 +80,7 @@ namespace r2d2::display {
          * @param data
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-                        const pixel_data *data) override;
+                        const uint16_t *data) override;
 
         /**
          * @brief Directly fill multiple pixels with the same color to the
@@ -99,7 +93,7 @@ namespace r2d2::display {
          * @param data
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-                        const pixel_data data) override;
+                        const uint16_t data) override;
     };
 
 } // namespace r2d2::display
