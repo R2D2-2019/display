@@ -26,6 +26,7 @@ namespace r2d2::display {
         constexpr static uint8_t _RASET = 0x2B;
         constexpr static uint8_t _RAMWR = 0x2C;
         constexpr static uint8_t _RAMRD = 0x2E;
+        constexpr static uint8_t _PTLAR = 0x30;
         constexpr static uint8_t _COLMOD = 0x3A;
         constexpr static uint8_t _MADCTL = 0x36;
         constexpr static uint8_t _FRMCTR1 = 0xB1;
@@ -61,12 +62,6 @@ namespace r2d2::display {
         constexpr static uint8_t height = 160;
 
         /**
-         * @brief The pixel data accepted for each pixel
-         *
-         */
-        typedef uint16_t pixel_data;
-
-        /**
          * @brief Directly write a pixel to the screen
          *
          * @param x
@@ -74,7 +69,7 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixel(uint16_t x, uint16_t y,
-                               const pixel_data data) = 0;
+                               const uint16_t data) = 0;
 
         /**
          * @brief Directly write multiple pixels to the screen
@@ -86,7 +81,7 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const pixel_data *data) = 0;
+                                uint16_t height, const uint16_t *data) = 0;
 
         /**
          * @brief Directly fill multiple pixels with the same color to the
@@ -99,7 +94,7 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const pixel_data data) = 0;
+                                uint16_t height, const uint16_t data) = 0;
     };
 
 } // namespace r2d2::display
