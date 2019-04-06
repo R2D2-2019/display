@@ -12,6 +12,7 @@ int main(void) {
     auto display = r2d2::display::ssd1306_oled_buffered(bus, 0x3c);
     display.clear();
     display.flush();
+
     for (uint_fast16_t y = 0; y < 64; y++) {
         for (uint_fast16_t x = 0; x < 128; x++) {
             display.write(hwlib::xy(x, y), hwlib::white);
