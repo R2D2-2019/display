@@ -4,11 +4,11 @@
 
 namespace r2d2::display {
     /**
-     * SSD1306 unbuffered interface for an oled
+     * SSD1306 buffered interface for an oled
      * Implements hwlib::window to easily use text and drawing functions that are already implemented.
      * Extends from r2d2::display::ssd1306_i2c_c 
      */
-    class ssd1306_oled_unbuffered : public r2d2::display::ssd1306_i2c_c,
+    class ssd1306_oled_buffered : public r2d2::display::ssd1306_i2c_c,
                                     public hwlib::window {
     private:
         /**
@@ -21,7 +21,7 @@ namespace r2d2::display {
          * The buffer with the pixel data
          * The first byte is used for the data-prefix that the display driver requires to be sent when sending pixel data.
          */ 
-        uint8_t buffer[wsize.x * wsize.y / 8] = {0};
+        uint8_t buffer[(wsize.x * wsize.y / 8) + 1] = {0};
 
         /**
          * The write implementation of hwlib::window
@@ -34,7 +34,7 @@ namespace r2d2::display {
         /**
          * Construct the display driver by providing the communication bus and the address of the display.
          */ 
-        ssd1306_oled_unbuffered(r2d2::i2c::i2c_bus_c &bus,
+        ssd1306_oled_buffered(r2d2::i2c::i2c_bus_c &bus,
                                 const uint8_t &address);
 
         /**
@@ -44,7 +44,8 @@ namespace r2d2::display {
         void clear() override;
 
         /**
-         * Does nothing.
+         * Flushes the data to the display. 
+         * All the data is kept in a buffer on the arduino until this function is called, it will then push the entirety of the buffer to the display at once.
          */ 
         void flush() override;
     };
