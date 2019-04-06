@@ -7,6 +7,10 @@ namespace r2d2::display {
     protected:
         hwlib::window &display;
 
+        /**
+         * This function converts a uin16_t 565 color to a hwlib color.
+         * 
+         */
         hwlib::color to_color(uint16_t c) {
             return hwlib::color(c >> 11, (c >> 5) & 0x3F, c & 0x1F);
         }
