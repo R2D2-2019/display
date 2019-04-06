@@ -8,7 +8,7 @@ namespace r2d2::display {
     private:
         static auto constexpr wsize = hwlib::xy(128, 64);
 
-        uint8_t buffer[wsize.x * wsize.y / 8] = {0};
+        uint8_t buffer[(wsize.x * wsize.y / 8) + 1] = {0};
 
         void write_implementation(hwlib::xy pos, hwlib::color col) override;
 
