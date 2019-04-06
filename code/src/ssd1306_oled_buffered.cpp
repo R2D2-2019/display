@@ -5,9 +5,9 @@ namespace r2d2::display {
                                                      hwlib::color col) {
         int a = pos.x + (pos.y / 8) * size.x;
         if (col == hwlib::white) {
-            buffer[a] |= (0x01 << (pos.y % 8));
+            buffer[a + 1] |= (0x01 << (pos.y % 8));
         } else {
-            buffer[a] &= ~(0x01 << (pos.y % 8));
+            buffer[a + 1] &= ~(0x01 << (pos.y % 8));
         }
     }
 
@@ -20,20 +20,16 @@ namespace r2d2::display {
     }
     void ssd1306_oled_buffered::clear() {
         const uint8_t d = (background == hwlib::white) ? 0xFF : 0x00;
-        for (uint_fast16_t x = 0; x < sizeof(buffer); ++x) {
+        for (uint_fast16_t x = 1; x < sizeof(buffer); ++x) {
             buffer[x] = d;
         }
-        cursor = wsize;
+        cursor = size;
     }
 
     void ssd1306_oled_buffered::flush() {
         command(ssd1306_commands::column_addr, 0, 127);
         command(ssd1306_commands::page_addr, 0, 7);
-        uint8_t data[sizeof(buffer) + 1] = {0};
-        data[0] = ssd1306_data_prefix;
-        for (uint_fast16_t x = 0; x < sizeof(data) - 1; ++x) {
-            data[x + 1] = buffer[x];
-        }
-        bus.write(address, data, sizeof(data));
+        buffer[0] = ssd1306_data_prefix;
+        bus.write(address, buffer, sizeof(buffer));
     }
 } // namespace r2d2::display
