@@ -5,7 +5,6 @@ namespace r2d2::display {
                                                        hwlib::color col) {
 
         int a = pos.x + (pos.y / 8) * size.x;
-        hwlib::cout << pos.y << "\n";
         if (col == hwlib::white) {
             buffer[a] |= (0x01 << (pos.y % 8));
         } else {
@@ -19,7 +18,6 @@ namespace r2d2::display {
                                                      const uint8_t &address)
         : ssd1306_i2c_c(bus, address),
           window(wsize, hwlib::white, hwlib::black) {
-        hwlib::cout << "test" << hwlib::endl;
         bus.write(address, ssd1306_initialization,
                   sizeof(ssd1306_initialization) / sizeof(uint8_t));
     }
