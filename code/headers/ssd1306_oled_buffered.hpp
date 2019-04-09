@@ -1,3 +1,5 @@
+#pragma once
+
 #include <hwlib.hpp>
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
