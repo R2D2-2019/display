@@ -31,7 +31,7 @@ namespace r2d2::display {
             data[x] = d;
         }
         bus.write(address, data, sizeof(data));
-        cursor = wsize;
+        cursor = hwlib::xy(0,0);
     }
 
     void ssd1306_oled_unbuffered::flush() {
