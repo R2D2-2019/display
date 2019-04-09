@@ -1,3 +1,5 @@
+#pragma  once
+
 #include <hwlib.hpp>
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
@@ -8,7 +10,7 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that are already implemented.
      * Extends from r2d2::display::ssd1306_i2c_c 
      */
-    class ssd1306_oled_unbuffered : public r2d2::display::ssd1306_i2c_c,
+    class ssd1306_oled_unbuffered_c : public r2d2::display::ssd1306_i2c_c,
                                     public hwlib::window {
     private:
         /**
@@ -34,7 +36,7 @@ namespace r2d2::display {
         /**
          * Construct the display driver by providing the communication bus and the address of the display.
          */ 
-        ssd1306_oled_unbuffered(r2d2::i2c::i2c_bus_c &bus,
+        ssd1306_oled_unbuffered_c(r2d2::i2c::i2c_bus_c &bus,
                                 const uint8_t &address);
 
         /**

@@ -91,9 +91,11 @@ namespace r2d2::display {
 
     class ssd1306_i2c_c {
     protected:
-        /// current cursor location in the controller
+        /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
+        /// The device address
         uint8_t address;
+        /// The current cursor location in the controller
         hwlib::xy cursor;
 
     public:
