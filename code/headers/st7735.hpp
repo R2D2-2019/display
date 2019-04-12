@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include <cstdint>
+#include <hwlib.hpp>
 
 namespace r2d2::display {
 
@@ -69,13 +69,7 @@ namespace r2d2::display {
             transaction.write(sizeof(commands), commands);
         }
 
-        void write_data(const uint8_t *data, size_t size) {
-            // set display in data mode
-            dc.write(true);
-
-            auto transaction = bus.transaction(cs);
-            transaction.write(size, data);
-        }      
+        void write_data(const uint8_t *data, size_t size);
 
         template <typename... Args>
         void write_data(uint8_t data, Args &&... args) {
@@ -85,6 +79,11 @@ namespace r2d2::display {
             // write all data on the bus
             write_data(commands, sizeof(commands));
         } 
+
+        void init();
+
+        void set_cursor(uint16_t x_min, uint16_t y_min, uint16_t x_max,
+                        uint16_t y_max);
 
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                  hwlib::pin_out &dc, hwlib::pin_out &reset)
