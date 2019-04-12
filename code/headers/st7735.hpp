@@ -127,6 +127,7 @@ namespace r2d2::display {
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
             : bus(bus), cs(cs), dc(dc), reset(reset) {
+            init();
         }
 
     public:
