@@ -12,13 +12,15 @@ namespace r2d2::display {
     void st7735_unbuffered_c::set_pixel(uint16_t x, uint16_t y,
                                         const uint16_t data) {
         // set cursor on correct position
-        set_cursor(x, y, 1, 1);
+        set_cursor(x, y, x, y);
 
         // write to ram
         write_command(_RAMWR);
 
+        const uint16_t t = __REV16(data); // make a copy and reverse byte order
+
         // write pixel data to the screeen
-        write_data((uint8_t *)&data, 2);
+        write_data((uint8_t *)&t, 2);
     }
 
     void st7735_unbuffered_c::set_pixels(uint16_t x, uint16_t y, uint16_t w,
@@ -45,10 +47,10 @@ namespace r2d2::display {
         // write to ram
         write_command(_RAMWR);
 
-        const uint8_t arr[2] = {uint8_t(data >> 8), uint8_t(data & 0xFF)};
+        const uint16_t t = __REV16(data); // make a copy and reverse byte order
 
         for (size_t i = 0; i < size_t((w + 1) * (h + 1)); i++) {
-            write_data(arr, 2);
+            write_data((uint8_t *)&t, 2);
         }
     }
 } // namespace r2d2::display
