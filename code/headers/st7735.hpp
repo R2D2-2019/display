@@ -48,7 +48,7 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRP1 = 0xE0;
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
-        // bus supported for the
+        // display bus
         hwlib::spi_bus &bus;
 
         // pins for the display
@@ -56,6 +56,12 @@ namespace r2d2::display {
         hwlib::pin_out &dc;
         hwlib::pin_out &reset;
 
+        /**
+         * @brief Write a command to the screen
+         *
+         * @tparam Args
+         * @param args
+         */
         template <typename... Args>
         void write_command(Args &&... args) {
             // set display in command mode
@@ -69,8 +75,21 @@ namespace r2d2::display {
             transaction.write(sizeof(commands), commands);
         }
 
+        /**
+         * @brief Write display data/command data to the screen
+         *
+         * @param data
+         * @param size
+         */
         void write_data(const uint8_t *data, size_t size);
 
+        /**
+         * @brief Write display data/command data to the screen
+         *
+         * @tparam Args
+         * @param data
+         * @param args
+         */
         template <typename... Args>
         void write_data(uint8_t data, Args &&... args) {
             // convert all data to a array
@@ -78,17 +97,37 @@ namespace r2d2::display {
 
             // write all data on the bus
             write_data(commands, sizeof(commands));
-        } 
+        }
 
+        /**
+         * @brief inits the display
+         *
+         */
         void init();
 
+        /**
+         * @brief Set the cursor object
+         *
+         * @param x_min
+         * @param y_min
+         * @param x_max
+         * @param y_max
+         */
         void set_cursor(uint16_t x_min, uint16_t y_min, uint16_t x_max,
                         uint16_t y_max);
 
-        st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
-                 hwlib::pin_out &dc, hwlib::pin_out &reset)
-            :bus(bus), cs(cs), dc(dc), reset(reset)
-        {}
+        /**
+         * @brief Construct a new st7735_c object
+         *
+         * @param bus
+         * @param cs
+         * @param dc
+         * @param reset
+         */
+        st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
+                 hwlib::pin_out &reset)
+            : bus(bus), cs(cs), dc(dc), reset(reset) {
+        }
 
     public:
         /**
@@ -110,8 +149,7 @@ namespace r2d2::display {
          * @param y
          * @param data
          */
-        virtual void set_pixel(uint16_t x, uint16_t y,
-                               const uint16_t data) = 0;
+        virtual void set_pixel(uint16_t x, uint16_t y, const uint16_t data) = 0;
 
         /**
          * @brief Directly write multiple pixels to the screen
