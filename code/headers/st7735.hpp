@@ -48,6 +48,10 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRP1 = 0xE0;
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
+        // since it uses a generic driver the display has a offset
+        constexpr static uint8_t x_offset = 26;
+        constexpr static uint8_t y_offset = 1;
+
         // display bus
         hwlib::spi_bus &bus;
 
