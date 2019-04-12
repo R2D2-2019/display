@@ -15,6 +15,10 @@ CONSOLE_BAUDRATE  ?= 2400
 STACK_SIZE        ?= 81920
 HEAP              ?= BMPTK
 
+#add I2C_library
+I2C               ?= ../../../libraries/I2C_library
+include              $(I2C)/Makefile.inc
+
 # defer to the Makefile.link
 include           $(RELATIVE)/Makefile.link
 

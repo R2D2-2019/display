@@ -12,6 +12,7 @@
 # add Catch
 SEARCH            += ../../../libraries/Catch2/single_include/catch2
 
+
 # add hwlib
 HWLIB             ?= ../../../libraries/hwlib
 include           $(HWLIB)/Makefile.inc
