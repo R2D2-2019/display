@@ -180,6 +180,19 @@ namespace r2d2::display {
          */
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
                                 uint16_t height, const uint16_t data) = 0;
+
+        /**
+         * @brief Converst a hwlib::color to a uint16_t in the format the screen
+         * wants
+         *
+         * @param c
+         * @return constexpr uint16_t
+         */
+        constexpr static uint16_t color_to_bytes(const hwlib::color c) {
+            return (uint16_t(c.red) * 0x1F / 0xFF) << 11 |
+                   (uint16_t(c.green) * 0x3F / 0xFF) << 5 |
+                   (uint16_t(c.blue) * 0x1F / 0xFF);
+        }
     };
 
 } // namespace r2d2::display
