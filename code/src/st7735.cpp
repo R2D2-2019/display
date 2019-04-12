@@ -31,21 +31,26 @@ namespace r2d2::display {
         reset.write(true);
         hwlib::wait_ms(5);
 
-        write_command(_SWRESET, _SLPOUT, _FRMCTR1);
+        // do a software reset and stop sleep mode, voltage booster on
+        write_command(_SWRESET, _SLPOUT);
+
         // frame rate control normal mode
+        write_command(_FRMCTR1);
         write_data(0x01, 0x2C, 0x2D);
 
-        write_command(_FRMCTR2);
         // frame rate control idle mode
+        write_command(_FRMCTR2);
         write_data(0x01, 0x2C, 0x2D);
 
-        write_command(_FRMCTR3);
         // frame rate control partial mode
+        write_command(_FRMCTR3);
         write_data(0x01, 0x2C, 0x2D, 0x01, 0x2C, 0x2D);
 
+        // display invertion
         write_command(_INVCTR);
         write_data(0x07);
 
+        // power control settings
         write_command(_PWCTR1);
         write_data(0xA2, 0x02, 0x84);
         write_command(_PWCTR2);
@@ -57,9 +62,11 @@ namespace r2d2::display {
         write_command(_PWCTR5);
         write_data(0x8A, 0xEE);
 
+        // vcomh voltage control
         write_command(_VMCTR1);
         write_data(0x0E);
 
+        // display inversion off, memory direction control
         write_command(_INVOFF, _MADCTL);
         write_data(0x00);
 
@@ -67,12 +74,15 @@ namespace r2d2::display {
         write_command(_COLMOD);
         write_data(0x05);
 
+        // set the cursor to the maximum of the screen
         set_cursor(0x00, 0x00, width - 1, height - 1);
 
+        // set gamma adjustment + polarity
         write_command(_GMCTRP1);
         write_data(0x02, 0x1c, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2d, 0x29, 0x25,
                    0x2B, 0x39, 0x00, 0x01, 0x03, 0x10);
 
+        // set gamma adjustment - polarity
         write_command(_GMCTRN1);
         write_data(0x03, 0x1d, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E, 0x2E,
                    0x37, 0x3F, 0x00, 0x00, 0x02, 0x10);
