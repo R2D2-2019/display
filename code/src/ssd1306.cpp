@@ -36,8 +36,7 @@ namespace r2d2::display {
             cursor = location;
         }
 
-        uint8_t data[] = {ssd1306_data_prefix, d};
-        bus.write(address, data, sizeof(data) / sizeof(uint8_t));
+        data(d);
         cursor.x++;
     }
 } // namespace r2d2::display
