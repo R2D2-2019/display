@@ -6,16 +6,9 @@ namespace r2d2::display {
                                              hwlib::pin_out &cs,
                                              hwlib::pin_out &dc,
                                              hwlib::pin_out &reset)
-        : bus(bus), cs(cs), dc(dc), reset(reset) {
+        : st7735_c(bus, cs, dc, reset) 
+    {
         init();
-    }
-
-    void st7735_unbuffered_c::write_data(const uint8_t *data, size_t size) {
-        // set display in data mode
-        dc.write(true);
-
-        auto transaction = bus.transaction(cs);
-        transaction.write(size, data);
     }
 
     void st7735_unbuffered_c::set_cursor(uint16_t x_min, uint16_t y_min,

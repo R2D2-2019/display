@@ -48,6 +48,49 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRP1 = 0xE0;
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
+        // bus supported for the
+        hwlib::spi_bus &bus;
+
+        // pins for the display
+        hwlib::pin_out &cs;
+        hwlib::pin_out &dc;
+        hwlib::pin_out &reset;
+
+        template <typename... Args>
+        void write_command(Args &&... args) {
+            // set display in command mode
+            dc.write(false);
+
+            // convert all commands to a array
+            const uint8_t commands[] = {static_cast<uint8_t>(args)...};
+
+            // write all commands on the bus
+            auto transaction = bus.transaction(cs);
+            transaction.write(sizeof(commands), commands);
+        }
+
+        void write_data(const uint8_t *data, size_t size) {
+            // set display in data mode
+            dc.write(true);
+
+            auto transaction = bus.transaction(cs);
+            transaction.write(size, data);
+        }      
+
+        template <typename... Args>
+        void write_data(uint8_t data, Args &&... args) {
+            // convert all data to a array
+            const uint8_t commands[] = {data, static_cast<uint8_t>(args)...};
+
+            // write all data on the bus
+            write_data(commands, sizeof(commands));
+        } 
+
+        st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
+                 hwlib::pin_out &dc, hwlib::pin_out &reset)
+            :bus(bus), cs(cs), dc(dc), reset(reset)
+        {}
+
     public:
         /**
          * @brief width of display
