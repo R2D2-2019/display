@@ -37,7 +37,7 @@ namespace r2d2::display {
         
         uint16_t t = __REV16(data); // make a copy and reverse byte order
 
-        for(uint8_t i = 0; i < (width * height); i++){
+        for(uint16_t i = 0; i < (width * height); i++){
             ((uint16_t *)buffer)[i] = t;
         }
     }
