@@ -182,6 +182,12 @@ namespace r2d2::display {
                                 uint16_t height, const uint16_t data) = 0;
 
         /**
+         * @brief flushes the display if buffered
+         * 
+         */
+        virtual void flush() {}
+
+        /**
          * @brief Converst a hwlib::color to a uint16_t in the format the screen
          * wants
          *
