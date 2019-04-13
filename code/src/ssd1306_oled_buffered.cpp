@@ -27,8 +27,8 @@ namespace r2d2::display {
     }
 
     void ssd1306_oled_buffered_c::flush() {
-        command(ssd1306_commands::column_addr, 0, 127);
-        command(ssd1306_commands::page_addr, 0, 7);
+        command(ssd1306_command::column_addr, 0, 127);
+        command(ssd1306_command::page_addr, 0, 7);
         buffer[0] = ssd1306_data_prefix;
         bus.write(address, buffer, sizeof(buffer));
     }
