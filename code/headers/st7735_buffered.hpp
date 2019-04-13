@@ -9,7 +9,7 @@ namespace r2d2::display {
 
     class st7735_buffered_c : public st7735_c {
     protected:
-        uint8_t buffer[width * height * 2] = {};
+        uint16_t buffer[width * height] = {};
 
     public:
         /**
