@@ -1,6 +1,8 @@
 #pragma once
 
 #include <hwlib.hpp>
+
+#include <display_adapter.hpp>
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
 
@@ -10,8 +12,7 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_unbuffered_c : public r2d2::display::ssd1306_i2c_c,
-                                      public hwlib::window {
+    class ssd1306_oled_unbuffered_c : public display, public ssd1306_i2c_c {
     private:
         /**
          * The size of the display
@@ -27,14 +28,6 @@ namespace r2d2::display {
          */
         uint8_t buffer[wsize.x * wsize.y / 8] = {};
 
-        /**
-         * The write implementation of hwlib::window
-         * This is what allows us to re-use the existing code.
-         * It sets a pixel at the given coordinate to the given color. In the
-         * case of this specific display the color is either white or black.
-         */
-        void write_implementation(hwlib::xy pos, hwlib::color col) override;
-
     public:
         /**
          * Construct the display driver by providing the communication bus and
@@ -44,15 +37,33 @@ namespace r2d2::display {
                                   const uint8_t &address);
 
         /**
-         * Clears the display.
-         * Sets all pixels to "off"
+         * @brief Write a pixel to the screen
+         *
+         * @param x
+         * @param y
+         * @param data
+         */
+        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override;
+
+        /**
+         * This clears the display this overrides the default clear of hwlib
+         * becouse it is realy inefficient for this screen.
+         */
+        void clear(hwlib::color col) override;
+
+        /**
+         * This clears the display this overrides the default clear of hwlib
+         * becouse it is realy inefficient for this screen.
          */
         void clear() override;
 
         /**
-         * Does nothing.
+         * @brief Converts a hwlib::color to the pixel data for the screen with
+         * a maximum of two bytes for every pixel
+         *
+         * @param c
          */
-        void flush() override;
+        uint16_t color_to_pixel(const hwlib::color &c);
     };
 
 } // namespace r2d2::display
