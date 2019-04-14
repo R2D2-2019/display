@@ -2,9 +2,9 @@
 
 #include <hwlib.hpp>
 
+#include <display_adapter.hpp>
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
-#include <display_adapter.hpp>
 
 namespace r2d2::display {
     /**
@@ -12,7 +12,7 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_buffered_c : protected ssd1306_i2c_c, public display {
+    class ssd1306_oled_buffered_c : public display, protected ssd1306_i2c_c {
     private:
         /**
          * The size of the display
@@ -28,13 +28,13 @@ namespace r2d2::display {
          */
         uint8_t buffer[(wsize.x * wsize.y / 8) + 1] = {};
 
-        // /**
-        //  * The write implementation of hwlib::window
-        //  * This is what allows us to re-use the existing code.
-        //  * It sets a pixel at the given coordinate to the given color. In the
-        //  * case of this specific display the color is either white or black.
-        //  */
-        // void write_implementation(hwlib::xy pos, hwlib::color col) override;
+        /**
+         * @brief converts a hwlib::color to the pixel data for the screen with
+         * a maximum of two bytes for every pixel
+         *
+         * @param c
+         */
+        uint16_t color_to_pixel(const hwlib::color &c) override;
 
     public:
         /**
@@ -45,10 +45,25 @@ namespace r2d2::display {
                                 const uint8_t &address);
 
         /**
-         * Clears the display.
-         * Sets all pixels to "off"
+         * @brief Write a pixel to the screen
+         *
+         * @param x
+         * @param y
+         * @param data
          */
-        void clear(hwlib::color col);
+        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override;
+
+        /**
+         * This clears the display this overrides the default clear of hwlib
+         * becouse it is realy inefficient for this screen.
+         */
+        void clear(hwlib::color col) override;
+
+        /**
+         * This clears the display this overrides the default clear of hwlib
+         * becouse it is realy inefficient for this screen.
+         */
+        void clear() override;
 
         /**
          * Flushes the data to the display.
