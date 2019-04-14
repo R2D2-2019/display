@@ -22,4 +22,7 @@ namespace r2d2::display {
             }
         }
     }
+
+    void display::flush() {
+    }
 } // namespace r2d2::display

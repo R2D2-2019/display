@@ -68,7 +68,6 @@ namespace r2d2::display {
          * a flush if not needed
          *
          */
-        virtual void flush() override {
-        }
+        virtual void flush() override;
     };
 } // namespace r2d2::display
