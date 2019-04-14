@@ -14,17 +14,17 @@ namespace r2d2::display {
                                               const uint16_t data) {
 
         // calculate the index of the pixel
-        uint16_t a = x + (y / 8) * size.x;
+        uint16_t t_index = x + (y / 8) * size.x;
 
         // set or clear the pixel
         if (data) {
-            buffer[a] |= (0x01 << (y % 8));
+            buffer[t_index] |= (0x01 << (y % 8));
         } else {
-            buffer[a] &= ~(0x01 << (y % 8));
+            buffer[t_index] &= ~(0x01 << (y % 8));
         }
 
         // write pixel byte to screen
-        pixels_byte_write(hwlib::xy(x, y / 8), buffer[a]);
+        pixels_byte_write(hwlib::xy(x, y / 8), buffer[t_index]);
     }
 
     void ssd1306_oled_unbuffered_c::clear() {
