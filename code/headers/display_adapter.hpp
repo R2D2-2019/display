@@ -15,6 +15,12 @@ namespace r2d2::display {
             set_pixel(pos.x, pos.y, color_to_pixel(col));
         }
 
+    public:
+        display(hwlib::xy size, hwlib::color foreground = hwlib::white,
+                hwlib::color background = hwlib::black)
+            : hwlib::window(size, foreground, background) {
+        }
+
         /**
          * @brief Converts a hwlib::color to the pixel data for the screen with
          * a maximum of two bytes for every pixel
@@ -22,12 +28,6 @@ namespace r2d2::display {
          * @param c
          */
         virtual uint16_t color_to_pixel(const hwlib::color &c) = 0;
-
-    public:
-        display(hwlib::xy size, hwlib::color foreground = hwlib::white,
-                hwlib::color background = hwlib::black)
-            : hwlib::window(size, foreground, background) {
-        }
 
         /**
          * @brief Write a pixel to the screen
