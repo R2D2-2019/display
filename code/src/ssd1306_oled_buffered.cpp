@@ -6,8 +6,10 @@ namespace r2d2::display {
         : display(wsize, hwlib::white, hwlib::black),
           ssd1306_i2c_c(bus, address) {
 
+        // set the command for writing to the screen
         buffer[0] = ssd1306_data_prefix;
 
+        // write the initalisation sequence to the screen
         bus.write(address, ssd1306_initialization,
                   sizeof(ssd1306_initialization) / sizeof(uint8_t));
     }
@@ -15,7 +17,7 @@ namespace r2d2::display {
     void ssd1306_oled_buffered_c::set_pixel(uint16_t x, uint16_t y,
                                             const uint16_t data) {
         // calculate the index of the pixel
-        uint8_t t_index = x + (y / 8) * size.x;
+        uint16_t t_index = x + (y / 8) * size.x;
 
         // set or clear the pixel
         if (data) {
