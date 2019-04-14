@@ -92,7 +92,7 @@ namespace r2d2::display {
             (uint8_t)ssd1306_command::display_on};
     };
 
-    class ssd1306_i2c_c: public ssd1306_c {
+    class ssd1306_i2c_c : public ssd1306_c {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
