@@ -1,8 +1,10 @@
 #pragma once
 
 #include <hwlib.hpp>
+
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
+#include <display_adapter.hpp>
 
 namespace r2d2::display {
     /**
@@ -10,8 +12,7 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_buffered_c : public r2d2::display::ssd1306_i2c_c,
-                                    public hwlib::window {
+    class ssd1306_oled_buffered_c : protected ssd1306_i2c_c, public display {
     private:
         /**
          * The size of the display
@@ -27,13 +28,13 @@ namespace r2d2::display {
          */
         uint8_t buffer[(wsize.x * wsize.y / 8) + 1] = {};
 
-        /**
-         * The write implementation of hwlib::window
-         * This is what allows us to re-use the existing code.
-         * It sets a pixel at the given coordinate to the given color. In the
-         * case of this specific display the color is either white or black.
-         */
-        void write_implementation(hwlib::xy pos, hwlib::color col) override;
+        // /**
+        //  * The write implementation of hwlib::window
+        //  * This is what allows us to re-use the existing code.
+        //  * It sets a pixel at the given coordinate to the given color. In the
+        //  * case of this specific display the color is either white or black.
+        //  */
+        // void write_implementation(hwlib::xy pos, hwlib::color col) override;
 
     public:
         /**
@@ -47,7 +48,7 @@ namespace r2d2::display {
          * Clears the display.
          * Sets all pixels to "off"
          */
-        void clear() override;
+        void clear(hwlib::color col);
 
         /**
          * Flushes the data to the display.
@@ -55,7 +56,7 @@ namespace r2d2::display {
          * is called, it will then push the entirety of the buffer to the
          * display at once.
          */
-        void flush() override;
+        void flush();
     };
 
 } // namespace r2d2::display
