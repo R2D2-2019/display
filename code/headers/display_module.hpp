@@ -45,6 +45,8 @@ namespace r2d2::display {
                             hwlib::color(data.red, data.green, data.blue));
                     }
                 }
+
+                display.flush();
             }
         }
     };
