@@ -4,7 +4,7 @@
 #include <i2c_bus.hpp>
 
 namespace r2d2::display {
-    enum class ssd1306_commands : uint8_t {
+    enum class ssd1306_command : uint8_t {
         set_contrast = 0x81,
         display_all_on_resume = 0xa4,
         display_all_on = 0xa5,
@@ -48,46 +48,46 @@ namespace r2d2::display {
     /// SSD1306 chip initialization
     constexpr const uint8_t ssd1306_initialization[] = {
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::display_off,
+        (uint8_t)ssd1306_command::display_off,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_display_clock_div,
+        (uint8_t)ssd1306_command::set_display_clock_div,
         0x80,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_multiplex,
+        (uint8_t)ssd1306_command::set_multiplex,
         0x3f,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_display_offset,
+        (uint8_t)ssd1306_command::set_display_offset,
         0x00,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_start_line | 0x00,
+        (uint8_t)ssd1306_command::set_start_line | 0x00,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::charge_pump,
+        (uint8_t)ssd1306_command::charge_pump,
         0x14,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::memory_mode,
+        (uint8_t)ssd1306_command::memory_mode,
         0x00,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::seg_remap | 0x01,
+        (uint8_t)ssd1306_command::seg_remap | 0x01,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::com_scan_dec,
+        (uint8_t)ssd1306_command::com_scan_dec,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_compins,
+        (uint8_t)ssd1306_command::set_compins,
         0x12,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_contrast,
+        (uint8_t)ssd1306_command::set_contrast,
         0xcf,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_precharge,
+        (uint8_t)ssd1306_command::set_precharge,
         0xf1,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::set_vcom_detect,
+        (uint8_t)ssd1306_command::set_vcom_detect,
         0x40,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::display_all_on_resume,
+        (uint8_t)ssd1306_command::display_all_on_resume,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::normal_display,
+        (uint8_t)ssd1306_command::normal_display,
         ssd1306_cmd_prefix,
-        (uint8_t)ssd1306_commands::display_on};
+        (uint8_t)ssd1306_command::display_on};
 
     class ssd1306_i2c_c {
     protected:
@@ -103,13 +103,13 @@ namespace r2d2::display {
         ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address);
 
         /// send a command without data
-        void command(ssd1306_commands c);
+        void command(ssd1306_command c);
 
         /// send a command with one data byte
-        void command(ssd1306_commands c, uint8_t d0);
+        void command(ssd1306_command c, uint8_t d0);
 
         /// send a command with two data bytes
-        void command(ssd1306_commands c, uint8_t d0, uint8_t d1);
+        void command(ssd1306_command c, uint8_t d0, uint8_t d1);
 
         /// send one byte of data
         void data(uint8_t d);

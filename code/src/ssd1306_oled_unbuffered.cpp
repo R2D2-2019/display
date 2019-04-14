@@ -23,8 +23,8 @@ namespace r2d2::display {
     }
     void ssd1306_oled_unbuffered_c::clear() {
         const uint8_t d = (background == hwlib::white) ? 0xFF : 0x00;
-        command(ssd1306_commands::column_addr, 0, 127);
-        command(ssd1306_commands::page_addr, 0, 7);
+        command(ssd1306_command::column_addr, 0, 127);
+        command(ssd1306_command::page_addr, 0, 7);
         uint8_t data[sizeof(buffer) + 1] = {0};
         data[0] = ssd1306_data_prefix;
         for (uint_fast16_t x = 1; x < sizeof(data); ++x) {
