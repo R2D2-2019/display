@@ -40,16 +40,13 @@ namespace r2d2::display {
         const uint8_t d = (col == hwlib::white) ? 0xFF : 0x00;
 
         // clear the internal buffer with the screen color
-        for( auto & b : buffer){
-            b = d;
+        for(uint16_t i = 1; i < sizeof(buffer); i++) {
+            buffer[i] = d;
         }
 
         // update cursor of the display
         command(ssd1306_command::column_addr, 0, 127);
         command(ssd1306_command::page_addr, 0, 7);
-
-        // set the command for writing to the screen
-        buffer[0] = ssd1306_data_prefix;
 
         // write data to the screen
         bus.write(address, buffer, sizeof(buffer));
