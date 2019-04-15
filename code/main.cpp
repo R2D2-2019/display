@@ -7,8 +7,6 @@
 #include "display_module.hpp"
 
 int main() {
-    using namespace r2d2;
-
     // kill the watchdog
     WDT->WDT_MR = WDT_MR_WDDIS;
 
@@ -23,7 +21,7 @@ int main() {
 
     r2d2::comm_c comm;
 
-    display::module_c module(comm, display);
+    r2d2::display::module_c module(comm, display);
 
     for (;;) {
         module.process();
