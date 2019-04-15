@@ -3,7 +3,7 @@
 namespace r2d2::display {
     ssd1306_oled_unbuffered_c::ssd1306_oled_unbuffered_c(
         r2d2::i2c::i2c_bus_c &bus, const uint8_t &address)
-        : display(wsize), ssd1306_i2c_c(bus, address) {
+        : display_c(wsize), ssd1306_i2c_c(bus, address) {
 
         // set the command for writing to the screen
         buffer[0] = ssd1306_data_prefix;

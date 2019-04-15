@@ -3,7 +3,7 @@
 #include <hwlib.hpp>
 
 namespace r2d2::display {
-    class display : public hwlib::window {
+    class display_c : public hwlib::window {
     protected:
         /**
          * @brief Write implementation for hwlib
@@ -16,7 +16,7 @@ namespace r2d2::display {
         }
 
     public:
-        display(hwlib::xy size, hwlib::color foreground = hwlib::white,
+        display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
                 hwlib::color background = hwlib::black)
             : hwlib::window(size, foreground, background) {
         }

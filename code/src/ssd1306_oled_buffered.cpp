@@ -3,7 +3,7 @@
 namespace r2d2::display {
     ssd1306_oled_buffered_c::ssd1306_oled_buffered_c(r2d2::i2c::i2c_bus_c &bus,
                                                      const uint8_t &address)
-        : display(wsize, hwlib::white, hwlib::black),
+        : display_c(wsize, hwlib::white, hwlib::black),
           ssd1306_i2c_c(bus, address) {
 
         // set the command for writing to the screen

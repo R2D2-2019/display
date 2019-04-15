@@ -12,7 +12,7 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_unbuffered_c : public display, public ssd1306_i2c_c {
+    class ssd1306_oled_unbuffered_c : public display_c, public ssd1306_i2c_c {
     private:
         /**
          * The size of the display
