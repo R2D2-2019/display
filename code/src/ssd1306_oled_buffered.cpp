@@ -17,13 +17,13 @@ namespace r2d2::display {
     void ssd1306_oled_buffered_c::set_pixel(uint16_t x, uint16_t y,
                                             const uint16_t data) {
         // calculate the index of the pixel
-        uint16_t t_index = x + (y / 8) * size.x;
+        uint16_t t_index = (x + (y / 8) * size.x) + 1;
 
         // set or clear the pixel
         if (data) {
-            buffer[t_index + 1] |= (0x01 << (y % 8));
+            buffer[t_index] |= (0x01 << (y % 8));
         } else {
-            buffer[t_index + 1] &= ~(0x01 << (y % 8));
+            buffer[t_index] &= ~(0x01 << (y % 8));
         }
     }    
 
