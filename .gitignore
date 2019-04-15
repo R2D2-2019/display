@@ -10,4 +10,4 @@
 *.lst
 .idea/
 cmake*/
-
+settings.json
