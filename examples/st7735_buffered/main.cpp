@@ -32,15 +32,15 @@ int main(void) {
     // draw boarders on the edges of the screen
     for (uint8_t y = 0; y < 160; y++) {
         display.set_pixel(0, y,
-                          display.color_to_bytes(hwlib::color(0, 0xFF, 0)));
+                          display.color_to_pixel(hwlib::color(0, 0xFF, 0)));
         display.set_pixel(0 + 79, y,
-                          display.color_to_bytes(hwlib::color(0, 0xFF, 0)));
+                          display.color_to_pixel(hwlib::color(0, 0xFF, 0)));
     }
     for (uint8_t x = 0; x < 80; x++) {
         display.set_pixel(x, 0,
-                          display.color_to_bytes(hwlib::color(0xFF, 0xFF, 0)));
+                          display.color_to_pixel(hwlib::color(0xFF, 0xFF, 0)));
         display.set_pixel(x, 159,
-                          display.color_to_bytes(hwlib::color(0xFF, 0xFF, 0)));
+                          display.color_to_pixel(hwlib::color(0xFF, 0xFF, 0)));
     }
 
     display.flush();
@@ -48,7 +48,7 @@ int main(void) {
     // endless loop
     for (;;) {
         display.set_pixel(10, 10,
-                          display.color_to_bytes(hwlib::color(255, 255, 255)));
+                          display.color_to_pixel(hwlib::color(255, 255, 255)));
         display.flush();
     }
 }
