@@ -4,10 +4,11 @@
 #pragma once
 
 #include <hwlib.hpp>
+#include <display_adapter.hpp>
 
 namespace r2d2::display {
 
-    class st7735_c {
+    class st7735_c : public display_c {
     protected:
         // all the commands for the display
         constexpr static uint8_t _NOP = 0x00;
@@ -130,7 +131,7 @@ namespace r2d2::display {
          */
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
-            : bus(bus), cs(cs), dc(dc), reset(reset) {
+            :display_c(hwlib::xy(width, height)) , bus(bus), cs(cs), dc(dc), reset(reset) {
             init();
         }
 
@@ -148,59 +149,18 @@ namespace r2d2::display {
         constexpr static uint8_t height = 160;
 
         /**
-         * @brief Directly write a pixel to the screen
-         *
-         * @param x
-         * @param y
-         * @param data
-         */
-        virtual void set_pixel(uint16_t x, uint16_t y, const uint16_t data) = 0;
-
-        /**
-         * @brief Directly write multiple pixels to the screen
-         *
-         * @param x
-         * @param y
-         * @param width
-         * @param height
-         * @param data
-         */
-        virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const uint16_t *data) = 0;
-
-        /**
-         * @brief Directly fill multiple pixels with the same color to the
-         * screen
-         *
-         * @param x
-         * @param y
-         * @param width
-         * @param height
-         * @param data
-         */
-        virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const uint16_t data) = 0;
-
-        /**
-         * @brief flushes the display if buffered
-         * 
-         */
-        virtual void flush() {}
-
-        /**
          * @brief Converst a hwlib::color to a uint16_t in the format the screen
          * wants
          *
          * @param c
          * @return constexpr uint16_t
          */
-        constexpr static uint16_t color_to_bytes(const hwlib::color c) {
+        uint16_t color_to_pixel(const hwlib::color &c) override {
             return (uint16_t(c.red) * 0x1F / 0xFF) << 11 |
                    (uint16_t(c.green) * 0x3F / 0xFF) << 5 |
                    (uint16_t(c.blue) * 0x1F / 0xFF);
         }
     };
-
 } // namespace r2d2::display
 
 #endif
