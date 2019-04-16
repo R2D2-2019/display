@@ -59,4 +59,3 @@ jobs:
             - cd test_module/code
             - make build
             - make clean
-        
