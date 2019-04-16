@@ -25,7 +25,7 @@ namespace r2d2::display {
         // all the data directly to the buffer
         for(size_t v = 0; v < h; v++){
             for(size_t t = 0; t < w; t++){
-                const uint16_t g = __REV(data[(v * w) + t]);
+                const uint16_t g = __REV16(data[(v * w) + t]);
 
                 buffer[(x + t) + ((y + v) * width)] = g;
             }            

@@ -34,7 +34,7 @@ namespace r2d2::display {
         // unfortunaly the arduino due is little endian otherwise we could put
         // all the data directly to the write_data function
         for (size_t i = 0; i < w * h; i++) {
-            const uint16_t t = __REV(data[i]);
+            const uint16_t t = __REV16(data[i]);
 
             write_data((uint8_t *)&t, 2);
         }
