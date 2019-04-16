@@ -1,4 +1,4 @@
-#include "st7735_buffered.hpp"
+#include <st7735_buffered.hpp>
 #include <hwlib.hpp>
 
 int main(void) {

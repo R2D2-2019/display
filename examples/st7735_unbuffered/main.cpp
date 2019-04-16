@@ -1,5 +1,5 @@
-#include "st7735_unbuffered.hpp"
 #include <hwlib.hpp>
+#include <st7735_unbuffered.hpp>
 
 int main(void) {
     // kill the watchdog
