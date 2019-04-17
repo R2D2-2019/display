@@ -1,6 +1,3 @@
-#ifndef R2D2_ST7735_HPP
-#define R2D2_ST7735_HPP
-
 #pragma once
 
 #include <hwlib.hpp>
@@ -162,5 +159,3 @@ namespace r2d2::display {
         }
     };
 } // namespace r2d2::display
-
-#endif
