@@ -1,25 +1,25 @@
 #pragma once
 
 #include <base_module.hpp>
+#include <display_adapter.hpp>
 #include <hwlib.hpp>
 
 namespace r2d2::display {
     class module_c : public base_module_c {
     protected:
-        hwlib::window &display;
+        display_c &display;
 
     public:
         /**
          * @param comm
          * @param led
          */
-        module_c(base_comm_c &comm, hwlib::window &display)
+        module_c(base_comm_c &comm, display_c &display)
             : base_module_c(comm), display(display) {
 
             // Set up listeners
-            comm.listen_for_frames({
-                r2d2::frame_type::DISPLAY_FILLED_RECTANGLE
-            });
+            comm.listen_for_frames(
+                {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE});
         }
 
         /**
@@ -38,13 +38,9 @@ namespace r2d2::display {
                 const auto data =
                     frame.as_frame_type<frame_type::DISPLAY_FILLED_RECTANGLE>();
 
-                for (uint8_t y = 0; y < data.height; y++) {
-                    for (uint8_t x = 0; x < data.width; x++) {
-                        display.write(
-                            hwlib::xy(data.x + x, data.y + y),
-                            hwlib::color(data.red, data.green, data.blue));
-                    }
-                }
+                display.set_pixels(data.x, data.y, data.width, data.height,
+                                   display.color_to_pixel(hwlib::color(
+                                       data.red, data.green, data.blue)));
 
                 display.flush();
             }
