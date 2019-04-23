@@ -1,6 +1,8 @@
 #pragma once
 
 #include <hwlib.hpp>
+
+#include <display_adapter.hpp>
 #include <i2c_bus.hpp>
 
 namespace r2d2::display {
@@ -92,7 +94,7 @@ namespace r2d2::display {
             (uint8_t)ssd1306_command::display_on};
     };
 
-    class ssd1306_i2c_c : public ssd1306_c {
+    class ssd1306_i2c_c : protected ssd1306_c, public display_c {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
@@ -101,7 +103,6 @@ namespace r2d2::display {
         /// The current cursor location in the controller
         hwlib::xy cursor;
 
-    public:
         // construct by providing the i2c channel
         ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address);
 
@@ -116,8 +117,25 @@ namespace r2d2::display {
 
         /// send one byte of data
         void data(uint8_t d);
+
         /// write the pixel byte d at column x page y
         void pixels_byte_write(hwlib::xy location, uint8_t d);
+
+    public:
+        /**
+         * The size of the display
+         * This is needed even though hwlib::window keeps it's own size to
+         * create the buffer at compile time.
+         */
+        static auto constexpr wsize = hwlib::xy(128, 64);
+
+        /**
+         * @brief converts a hwlib::color to the pixel data for the screen with
+         * a maximum of two bytes for every pixel
+         *
+         * @param c
+         */
+        uint16_t color_to_pixel(const hwlib::color &c) override;
     };
 
 } // namespace r2d2::display

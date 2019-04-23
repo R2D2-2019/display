@@ -3,7 +3,7 @@
 namespace r2d2::display {
     ssd1306_oled_unbuffered_c::ssd1306_oled_unbuffered_c(
         r2d2::i2c::i2c_bus_c &bus, const uint8_t &address)
-        : display_c(wsize), ssd1306_i2c_c(bus, address) {
+        : ssd1306_i2c_c(bus, address) {
 
         // set the command for writing to the screen
         buffer[0] = ssd1306_data_prefix;
@@ -40,7 +40,7 @@ namespace r2d2::display {
         const uint8_t d = (col == hwlib::white) ? 0xFF : 0x00;
 
         // clear the internal buffer with the screen color
-        for(uint16_t i = 1; i < sizeof(buffer); i++) {
+        for (uint16_t i = 1; i < sizeof(buffer); i++) {
             buffer[i] = d;
         }
 
@@ -53,10 +53,5 @@ namespace r2d2::display {
 
         // update the cursor
         cursor = hwlib::xy(0, 0);
-    }
-
-    uint16_t ssd1306_oled_unbuffered_c::color_to_pixel(const hwlib::color &c) {
-        // return as bool becouse we only need bools for the display
-        return (c == hwlib::white);
     }
 } // namespace r2d2::display
