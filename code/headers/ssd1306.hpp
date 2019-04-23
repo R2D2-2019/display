@@ -123,11 +123,16 @@ namespace r2d2::display {
 
     public:
         /**
-         * The size of the display
-         * This is needed even though hwlib::window keeps it's own size to
-         * create the buffer at compile time.
+         * @brief width of display
+         *
          */
-        static auto constexpr wsize = hwlib::xy(128, 64);
+        constexpr static uint8_t width = 128;
+
+        /**
+         * @brief height of display
+         *
+         */
+        constexpr static uint8_t height = 64;
 
         /**
          * @brief converts a hwlib::color to the pixel data for the screen with

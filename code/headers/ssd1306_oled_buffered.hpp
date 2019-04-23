@@ -18,7 +18,7 @@ namespace r2d2::display {
          * The first byte is used for the data-prefix that the display driver
          * requires to be sent when sending pixel data.
          */
-        uint8_t buffer[(wsize.x * wsize.y / 8) + 1] = {};
+        uint8_t buffer[(width * height / 8) + 1] = {};
 
     public:
         /**

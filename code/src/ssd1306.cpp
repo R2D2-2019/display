@@ -4,7 +4,7 @@
 namespace r2d2::display {
     ssd1306_i2c_c::ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus,
                                  const uint8_t &address)
-        : display_c(wsize, hwlib::white, hwlib::black),
+        : display_c(hwlib::xy(width, height), hwlib::white, hwlib::black),
           bus(bus),
           address(address),
           cursor(255, 255) {
