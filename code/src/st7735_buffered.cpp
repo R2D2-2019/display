@@ -23,8 +23,8 @@ namespace r2d2::display {
 
         // unfortunaly the arduino due is little endian otherwise we could put
         // all the data directly to the buffer
-        for(size_t v = 0; v < h; v++){
-            for(size_t t = 0; t < w; t++){
+        for (size_t v = 0; v < h; v++) {
+            for (size_t t = 0; t < w; t++) {
                 const uint16_t g = __REV16(data[(v * w) + t]);
 
                 buffer[(x + t) + ((y + v) * width)] = g;
@@ -37,14 +37,14 @@ namespace r2d2::display {
         
         uint16_t g = __REV16(data); // make a copy and reverse byte order
 
-        for(size_t v = 0; v < h; v++){
-            for(size_t t = 0; t < w; t++){
+        for (size_t v = 0; v < h; v++) {
+            for (size_t t = 0; t < w; t++) {
                 buffer[(x + t) + ((y + v) * width)] = g;
             }            
         }
     }
 
-    void st7735_buffered_c::flush(){
+    void st7735_buffered_c::flush() {
         set_cursor(0, 0, width - 1, height - 1);
 
         // write to ram
