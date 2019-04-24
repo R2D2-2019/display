@@ -2,7 +2,6 @@
 
 #include <hwlib.hpp>
 
-#include <display_adapter.hpp>
 #include <i2c_bus.hpp>
 #include <ssd1306.hpp>
 
@@ -12,21 +11,14 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_unbuffered_c : public display_c, public ssd1306_i2c_c {
+    class ssd1306_oled_unbuffered_c : public ssd1306_i2c_c {
     private:
-        /**
-         * The size of the display
-         * This is needed even though hwlib::window keeps it's own size to
-         * create the buffer at compile time.
-         */
-        static auto constexpr wsize = hwlib::xy(128, 64);
-
         /**
          * The buffer with the pixel data
          * The first byte is used for the data-prefix that the display driver
          * requires to be sent when sending pixel data.
          */
-        uint8_t buffer[wsize.x * wsize.y / 8 + 1] = {};
+        uint8_t buffer[width * height / 8 + 1] = {};
 
     public:
         /**
@@ -56,14 +48,6 @@ namespace r2d2::display {
          * becouse it is realy inefficient for this screen.
          */
         void clear() override;
-
-        /**
-         * @brief Converts a hwlib::color to the pixel data for the screen with
-         * a maximum of two bytes for every pixel
-         *
-         * @param c
-         */
-        uint16_t color_to_pixel(const hwlib::color &c);
     };
 
 } // namespace r2d2::display
