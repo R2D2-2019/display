@@ -25,7 +25,7 @@ int main() {
 
     // display_rectangles_test(display);
     // display_circles_test(display);
-    // fill_screen_test(display, display_height, display_width);
+    // fill_screen_test(display);
     return 0;
 }
 
