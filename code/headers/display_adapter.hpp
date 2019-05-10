@@ -63,6 +63,22 @@ namespace r2d2::display {
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
                                 uint16_t height, const uint16_t data);
 
+
+        /**
+         * @brief Sets character in a single color
+         * 
+         * @param x x-coordinate of the character (x=0 is the leftmost collumn)
+         * 
+         * @param y y-coordinate of the character (y=0 is the highest row)
+         * 
+         * @param character The un-extended (0-127) ascii value of the character
+         * 
+         * @param pixel_color The color of the pixel
+         * 
+         */
+        virtual void set_character(uint16_t x, uint16_t y,
+                                uint8_t character, uint16_t pixel_color);
+
         /**
          * @brief Override for hwlib::window the class doesn't need to implement
          * a flush if not needed
