@@ -72,7 +72,7 @@ namespace r2d2::display {
          * 
          * @param y y-coordinate of the character (y=0 is the highest row)
          * 
-         * @param character A character to be displayed as an image
+         * @param character The un-extended (0-127) ascii value of the character
          * 
          * @param pixel_color The color of the pixel
          * 
