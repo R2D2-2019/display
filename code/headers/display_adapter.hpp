@@ -1,7 +1,6 @@
 #pragma once
 
 #include <hwlib.hpp>
-
 namespace r2d2::display {
     class display_c : public hwlib::window {
     protected:
@@ -14,7 +13,9 @@ namespace r2d2::display {
         void write_implementation(hwlib::xy pos, hwlib::color col) {
             set_pixel(pos.x, pos.y, color_to_pixel(col));
         }
-
+        
+        // The font used in the display is 8*8 
+        hwlib::font_default_8x8 display_font = hwlib::font_default_8x8();
     public:
         display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
                 hwlib::color background = hwlib::black)
@@ -71,13 +72,13 @@ namespace r2d2::display {
          * 
          * @param y y-coordinate of the character (y=0 is the highest row)
          * 
-         * @param character The un-extended (0-127) ascii value of the character
+         * @param character A character to be displayed as an image
          * 
          * @param pixel_color The color of the pixel
          * 
          */
-        virtual void set_character(uint16_t x, uint16_t y,
-                                uint8_t character, uint16_t pixel_color);
+        virtual void set_character(uint16_t x, uint16_t y, uint8_t character, 
+                                uint16_t pixel_color);
 
         /**
          * @brief Override for hwlib::window the class doesn't need to implement
