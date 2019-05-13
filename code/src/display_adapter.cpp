@@ -40,7 +40,7 @@ namespace r2d2::display {
         }
     }
 
-    void display_c::set_character(uint8_t target, char *characters,
+    void display_c::set_character(uint8_t target, const char *characters,
                                 uint8_t character_amount){
         if (target >= cursor_size) {
             return;
@@ -49,7 +49,7 @@ namespace r2d2::display {
         for (uint8_t char_i = 0; char_i < character_amount; char_i++) {
             set_character(cursor.cursor_x, cursor.cursor_y, characters[char_i], 
                 color_to_pixel(cursor.cursor_color));
-            
+            cursor.cursor_x += 8;
         }
     }
 
@@ -59,7 +59,7 @@ namespace r2d2::display {
     }
 
     void display_c::set_cursor_color(uint8_t cursor_target, hwlib::color color){
-        
+
     }
     
     

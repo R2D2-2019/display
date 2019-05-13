@@ -96,7 +96,7 @@ namespace r2d2::display {
          * 
          * @param character_amount number of characters to draw
          */
-        virtual void set_character(uint8_t cursor_target, char *characters,
+        virtual void set_character(uint8_t cursor_target, const char *characters,
                                 uint8_t character_amount);
 
         /**
