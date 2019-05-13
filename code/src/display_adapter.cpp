@@ -42,6 +42,7 @@ namespace r2d2::display {
 
     void display_c::set_character(uint8_t cursor_target, const char *characters,
                                 uint8_t character_amount){
+        // Checks if the given cursor is not out of bounds
         if (cursor_target >= cursor_size) {
             return;
         }
@@ -55,7 +56,12 @@ namespace r2d2::display {
 
     void display_c::set_cursor_positon(uint8_t cursor_target, uint8_t x, 
                                     uint8_t y){
-        
+        // Checks if the given cursor is not out of bounds
+        if (cursor_target >= cursor_size) {
+            return;
+        }
+        cursors[cursor_target].cursor_x = x;
+        cursors[cursor_target].cursor_y = y;
     }
 
     void display_c::set_cursor_color(uint8_t cursor_target, hwlib::color color){
