@@ -65,7 +65,11 @@ namespace r2d2::display {
     }
 
     void display_c::set_cursor_color(uint8_t cursor_target, hwlib::color color){
-
+        // Checks if the given cursor is not out of bounds
+        if (cursor_target >= cursor_size) {
+            return;
+        }
+        cursors[cursor_target].cursor_color = color;
     }
     
     
