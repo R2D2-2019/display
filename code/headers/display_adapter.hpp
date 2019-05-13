@@ -1,6 +1,7 @@
 #pragma once
 
 #include <hwlib.hpp>
+#include <display_cursor.hpp>
 namespace r2d2::display {
     class display_c : public hwlib::window {
     protected:
@@ -16,6 +17,10 @@ namespace r2d2::display {
         
         // The font used in the display is 8*8 
         hwlib::font_default_8x8 display_font = hwlib::font_default_8x8();
+
+        // Keeps track of cursors (for now hardcoded as 5 cursors)
+        uint8_t cursor_size = 5;
+        r2d2::display::display_cursor cursors[5];
     public:
         display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
                 hwlib::color background = hwlib::black)
@@ -73,12 +78,21 @@ namespace r2d2::display {
          * @param y y-coordinate of the character (y=0 is the highest row)
          * 
          * @param character The un-extended (0-127) ascii value of the character
+         *  
          * 
          * @param pixel_color The color of the pixel
          * 
          */
         virtual void set_character(uint16_t x, uint16_t y, char character, 
                                 uint16_t pixel_color);
+
+
+        /**
+         * @brief Draws given characters to the target cursor
+         * 
+         */
+        virtual void set_character(uint8_t target, char *characters,
+                                uint8_t character_amount);
 
         /**
          * @brief Override for hwlib::window the class doesn't need to implement

@@ -29,12 +29,13 @@ namespace r2d2::display {
                                     char character, uint16_t pixel_color) {
         // Loops through all rows of the character 
         const hwlib::image& character_image = display_font[character];                               
-        for(int image_y = 0; image_y < 8; image_y++) {
-            for(int image_x = 0; image_x < 8; image_x++) {
+        for (int image_y = 0; image_y < 8; image_y++) {
+            for (int image_x = 0; image_x < 8; image_x++) {
+                // Check if the pixel needs to be drawn. 
+                // If the pixel color is anything other than white, draw it
                 hwlib::color character_pixel_color = character_image[hwlib::xy(image_x, image_y)];
-                if(character_pixel_color != hwlib::white) {
+                if (character_pixel_color != hwlib::white) {
                     set_pixel(x + image_x, y + image_y, color_to_pixel(pixel_color));
-
                 }
             }
         }
