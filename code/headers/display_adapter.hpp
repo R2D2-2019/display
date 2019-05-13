@@ -77,7 +77,7 @@ namespace r2d2::display {
          * @param pixel_color The color of the pixel
          * 
          */
-        virtual void set_character(uint16_t x, uint16_t y, uint8_t character, 
+        virtual void set_character(uint16_t x, uint16_t y, char character, 
                                 uint16_t pixel_color);
 
         /**

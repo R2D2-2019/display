@@ -26,7 +26,7 @@ namespace r2d2::display {
 
     
     void display_c::set_character(uint16_t x, uint16_t y, 
-                                    uint8_t character, uint16_t pixel_color) {
+                                    char character, uint16_t pixel_color) {
         // Loops through all rows of the character 
         const hwlib::image& character_image = display_font[character];                               
         for(int image_y = 0; image_y < 8; image_y++) {
