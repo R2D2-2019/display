@@ -86,9 +86,9 @@ namespace r2d2::display {
         virtual void set_character(uint16_t x, uint16_t y, char character, 
                                 uint16_t pixel_color);
 
-
         /**
-         * @brief Draws given characters to the target cursor
+         * @brief Draws given characters to the target cursor. For every 
+         * character drawn this way, the cursor will move 8 pixels.
          * 
          * @param cursor_target This targets the cursor with which to draw
          * 
@@ -98,6 +98,27 @@ namespace r2d2::display {
          */
         virtual void set_character(uint8_t cursor_target, char *characters,
                                 uint8_t character_amount);
+
+        /**
+         * @brief Sets the targeted cursor to the given position
+         * 
+         * @param cursor_target This targets which cursor to move
+         * 
+         * @param x new X position of the cursor
+         * 
+         * @param y new Y position of the cursor
+         */
+        virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x, 
+                                uint8_t y);
+
+        /**
+         * @brief Sets the targeted cursor to the given color
+         * 
+         * @param cursor_target This targets which cursor to change colors
+         * 
+         * @param color The new color
+         */
+        virtual void set_cursor_color(uint8_t cursor_target, hwlib::color color);
 
         /**
          * @brief Override for hwlib::window the class doesn't need to implement

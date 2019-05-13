@@ -24,7 +24,6 @@ namespace r2d2::display {
         }
     }
 
-    
     void display_c::set_character(uint16_t x, uint16_t y, 
                                     char character, uint16_t pixel_color) {
         // Loops through all rows of the character 
@@ -41,7 +40,6 @@ namespace r2d2::display {
         }
     }
 
-
     void display_c::set_character(uint8_t target, char *characters,
                                 uint8_t character_amount){
         if (target >= cursor_size) {
@@ -55,6 +53,16 @@ namespace r2d2::display {
         }
     }
 
+    void display_c::set_cursor_positon(uint8_t cursor_target, uint8_t x, 
+                                    uint8_t y){
+        
+    }
+
+    void display_c::set_cursor_color(uint8_t cursor_target, hwlib::color color){
+        
+    }
+    
+    
     void display_c::flush() {
     }
 } // namespace r2d2::display
