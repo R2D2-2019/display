@@ -41,6 +41,20 @@ namespace r2d2::display {
         }
     }
 
+
+    void display_c::set_character(uint8_t target, char *characters,
+                                uint8_t character_amount){
+        if (target >= cursor_size) {
+            return;
+        }
+        display_cursor &cursor = cursors[target];
+        for (uint8_t char_i = 0; char_i < character_amount; char_i++) {
+            set_character(cursor.cursor_x, cursor.cursor_y, characters[char_i], 
+                color_to_pixel(cursor.cursor_color));
+            
+        }
+    }
+
     void display_c::flush() {
     }
 } // namespace r2d2::display
