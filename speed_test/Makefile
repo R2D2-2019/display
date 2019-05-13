@@ -9,10 +9,10 @@
 #############################################################################
 
 # source files in this project (main.cpp is automatically assumed)
-SOURCES := $(wildcard src/*.cpp)
+SOURCES := $(wildcard  ../code/src/*.cpp)
 
 # header files in this project
-HEADERS := $(wildcard headers/*.hpp)
+HEADERS := $(wildcard ../code/headers/*.hpp)
 
 # other places to look for files for this project
 SEARCH  := ../code/headers ../code/src
