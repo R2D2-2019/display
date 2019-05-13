@@ -34,7 +34,7 @@ namespace r2d2::display {
                 // If the pixel color is anything other than white, draw it
                 hwlib::color character_pixel_color = character_image[hwlib::xy(image_x, image_y)];
                 if (character_pixel_color != hwlib::white) {
-                    set_pixel(x + image_x, y + image_y, color_to_pixel(pixel_color));
+                    set_pixel(x + image_x, y + image_y, pixel_color);
                 }
             }
         }
