@@ -34,15 +34,21 @@ namespace r2d2::display {
                     continue;
                 }
 
-                // Get the data from the frame
-                const auto data =
-                    frame.as_frame_type<frame_type::DISPLAY_FILLED_RECTANGLE>();
+                if (frame.type == r2d2::frame_type::DISPLAY_FILLED_RECTANGLE) {
+                    // Get the data from the frame
+                    const auto data =
+                        frame.as_frame_type<frame_type::DISPLAY_FILLED_RECTANGLE>();
 
-                display.set_pixels(data.x, data.y, data.width, data.height,
-                                   display.color_to_pixel(hwlib::color(
-                                       data.red, data.green, data.blue)));
+                    display.set_pixels(data.x, data.y, data.width, data.height,
+                                        display.color_to_pixel(hwlib::color(
+                                            data.red, data.green, data.blue)));
 
-                display.flush();
+                    display.flush();
+                } else if (frame.type == r2d2::frame_type::DISPLAY_CHARACTER) {
+                    const auto data = frame.as_frame_type<frame_type::DISPLAY_CHARACTER>();
+                    display.set_character(data.x, data.y, data.character, display.color_to_pixel(hwlib::color(data.red, data.green, data.blue)));
+                    display.flush();
+                }
             }
         }
     };
