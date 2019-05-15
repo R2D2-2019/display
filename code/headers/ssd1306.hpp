@@ -94,45 +94,92 @@ namespace r2d2::display {
             (uint8_t)ssd1306_command::display_on};
     };
 
-    class ssd1306_i2c_c : protected ssd1306_c, public display_c {
+    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
+    class ssd1306_i2c_c : protected ssd1306_c, public display_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
         /// The device address
         uint8_t address;
-        /// The current cursor location in the controller
+        /// The current cursor location in the controller. Completely irrelevant
+        /// to the character drawing cursor.
         hwlib::xy cursor;
 
         // construct by providing the i2c channel
-        ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address);
+        ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address)
+            : display_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(hwlib::xy(width, height), hwlib::white, hwlib::black),
+            bus(bus),
+            address(address),
+            cursor(255, 255) {
+        }
 
         /// send a command without data
-        void command(ssd1306_command c);
+        void command(ssd1306_command c) {
+            // create command packet
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c};
+
+            // write command to the bus
+            bus.write(address, data, sizeof(data) / sizeof(uint8_t));
+        }
 
         /// send a command with one data byte
-        void command(ssd1306_command c, uint8_t d0);
+        void command(ssd1306_command c, uint8_t d0) {
+            // create command packet
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c, ssd1306_cmd_prefix,
+                            d0};
+
+            // write command to the bus
+            bus.write(address, data, sizeof(data) / sizeof(uint8_t));
+        }
 
         /// send a command with two data bytes
-        void command(ssd1306_command c, uint8_t d0, uint8_t d1);
+        void command(ssd1306_command c, uint8_t d0, uint8_t d1) {
+            // create command packet
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c,
+                            ssd1306_cmd_prefix, d0,
+                            ssd1306_cmd_prefix, d1};
+
+            // write command to the bus
+            bus.write(address, data, sizeof(data) / sizeof(uint8_t));
+        }
 
         /// send one byte of data
-        void data(uint8_t d);
+        void data(uint8_t d) {
+            // create data packet
+            uint8_t data[] = {ssd1306_data_prefix, d};
+
+            // write data to the bus
+            bus.write(address, data, sizeof(data) / sizeof(uint8_t));
+        }
 
         /// write the pixel byte d at column x page y
-        void pixels_byte_write(hwlib::xy location, uint8_t d);
+        void pixels_byte_write(hwlib::xy location, uint8_t d) {
+            // check if we need to update the current cursor of the screen
+            if (location != cursor) {
+                command(ssd1306_command::column_addr, location.x, 127);
+                command(ssd1306_command::page_addr, location.y, 7);
+                cursor = location;
+            }
+
+            // write data to the screen
+            data(d);
+
+            // update the local cursor
+            cursor.x++; // TODO: cursor fallthrough
+        }
 
     public:
         /**
          * @brief width of display
          *
          */
-        constexpr static uint8_t width = 128;
+        constexpr static uint8_t width = Display_Size_Width;
 
         /**
          * @brief height of display
          *
          */
-        constexpr static uint8_t height = 64;
+        constexpr static uint8_t height = Display_Size_Height;
 
         /**
          * @brief converts a hwlib::color to the pixel data for the screen with
@@ -140,7 +187,10 @@ namespace r2d2::display {
          *
          * @param c
          */
-        uint16_t color_to_pixel(const hwlib::color &c) override;
+        uint16_t color_to_pixel(const hwlib::color &c) override {
+            // return as bool becouse we only need bools for the display
+            return (c == hwlib::white);
+        }
     };
 
 } // namespace r2d2::display

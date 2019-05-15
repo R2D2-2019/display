@@ -5,7 +5,8 @@
 
 namespace r2d2::display {
 
-    class st7735_c : public display_c {
+    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
+    class st7735_c : public display_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
     protected:
         // all the commands for the display
         constexpr static uint8_t _NOP = 0x00;
@@ -47,8 +48,8 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
         // since it uses a generic driver the display has a offset
-        constexpr static uint8_t x_offset = 26;
-        constexpr static uint8_t y_offset = 1;
+        constexpr static uint8_t x_offset = 0; //26
+        constexpr static uint8_t y_offset = 0; //1
 
         // display bus
         hwlib::spi_bus &bus;
@@ -83,7 +84,13 @@ namespace r2d2::display {
          * @param data
          * @param size
          */
-        void write_data(const uint8_t *data, size_t size);
+        void write_data(const uint8_t *data, size_t size) {
+            // set display in data mode
+            dc.write(true);
+
+            auto transaction = bus.transaction(cs);
+            transaction.write(size, data);
+        }
 
         /**
          * @brief Write display data/command data to the screen
@@ -105,7 +112,92 @@ namespace r2d2::display {
          * @brief inits the display
          *
          */
-        void init();
+        void init() {
+            // reset the display
+            reset.write(true);
+            hwlib::wait_ms(5);
+            reset.write(false);
+            hwlib::wait_ms(5);
+            reset.write(true);
+            hwlib::wait_ms(5);
+
+            // do a software reset and stop sleep mode, voltage booster on
+            write_command(_SWRESET);
+            hwlib::wait_ms(150);
+
+            write_command(_SLPOUT);
+            hwlib::wait_ms(500);
+
+            // frame rate control normal mode
+            write_command(_FRMCTR1);
+            write_data(0x01, 0x2C, 0x2D);
+
+            // frame rate control idle mode
+            write_command(_FRMCTR2);
+            write_data(0x01, 0x2C, 0x2D);
+
+            // frame rate control partial mode
+            write_command(_FRMCTR3);
+            write_data(0x01, 0x2C, 0x2D, 0x01, 0x2C, 0x2D);
+
+            hwlib::wait_ms(20);
+
+            // display invertion
+            write_command(_INVCTR);
+            write_data(0x07);
+
+            // power control settings
+            write_command(_PWCTR1);
+            write_data(0xA2, 0x02, 0x84);
+            write_command(_PWCTR2);
+            write_data(0xC5);
+            write_command(_PWCTR3);
+            write_data(0xA0, 0x00);
+            write_command(_PWCTR4);
+            write_data(0x8A, 0x2A);
+            write_command(_PWCTR5);
+            write_data(0x8A, 0xEE);
+
+            // vcomh voltage control
+            write_command(_VMCTR1);
+            write_data(0x0E);
+
+            // display inversion on, memory direction control
+            write_command(
+                _INVON,
+                _MADCTL); // for some reason we need the inversion on. It somehow
+                        // desided that 0xFFFF is black and 0x0000 is white so we
+                        // reverse this back thanks to the invert
+            write_data(0xC8); // we need the rgb to be inversed since it is inversed
+                            // with the hardware pin we cant access
+            hwlib::wait_ms(20);
+
+            // set screen in 8 bit bus mode with 16 bit color
+            write_command(_COLMOD);
+            write_data(0x05);
+            hwlib::wait_ms(10);
+
+            // set the cursor to the maximum of the screen
+            set_cursor(0x00, 0x00, width - 1, height - 1);
+
+            // set gamma adjustment + polarity
+            write_command(_GMCTRP1);
+            write_data(0x02, 0x1C, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2D, 0x29, 0x25,
+                    0x2B, 0x39, 0x00, 0x01, 0x03, 0x10);
+
+            // set gamma adjustment - polarity
+            write_command(_GMCTRN1);
+            write_data(0x03, 0x1D, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E, 0x2E,
+                    0x37, 0x3F, 0x00, 0x00, 0x02, 0x10);
+
+            // normal display on
+            write_command(_NORON);
+            hwlib::wait_ms(10);
+
+            // screen on
+            write_command(_DISPON);
+            hwlib::wait_ms(100);
+        }
 
         /**
          * @brief Set the cursor object
@@ -116,7 +208,22 @@ namespace r2d2::display {
          * @param y_max
          */
         void set_cursor(uint16_t x_min, uint16_t y_min, uint16_t x_max,
-                        uint16_t y_max);
+                        uint16_t y_max) {
+            x_min += x_offset;
+            x_max += x_offset;
+            y_min += y_offset;
+            y_max += y_offset;
+
+            // set the min and max row
+            write_command(_CASET);
+            write_data(uint8_t(x_min >> 8), uint8_t(x_min & 0xFF),
+                        uint8_t(x_max >> 8), uint8_t(x_max & 0xFF));
+
+            // set the min and max column
+            write_command(_RASET);
+            write_data(uint8_t(y_min >> 8), uint8_t(y_min & 0xFF),
+                        uint8_t(y_max >> 8), uint8_t(y_max & 0xFF));
+        }
 
         /**
          * @brief Construct a new st7735_c object
@@ -128,7 +235,7 @@ namespace r2d2::display {
          */
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
-            :display_c(hwlib::xy(width, height)) , bus(bus), cs(cs), dc(dc), reset(reset) {
+            :display_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(hwlib::xy(width, height)) , bus(bus), cs(cs), dc(dc), reset(reset) {
             init();
         }
 
@@ -137,13 +244,13 @@ namespace r2d2::display {
          * @brief width of display
          *
          */
-        constexpr static uint8_t width = 80;
+        constexpr static uint8_t width = Display_Size_Width;
 
         /**
          * @brief height of display
          *
          */
-        constexpr static uint8_t height = 160;
+        constexpr static uint8_t height = Display_Size_Height;
 
         /**
          * @brief Converst a hwlib::color to a uint16_t in the format the screen

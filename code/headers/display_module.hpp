@@ -5,16 +5,18 @@
 #include <hwlib.hpp>
 
 namespace r2d2::display {
+    
+    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
     class module_c : public base_module_c {
     protected:
-        display_c &display;
+        display_c<Cursor_Count, Display_Size_Width, Display_Size_Height> &display;
 
     public:
         /**
          * @param comm
          * @param led
          */
-        module_c(base_comm_c &comm, display_c &display)
+        module_c(base_comm_c &comm, display_c<Cursor_Count, Display_Size_Width, Display_Size_Height> &display)
             : base_module_c(comm), display(display) {
 
             // Set up listeners

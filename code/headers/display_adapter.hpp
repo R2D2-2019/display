@@ -3,6 +3,8 @@
 #include <hwlib.hpp>
 #include <display_cursor.hpp>
 namespace r2d2::display {
+
+    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
     class display_c : public hwlib::window {
     protected:
         /**
@@ -18,9 +20,8 @@ namespace r2d2::display {
         // The font used in the display is 8*8 
         hwlib::font_default_8x8 display_font = hwlib::font_default_8x8();
 
-        // Keeps track of cursors (for now hardcoded as 5 cursors)
-        uint8_t cursor_size = 5;
-        r2d2::display::display_cursor cursors[5];
+        // Keeps track of cursors
+        r2d2::display::display_cursor cursors[Cursor_Count];
     public:
         display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
                 hwlib::color background = hwlib::black)
@@ -54,7 +55,15 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const uint16_t *data);
+                                uint16_t height, const uint16_t *data) {
+            // set the data to the correct pixel
+            for (size_t t_y = 0; t_y < width; t_y++) {
+                for (size_t t_x = 0; t_x < width; t_x++) {
+                    // set the pixel with data at location of t_x + t_y * w
+                    set_pixel(x + t_x, y + t_y, data[t_x + (t_y * width)]);
+                }
+            }
+        }
 
         /**
          * @brief Fill multiple pixels with the same color to the
@@ -67,7 +76,15 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
-                                uint16_t height, const uint16_t data);
+                                uint16_t height, const uint16_t data) {
+            // set all the pixels to data
+            for (size_t t_y = 0; t_y < width; t_y++) {
+                for (size_t t_x = 0; t_x < width; t_x++) {
+                    // set the pixel with datas
+                    set_pixel(x + t_x, y + t_y, data);
+                }
+            }
+        }
 
 
         /**
@@ -84,7 +101,20 @@ namespace r2d2::display {
          * 
          */
         virtual void set_character(uint16_t x, uint16_t y, char character, 
-                                uint16_t pixel_color);
+                                uint16_t pixel_color) {
+            // Loops through all rows of the character 
+            const hwlib::image& character_image = display_font[character];                               
+            for (int image_y = 0; image_y < 8; image_y++) {
+                for (int image_x = 0; image_x < 8; image_x++) {
+                    // Check if the pixel needs to be drawn. 
+                    // If the pixel color is anything other than white, draw it
+                    hwlib::color character_pixel_color = character_image[hwlib::xy(image_x, image_y)];
+                    if (character_pixel_color != hwlib::white) {
+                        set_pixel(x + image_x, y + image_y, pixel_color);
+                    }
+                }
+            }
+        }
 
         /**
          * @brief Draws given characters to the target cursor. For every 
@@ -97,7 +127,18 @@ namespace r2d2::display {
          * @param character_amount number of characters to draw
          */
         virtual void set_character(uint8_t cursor_target, const char *characters,
-                                uint8_t character_amount);
+                                uint8_t character_amount){
+            // Checks if the given cursor is not out of bounds
+            if (cursor_target >= Cursor_Count) {
+                return;
+            }
+            display_cursor &cursor = cursors[cursor_target];
+            for (uint8_t char_i = 0; char_i < character_amount; char_i++) {
+                set_character(cursor.cursor_x, cursor.cursor_y, characters[char_i], 
+                    color_to_pixel(cursor.cursor_color));
+                cursor.cursor_x += 8;
+            }
+        }
 
         /**
          * @brief Sets the targeted cursor to the given position
@@ -109,7 +150,14 @@ namespace r2d2::display {
          * @param y new Y position of the cursor
          */
         virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x, 
-                                uint8_t y);
+                                uint8_t y){
+            // Checks if the given cursor is not out of bounds
+            if (cursor_target >= Cursor_Count) {
+                return;
+            }
+            cursors[cursor_target].cursor_x = x;
+            cursors[cursor_target].cursor_y = y;
+        }
 
         /**
          * @brief Sets the targeted cursor to the given color
@@ -118,13 +166,19 @@ namespace r2d2::display {
          * 
          * @param color The new color
          */
-        virtual void set_cursor_color(uint8_t cursor_target, hwlib::color color);
+        virtual void set_cursor_color(uint8_t cursor_target, hwlib::color color) {
+            // Checks if the given cursor is not out of bounds
+            if (cursor_target >= Cursor_Count) {
+                return;
+            }
+            cursors[cursor_target].cursor_color = color;
+        };
 
         /**
          * @brief Override for hwlib::window the class doesn't need to implement
          * a flush if not needed
          *
          */
-        virtual void flush() override;
+        virtual void flush() override {}
     };
 } // namespace r2d2::display

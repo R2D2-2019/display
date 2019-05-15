@@ -11,14 +11,15 @@ namespace r2d2::display {
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
      */
-    class ssd1306_oled_buffered_c : public ssd1306_i2c_c {
+    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
+    class ssd1306_oled_buffered_c : public ssd1306_i2c_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
     private:
         /**
          * The buffer with the pixel data
          * The first byte is used for the data-prefix that the display driver
          * requires to be sent when sending pixel data.
          */
-        uint8_t buffer[(width * height / 8) + 1] = {};
+        uint8_t buffer[(Display_Size_Width * Display_Size_Height / 8) + 1] = {};
 
     public:
         /**
@@ -26,7 +27,15 @@ namespace r2d2::display {
          * the address of the display.
          */
         ssd1306_oled_buffered_c(r2d2::i2c::i2c_bus_c &bus,
-                                const uint8_t &address);
+                                const uint8_t &address)
+                : ssd1306_i2c_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(bus, address)  {
+            // set the command for writing to the screen
+            buffer[0] = this->ssd1306_data_prefix;
+
+            // write the initalisation sequence to the screen
+            bus.write(address, this->ssd1306_initialization,
+                    sizeof(this->ssd1306_initialization) / sizeof(uint8_t));
+        }
 
         /**
          * @brief Write a pixel to the screen
@@ -35,19 +44,39 @@ namespace r2d2::display {
          * @param y
          * @param data
          */
-        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override;
+        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
+            // calculate the index of the pixel
+            uint16_t t_index = (x + (y / 8) * this->size.x) + 1;
+
+            // set or clear the pixel
+            if (data) {
+                buffer[t_index] |= (0x01 << (y % 8));
+            } else {
+                buffer[t_index] &= ~(0x01 << (y % 8));
+            }
+        }
+        /**
+         * This clears the display this overrides the default clear of hwlib
+         * becouse it is realy inefficient for this screen.
+         */
+        void clear(hwlib::color col) override {
+            // get a the data for the screen
+            const uint8_t d = (col == hwlib::white) ? 0xFF : 0x00;
+
+            // set all values to the color of the data
+            for (uint_fast16_t x = 1; x < sizeof(buffer); ++x) {
+                buffer[x] = d;
+            }
+        }
 
         /**
          * This clears the display this overrides the default clear of hwlib
          * becouse it is realy inefficient for this screen.
          */
-        void clear(hwlib::color col) override;
-
-        /**
-         * This clears the display this overrides the default clear of hwlib
-         * becouse it is realy inefficient for this screen.
-         */
-        void clear() override;
+        void clear() override {
+            // clear the screen with the background
+            clear(this->background);
+        };
 
         /**
          * Flushes the data to the display.
@@ -55,7 +84,13 @@ namespace r2d2::display {
          * is called, it will then push the entirety of the buffer to the
          * display at once.
          */
-        void flush();
+        void flush() {
+            // update cursor of the display
+            ssd1306_oled_buffered_c::command(ssd1306_oled_buffered_c::ssd1306_command::column_addr, 0, 127);
+            ssd1306_oled_buffered_c::command(ssd1306_oled_buffered_c::ssd1306_command::page_addr, 0, 7);
+            // write data to the screen
+            this->bus.write(this->address, this->buffer, sizeof(this->buffer));
+        }
     };
 
 } // namespace r2d2::display
