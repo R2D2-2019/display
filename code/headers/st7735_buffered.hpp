@@ -7,6 +7,14 @@
 
 namespace r2d2::display {
 
+    /**
+     * Class st7735_buffered is an interface for the st7735 chip
+     * 
+     * Implements hwlib::window to easily use text and drawing functions that
+     * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
+     * 
+     * The template paramters are required for the parent class
+     */
     template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
     class st7735_buffered_c : public st7735_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
     protected:
@@ -31,7 +39,7 @@ namespace r2d2::display {
          *
          * @param x
          * @param y
-         * @param data
+         * @param data Data is the color of the pixel
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override  {
 
@@ -42,13 +50,15 @@ namespace r2d2::display {
         }
 
         /**
-         * @brief Directly write multiple pixels to the screen
-         *
+         * @brief Directly write multiple pixels to the screen. This effectively
+         * draws a rectangle based on given location and size.
+         * 
+         * 
          * @param x
          * @param y
          * @param width
          * @param height
-         * @param data
+         * @param data Data is a pointer to the color of the pixel
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
                         const uint16_t *data) override  {
@@ -71,7 +81,7 @@ namespace r2d2::display {
          * @param y
          * @param width
          * @param height
-         * @param data
+         * @param data Data is the color of all pixels
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
                         const uint16_t data) override {
