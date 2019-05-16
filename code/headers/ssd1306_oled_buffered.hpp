@@ -10,6 +10,8 @@ namespace r2d2::display {
      * SSD1306 buffered interface for an oled
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
+     * 
+     * The template parameters are used for the parent class.
      */
     template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
     class ssd1306_oled_buffered_c : public ssd1306_i2c_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
@@ -40,9 +42,10 @@ namespace r2d2::display {
         /**
          * @brief Write a pixel to the screen
          *
-         * @param x
+         * @param x 
          * @param y
-         * @param data
+         * @param data Colour of the pixel to write. data > 0 will set the pixel
+         * Data <= 0 will clear the pixel
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
             // calculate the index of the pixel
