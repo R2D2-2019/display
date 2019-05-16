@@ -36,20 +36,47 @@ namespace r2d2::display {
                     continue;
                 }
 
-                if (frame.type == r2d2::frame_type::DISPLAY_FILLED_RECTANGLE) {
-                    // Get the data from the frame
-                    const auto data =
-                        frame.as_frame_type<frame_type::DISPLAY_FILLED_RECTANGLE>();
+                // const auto data = frame.as_frame_type<frame.type>();
+                switch(frame.type){
+                    case r2d2::frame_type::DISPLAY_FILLED_RECTANGLE: {
+                        // Get the data from the frame
+                        const auto data = frame.as_frame_type<frame_type::DISPLAY_FILLED_RECTANGLE>();
 
-                    display.set_pixels(data.x, data.y, data.width, data.height,
+                        display.set_pixels(data.x, data.y, 
+                                        data.width, data.height,
                                         display.color_to_pixel(hwlib::color(
-                                            data.red, data.green, data.blue)));
+                                            data.red, data.green, data.blue)
+                                        )
+                        );
 
-                    display.flush();
-                } else if (frame.type == r2d2::frame_type::DISPLAY_CHARACTER) {
-                    const auto data = frame.as_frame_type<frame_type::DISPLAY_CHARACTER>();
-                    display.set_character(data.x, data.y, data.character, display.color_to_pixel(hwlib::color(data.red, data.green, data.blue)));
-                    display.flush();
+                        display.flush();
+                    } break;
+
+                    case r2d2::frame_type::DISPLAY_CHARACTER: {
+                        const auto data = frame.as_frame_type<frame_type::DISPLAY_CHARACTER>();
+                        display.set_character(data.x, data.y, 
+                                            data.character, 
+                                            display.color_to_pixel(
+                                                hwlib::color(
+                                                    data.red, data.green, data.blue)
+                                            )
+                        );
+                        display.flush();
+                    } break;
+
+                    case r2d2::frame_type::CURSOR_POSITION: {
+                        const auto data = frame.as_frame_type<frame_type::CURSOR_POSITION>();
+                        display.set_cursor_positon(data.cursor_id, data.cursor_x, data.cursor_y);
+                    } break;
+
+                    case r2d2::frame_type::CURSOR_COLOR: {
+                        const auto data = frame.as_frame_type<frame_type::CURSOR_COLOR>();
+                        display.set_cursor_color(data.cursor_id, hwlib::color(data.red, data.green, data.blue));
+                    } break;
+
+                    default:
+                        
+                    break;
                 }
             }
         }
