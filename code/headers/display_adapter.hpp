@@ -147,12 +147,20 @@ namespace r2d2::display {
             for (uint8_t char_i = 0; char_i < character_amount; char_i++) {
                 set_character(cursor.cursor_x, cursor.cursor_y, characters[char_i], 
                     color_to_pixel(cursor.cursor_color));
-                cursor.cursor_x += 8;
+
+                // If the cursor is about to go out of bounds, return.
+                if (cursor.cursor_x + 8 < Display_Size_Width) {
+                    set_cursor_positon(cursor_target, cursor.cursor_x + 8, cursor.cursor_y);
+                } else {
+                    return;
+                }
             }
         }
 
         /**
-         * @brief Sets the targeted cursor to the given position
+         * @brief Sets the targeted cursor to the given position. Can't go out of
+         * the size of the window. It will stop before that. Any characters 
+         * written to be out of bounds will be drawn over each other.
          * 
          * @param cursor_target This targets which cursor to move
          * 
@@ -166,8 +174,15 @@ namespace r2d2::display {
             if (cursor_target >= Cursor_Count) {
                 return;
             }
-            cursors[cursor_target].cursor_x = x;
-            cursors[cursor_target].cursor_y = y;
+
+            // prevents out of bounds width
+            if (x < Display_Size_Width) {
+                cursors[cursor_target].cursor_x = x;
+            }
+            // prevents out of bounds height
+            if (y < Display_Size_Height) {
+                cursors[cursor_target].cursor_y = y;
+            }
         }
 
         /**
