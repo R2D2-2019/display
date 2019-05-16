@@ -2,7 +2,7 @@
 #include <comm.hpp>
 
 #include <i2c_bus.hpp>
-#include <ssd1306_oled_buffered.hpp>
+#include <st7735_unbuffered.hpp>
 
 #include "display_module.hpp"
 
@@ -11,14 +11,16 @@ int main() {
     WDT->WDT_MR = WDT_MR_WDDIS;
 
     hwlib::wait_ms(10);
+    // hardware spi
+    auto spi_bus = due::hwspi(0, due::hwspi::SPI_MODE::SPI_MODE0, 3);
+    auto pin_dummy = hwlib::pin_out_dummy;
 
-    // Initialise a I2C bus at full speed (400Kbit/s)
-    auto bus = r2d2::i2c::i2c_bus_c(
-        r2d2::i2c::i2c_bus_c::interface::interface_0, 400000);
+    auto dc = hwlib::target::pin_out(hwlib::target::pins::d9);
+    auto rst = hwlib::target::pin_out(hwlib::target::pins::d8);
 
-    // Initialise the display using address 0x3C and the bus
-    auto display = r2d2::display::ssd1306_oled_buffered_c(bus, 0x3c);
-
+    // use pin_dummy becouse chip select(cs) is controlled by the hardware spi
+    r2d2::display::st7735_unbuffered_c<static_cast<size_t>(r2d2::display_cursor::CURSORS_COUNT), 128, 160> display(spi_bus, pin_dummy, dc, rst);
+    
     r2d2::comm_c comm;
 
     r2d2::display::module_c module(comm, display);
