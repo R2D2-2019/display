@@ -3,7 +3,18 @@
 #include <hwlib.hpp>
 #include <display_cursor.hpp>
 namespace r2d2::display {
-
+    /*
+    * Class display_c is the base class for all displays in R2D2. It inherits
+    * from hwlib::window.
+    * 
+    * @tparam Cursor_Count is the amount of cursors to store. Most of the time 
+    * this is equal to the number claimed cursors in the display_cursor enum.
+    * 
+    * @tparam Display_Size_Width is an uint8_t representing the width of the display
+    * 
+    * @tparam Display_Size_Height is an uint8_t representing the height of the display
+    * 
+    */
     template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
     class display_c : public hwlib::window {
     protected:
