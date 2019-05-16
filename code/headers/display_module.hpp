@@ -52,8 +52,8 @@ namespace r2d2::display {
                         display.flush();
                     } break;
 
-                    case r2d2::frame_type::DISPLAY_CHARACTER: {
-                        const auto data = frame.as_frame_type<frame_type::DISPLAY_CHARACTER>();
+                    case r2d2::frame_type::DISPLAY_8x8_CHARACTER: {
+                        const auto data = frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>();
                         display.set_character(data.x, data.y, 
                                             data.character, 
                                             display.color_to_pixel(
@@ -62,6 +62,11 @@ namespace r2d2::display {
                                             )
                         );
                         display.flush();
+                    } break;
+
+                    case r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER: {
+                        const auto data = frame.as_frame_type<frame_type::DISPLAY_8x8_CURSOR_CHARACTER>();
+                        display.set_character(data.cursor_id, data.characters, data.amount_characters);
                     } break;
 
                     case r2d2::frame_type::CURSOR_POSITION: {
