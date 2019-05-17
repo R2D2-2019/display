@@ -1,21 +1,25 @@
 #pragma once
 
-#include <hwlib.hpp>
 #include <display_cursor.hpp>
+#include <hwlib.hpp>
+
 namespace r2d2::display {
     /*
-    * Class display_c is the base class for all displays in R2D2. It inherits
-    * from hwlib::window.
-    * 
-    * @tparam Cursor_Count is the amount of cursors to store. Most of the time 
-    * this is equal to the number claimed cursors in the display_cursor enum.
-    * 
-    * @tparam Display_Size_Width is an uint8_t representing the width of the display
-    * 
-    * @tparam Display_Size_Height is an uint8_t representing the height of the display
-    * 
-    */
-    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
+     * Class display_c is the base class for all displays in R2D2. It inherits
+     * from hwlib::window.
+     *
+     * @tparam CursorCount is the amount of cursors to store. Most of the time
+     * this is equal to the number claimed cursors in the display_cursor enum.
+     *
+     * @tparam DisplaySizeWidth is an uint8_t representing the width of the
+     * display
+     *
+     * @tparam DisplaySizeHeight is an uint8_t representing the height of the
+     * display
+     *
+     */
+    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
+              uint8_t DisplaySizeHeight>
     class display_c : public hwlib::window {
     protected:
         /**
@@ -27,15 +31,16 @@ namespace r2d2::display {
         void write_implementation(hwlib::xy pos, hwlib::color col) {
             set_pixel(pos.x, pos.y, color_to_pixel(col));
         }
-        
-        // The font used in the display is 8*8 
+
+        // The font used in the display is 8*8
         hwlib::font_default_8x8 display_font = hwlib::font_default_8x8();
 
         // Keeps track of cursors
-        r2d2::display::display_cursor cursors[Cursor_Count];
+        r2d2::display::display_cursor_s cursors[CursorCount];
+
     public:
         display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
-                hwlib::color background = hwlib::black)
+                  hwlib::color background = hwlib::black)
             : hwlib::window(size, foreground, background) {
         }
 
@@ -68,8 +73,8 @@ namespace r2d2::display {
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
                                 uint16_t height, const uint16_t *data) {
             // set the data to the correct pixel
-            for (size_t t_y = 0; t_y < width; t_y++) {
-                for (size_t t_x = 0; t_x < width; t_x++) {
+            for (std::size_t t_y = 0; t_y < width; t_y++) {
+                for (std::size_t t_x = 0; t_x < width; t_x++) {
                     // set the pixel with data at location of t_x + t_y * w
                     set_pixel(x + t_x, y + t_y, data[t_x + (t_y * width)]);
                 }
@@ -89,37 +94,37 @@ namespace r2d2::display {
         virtual void set_pixels(uint16_t x, uint16_t y, uint16_t width,
                                 uint16_t height, const uint16_t data) {
             // set all the pixels to data
-            for (size_t t_y = 0; t_y < width; t_y++) {
-                for (size_t t_x = 0; t_x < width; t_x++) {
+            for (std::size_t t_y = 0; t_y < width; t_y++) {
+                for (std::size_t t_x = 0; t_x < width; t_x++) {
                     // set the pixel with datas
                     set_pixel(x + t_x, y + t_y, data);
                 }
             }
         }
 
-
         /**
          * @brief Sets character in a single color
-         * 
+         *
          * @param x x-coordinate of the character (x=0 is the leftmost collumn)
-         * 
+         *
          * @param y y-coordinate of the character (y=0 is the highest row)
-         * 
+         *
          * @param character The un-extended (0-127) ascii value of the character
-         *  
-         * 
+         *
+         *
          * @param pixel_color The color of the pixel
-         * 
+         *
          */
-        virtual void set_character(uint16_t x, uint16_t y, char character, 
-                                uint16_t pixel_color) {
-            // Loops through all rows of the character 
-            const hwlib::image& character_image = display_font[character];                               
+        virtual void set_character(uint16_t x, uint16_t y, char character,
+                                   uint16_t pixel_color) {
+            // Loops through all rows of the character
+            const hwlib::image &character_image = display_font[character];
             for (int image_y = 0; image_y < 8; image_y++) {
                 for (int image_x = 0; image_x < 8; image_x++) {
-                    // Check if the pixel needs to be drawn. 
+                    // Check if the pixel needs to be drawn.
                     // If the pixel color is anything other than white, draw it
-                    hwlib::color character_pixel_color = character_image[hwlib::xy(image_x, image_y)];
+                    hwlib::color character_pixel_color =
+                        character_image[hwlib::xy(image_x, image_y)];
                     if (character_pixel_color != hwlib::white) {
                         set_pixel(x + image_x, y + image_y, pixel_color);
                     }
@@ -127,30 +132,39 @@ namespace r2d2::display {
             }
         }
 
+        virtual void set_character(uint16_t x, uint16_t y,
+                                   const char *character,
+                                   uint16_t pixel_color) {
+            //
+        }
+
         /**
-         * @brief Draws given characters to the target cursor. For every 
+         * @brief Draws given characters to the target cursor. For every
          * character drawn this way, the cursor will move 8 pixels.
-         * 
+         *
          * @param cursor_target This targets the cursor with which to draw
-         * 
+         *
          * @param characters Array of characters to draw
-         * 
+         *
          * @param character_amount number of characters to draw
          */
-        virtual void set_character(uint8_t cursor_target, const char *characters){
+        virtual void set_character(uint8_t cursor_target,
+                                   const char *characters) {
             // Checks if the given cursor is not out of bounds
-            if (cursor_target >= Cursor_Count) {
+            if (cursor_target >= CursorCount) {
                 return;
             }
-            display_cursor &cursor = cursors[cursor_target];
-            size_t index = 0;
-            while(characters[index] != '\0'){
-                set_character(cursor.cursor_x, cursor.cursor_y, characters[index], 
-                    color_to_pixel(cursor.cursor_color));
+            display_cursor_s &cursor = cursors[cursor_target];
+            std::size_t index = 0;
+            while (characters[index] != '\0') {
+                set_character(cursor.cursor_x, cursor.cursor_y,
+                              characters[index],
+                              color_to_pixel(cursor.cursor_color));
 
                 // If the cursor is about to go out of bounds, return.
-                if (cursor.cursor_x + 8 < Display_Size_Width) {
-                    set_cursor_positon(cursor_target, cursor.cursor_x + 8, cursor.cursor_y);
+                if (cursor.cursor_x + 8 < DisplaySizeWidth) {
+                    set_cursor_positon(cursor_target, cursor.cursor_x + 8,
+                                       cursor.cursor_y);
                 } else {
                     return;
                 }
@@ -159,43 +173,44 @@ namespace r2d2::display {
         }
 
         /**
-         * @brief Sets the targeted cursor to the given position. Can't go out of
-         * the size of the window. It will stop before that. Any characters 
+         * @brief Sets the targeted cursor to the given position. Can't go out
+         * of the size of the window. It will stop before that. Any characters
          * written to be out of bounds will be drawn over each other.
-         * 
+         *
          * @param cursor_target This targets which cursor to move
-         * 
+         *
          * @param x new X position of the cursor
-         * 
+         *
          * @param y new Y position of the cursor
          */
-        virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x, 
-                                uint8_t y){
+        virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
+                                        uint8_t y) {
             // Checks if the given cursor is not out of bounds
-            if (cursor_target >= Cursor_Count) {
+            if (cursor_target >= CursorCount) {
                 return;
             }
 
             // prevents out of bounds width
-            if (x < Display_Size_Width) {
+            if (x < DisplaySizeWidth) {
                 cursors[cursor_target].cursor_x = x;
             }
             // prevents out of bounds height
-            if (y < Display_Size_Height) {
+            if (y < DisplaySizeHeight) {
                 cursors[cursor_target].cursor_y = y;
             }
         }
 
         /**
          * @brief Sets the targeted cursor to the given color
-         * 
+         *
          * @param cursor_target This targets which cursor to change colors
-         * 
+         *
          * @param color The new color
          */
-        virtual void set_cursor_color(uint8_t cursor_target, hwlib::color color) {
+        virtual void set_cursor_color(uint8_t cursor_target,
+                                      hwlib::color color) {
             // Checks if the given cursor is not out of bounds
-            if (cursor_target >= Cursor_Count) {
+            if (cursor_target >= CursorCount) {
                 return;
             }
             cursors[cursor_target].cursor_color = color;
@@ -206,6 +221,7 @@ namespace r2d2::display {
          * a flush if not needed
          *
          */
-        virtual void flush() override {}
+        virtual void flush() override {
+        }
     };
 } // namespace r2d2::display

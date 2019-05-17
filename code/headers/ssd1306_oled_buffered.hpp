@@ -10,18 +10,21 @@ namespace r2d2::display {
      * SSD1306 buffered interface for an oled
      * Implements hwlib::window to easily use text and drawing functions that
      * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
-     * 
+     *
      * The template parameters are used for the parent class.
      */
-    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
-    class ssd1306_oled_buffered_c : public ssd1306_i2c_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
+    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
+              uint8_t DisplaySizeHeight>
+    class ssd1306_oled_buffered_c
+        : public ssd1306_i2c_c<CursorCount, DisplaySizeWidth,
+                               DisplaySizeHeight> {
     private:
         /**
          * The buffer with the pixel data
          * The first byte is used for the data-prefix that the display driver
          * requires to be sent when sending pixel data.
          */
-        uint8_t buffer[(Display_Size_Width * Display_Size_Height / 8) + 1] = {};
+        uint8_t buffer[(DisplaySizeWidth * DisplaySizeHeight / 8) + 1] = {};
 
     public:
         /**
@@ -30,19 +33,20 @@ namespace r2d2::display {
          */
         ssd1306_oled_buffered_c(r2d2::i2c::i2c_bus_c &bus,
                                 const uint8_t &address)
-                : ssd1306_i2c_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(bus, address)  {
+            : ssd1306_i2c_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+                  bus, address) {
             // set the command for writing to the screen
             buffer[0] = this->ssd1306_data_prefix;
 
             // write the initalisation sequence to the screen
             bus.write(address, this->ssd1306_initialization,
-                    sizeof(this->ssd1306_initialization) / sizeof(uint8_t));
+                      sizeof(this->ssd1306_initialization) / sizeof(uint8_t));
         }
 
         /**
          * @brief Write a pixel to the screen
          *
-         * @param x 
+         * @param x
          * @param y
          * @param data Colour of the pixel to write. data > 0 will set the pixel
          * Data <= 0 will clear the pixel
@@ -89,8 +93,10 @@ namespace r2d2::display {
          */
         void flush() {
             // update cursor of the display
-            ssd1306_oled_buffered_c::command(ssd1306_oled_buffered_c::ssd1306_command::column_addr, 0, 127);
-            ssd1306_oled_buffered_c::command(ssd1306_oled_buffered_c::ssd1306_command::page_addr, 0, 7);
+            ssd1306_oled_buffered_c::command(
+                ssd1306_oled_buffered_c::ssd1306_command::column_addr, 0, 127);
+            ssd1306_oled_buffered_c::command(
+                ssd1306_oled_buffered_c::ssd1306_command::page_addr, 0, 7);
             // write data to the screen
             this->bus.write(this->address, this->buffer, sizeof(this->buffer));
         }

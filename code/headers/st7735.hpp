@@ -1,12 +1,15 @@
 #pragma once
 
-#include <hwlib.hpp>
 #include <display_adapter.hpp>
+#include <hwlib.hpp>
+
 
 namespace r2d2::display {
 
-    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
-    class st7735_c : public display_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
+    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
+              uint8_t DisplaySizeHeight>
+    class st7735_c
+        : public display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
     protected:
         // all the commands for the display
         constexpr static uint8_t _NOP = 0x00;
@@ -48,8 +51,8 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
         // since it uses a generic driver the display has a offset
-        constexpr static uint8_t x_offset = 0; //26
-        constexpr static uint8_t y_offset = 0; //1
+        constexpr static uint8_t x_offset = 0; // 26
+        constexpr static uint8_t y_offset = 0; // 1
 
         // display bus
         hwlib::spi_bus &bus;
@@ -84,7 +87,7 @@ namespace r2d2::display {
          * @param data
          * @param size
          */
-        void write_data(const uint8_t *data, size_t size) {
+        void write_data(const uint8_t *data, std::size_t size) {
             // set display in data mode
             dc.write(true);
 
@@ -165,11 +168,11 @@ namespace r2d2::display {
             // display inversion on, memory direction control
             write_command(
                 _INVON,
-                _MADCTL); // for some reason we need the inversion on. It somehow
-                        // desided that 0xFFFF is black and 0x0000 is white so we
-                        // reverse this back thanks to the invert
-            write_data(0xC8); // we need the rgb to be inversed since it is inversed
-                            // with the hardware pin we cant access
+                _MADCTL); // for some reason we need the inversion on. It
+                          // somehow desided that 0xFFFF is black and 0x0000 is
+                          // white so we reverse this back thanks to the invert
+            write_data(0xC8); // we need the rgb to be inversed since it is
+                              // inversed with the hardware pin we cant access
             hwlib::wait_ms(20);
 
             // set screen in 8 bit bus mode with 16 bit color
@@ -182,13 +185,13 @@ namespace r2d2::display {
 
             // set gamma adjustment + polarity
             write_command(_GMCTRP1);
-            write_data(0x02, 0x1C, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2D, 0x29, 0x25,
-                    0x2B, 0x39, 0x00, 0x01, 0x03, 0x10);
+            write_data(0x02, 0x1C, 0x07, 0x12, 0x37, 0x32, 0x29, 0x2D, 0x29,
+                       0x25, 0x2B, 0x39, 0x00, 0x01, 0x03, 0x10);
 
             // set gamma adjustment - polarity
             write_command(_GMCTRN1);
-            write_data(0x03, 0x1D, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E, 0x2E,
-                    0x37, 0x3F, 0x00, 0x00, 0x02, 0x10);
+            write_data(0x03, 0x1D, 0x07, 0x06, 0x2E, 0x2C, 0x29, 0x2D, 0x2E,
+                       0x2E, 0x37, 0x3F, 0x00, 0x00, 0x02, 0x10);
 
             // normal display on
             write_command(_NORON);
@@ -217,12 +220,12 @@ namespace r2d2::display {
             // set the min and max row
             write_command(_CASET);
             write_data(uint8_t(x_min >> 8), uint8_t(x_min & 0xFF),
-                        uint8_t(x_max >> 8), uint8_t(x_max & 0xFF));
+                       uint8_t(x_max >> 8), uint8_t(x_max & 0xFF));
 
             // set the min and max column
             write_command(_RASET);
             write_data(uint8_t(y_min >> 8), uint8_t(y_min & 0xFF),
-                        uint8_t(y_max >> 8), uint8_t(y_max & 0xFF));
+                       uint8_t(y_max >> 8), uint8_t(y_max & 0xFF));
         }
 
         /**
@@ -235,7 +238,12 @@ namespace r2d2::display {
          */
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
-            :display_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(hwlib::xy(width, height)) , bus(bus), cs(cs), dc(dc), reset(reset) {
+            : display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+                  hwlib::xy(width, height)),
+              bus(bus),
+              cs(cs),
+              dc(dc),
+              reset(reset) {
             init();
         }
 
@@ -244,13 +252,13 @@ namespace r2d2::display {
          * @brief width of display
          *
          */
-        constexpr static uint8_t width = Display_Size_Width;
+        constexpr static uint8_t width = DisplaySizeWidth;
 
         /**
          * @brief height of display
          *
          */
-        constexpr static uint8_t height = Display_Size_Height;
+        constexpr static uint8_t height = DisplaySizeHeight;
 
         /**
          * @brief Converst a hwlib::color to a uint16_t in the format the screen

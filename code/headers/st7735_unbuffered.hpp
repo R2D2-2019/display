@@ -7,8 +7,10 @@
 
 namespace r2d2::display {
 
-    template<std::size_t Cursor_Count, uint8_t Display_Size_Width, uint8_t Display_Size_Height>
-    class st7735_unbuffered_c : public st7735_c<Cursor_Count, Display_Size_Width, Display_Size_Height> {
+    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
+              uint8_t DisplaySizeHeight>
+    class st7735_unbuffered_c
+        : public st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
     public:
         /**
          * @brief Construct a new st7735 unbuffered c object
@@ -20,8 +22,9 @@ namespace r2d2::display {
          */
         st7735_unbuffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                             hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_c<Cursor_Count, Display_Size_Width, Display_Size_Height>(bus, cs, dc, reset) 
-        {}
+            : st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+                  bus, cs, dc, reset) {
+        }
 
         /**
          * @brief Directly write a pixel to the screen
@@ -37,7 +40,8 @@ namespace r2d2::display {
             // write to ram
             st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
 
-            const uint16_t t = __REV16(data); // make a copy and reverse byte order
+            const uint16_t t =
+                __REV16(data); // make a copy and reverse byte order
 
             // write pixel data to the screeen
             st7735_unbuffered_c::write_data((uint8_t *)&t, 2);
@@ -60,9 +64,9 @@ namespace r2d2::display {
             // write to ram
             st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
 
-            // unfortunaly the arduino due is little endian otherwise we could put
-            // all the data directly to the write_data function
-            for (size_t i = 0; i < width * height; i++) {
+            // unfortunaly the arduino due is little endian otherwise we could
+            // put all the data directly to the write_data function
+            for (std::size_t i = 0; i < width * height; i++) {
                 const uint16_t t = __REV16(data[i]);
 
                 st7735_unbuffered_c::write_data((uint8_t *)&t, 2);
@@ -86,13 +90,14 @@ namespace r2d2::display {
             // write to ram
             st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
 
-            const uint16_t t = __REV16(data); // make a copy and reverse byte order
+            const uint16_t t =
+                __REV16(data); // make a copy and reverse byte order
 
-            for (size_t i = 0; i < size_t((width + 1) * (height + 1)); i++) {
+            for (std::size_t i = 0; i < std::size_t((width + 1) * (height + 1));
+                 i++) {
                 st7735_unbuffered_c::write_data((uint8_t *)&t, 2);
             }
         }
     };
 
 } // namespace r2d2::display
-

@@ -1,5 +1,6 @@
-#include <hwlib.hpp>
 #include <comm.hpp>
+#include <hwlib.hpp>
+
 
 #include <i2c_bus.hpp>
 #include <st7735_unbuffered.hpp>
@@ -19,8 +20,11 @@ int main() {
     auto rst = hwlib::target::pin_out(hwlib::target::pins::d8);
 
     // use pin_dummy becouse chip select(cs) is controlled by the hardware spi
-    r2d2::display::st7735_unbuffered_c<static_cast<size_t>(r2d2::display_cursor::CURSORS_COUNT), 128, 160> display(spi_bus, pin_dummy, dc, rst);
-    
+    r2d2::display::st7735_unbuffered_c<
+        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
+        128, 160>
+        display(spi_bus, pin_dummy, dc, rst);
+
     r2d2::comm_c comm;
 
     r2d2::display::module_c module(comm, display);
