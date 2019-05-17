@@ -57,7 +57,7 @@ namespace r2d2::display {
                         frame
                             .as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>();
                     display.set_character(
-                        data.x, data.y, data.character,
+                        data.x, data.y, data.characters,
                         display.color_to_pixel(
                             hwlib::color(data.red, data.green, data.blue)));
                     display.flush();
