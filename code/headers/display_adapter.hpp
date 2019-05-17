@@ -4,7 +4,7 @@
 #include <hwlib.hpp>
 
 namespace r2d2::display {
-    /*
+    /**
      * Class display_c is the base class for all displays in R2D2. It inherits
      * from hwlib::window.
      *
@@ -112,7 +112,7 @@ namespace r2d2::display {
          * @param character The un-extended (0-127) ascii value of the character
          *
          *
-         * @param pixel_color The color of the pixel
+         * @param pixel_color The color of the character
          *
          */
         virtual void set_character(uint16_t x, uint16_t y, char character,
@@ -132,10 +132,33 @@ namespace r2d2::display {
             }
         }
 
+        /**
+         * @brief Sets characters in a single color
+         *
+         * @param x x-coordinate of the first character
+         *
+         * @param y y-coordinate of the first character
+         *
+         * @param characters Array of characters to draw
+         *
+         * @param pixel_color The color of all characters
+         *
+         */
         virtual void set_character(uint16_t x, uint16_t y,
                                    const char *character,
                                    uint16_t pixel_color) {
-            //
+            std::size_t index = 0;
+            while (character[index] != '\0') {
+                set_character(x, y, character[index], pixel_color);
+
+                // If the cursor is about to go out of bounds, return.
+                if (x + 8 >= DisplaySizeWidth) {
+                    x += 8;
+                } else {
+                    return;
+                }
+                index++;
+            }
         }
 
         /**
@@ -145,8 +168,6 @@ namespace r2d2::display {
          * @param cursor_target This targets the cursor with which to draw
          *
          * @param characters Array of characters to draw
-         *
-         * @param character_amount number of characters to draw
          */
         virtual void set_character(uint8_t cursor_target,
                                    const char *characters) {
