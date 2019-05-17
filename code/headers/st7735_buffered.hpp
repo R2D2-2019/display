@@ -42,7 +42,7 @@ namespace r2d2::display {
          *
          * @param x
          * @param y
-         * @param data Data is the color of the pixel
+         * @param data
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
 
