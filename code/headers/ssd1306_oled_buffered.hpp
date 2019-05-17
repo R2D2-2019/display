@@ -48,8 +48,8 @@ namespace r2d2::display {
          *
          * @param x
          * @param y
-         * @param data Colour of the pixel to write. data > 0 will set the pixel
-         * Data <= 0 will clear the pixel
+         * @param data Colour of the pixel to write. data != 0 will set the pixel
+         * Data = 0 will clear the pixel
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
             // calculate the index of the pixel
