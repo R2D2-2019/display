@@ -66,7 +66,7 @@ namespace r2d2::display {
 
                     case r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER: {
                         const auto data = frame.as_frame_type<frame_type::DISPLAY_8x8_CURSOR_CHARACTER>();
-                        display.set_character(data.cursor_id, data.characters, data.amount_characters);
+                        display.set_character(data.cursor_id, data.characters);
                     } break;
 
                     case r2d2::frame_type::CURSOR_POSITION: {

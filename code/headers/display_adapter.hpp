@@ -137,15 +137,15 @@ namespace r2d2::display {
          * 
          * @param character_amount number of characters to draw
          */
-        virtual void set_character(uint8_t cursor_target, const char *characters,
-                                uint8_t character_amount){
+        virtual void set_character(uint8_t cursor_target, const char *characters){
             // Checks if the given cursor is not out of bounds
             if (cursor_target >= Cursor_Count) {
                 return;
             }
             display_cursor &cursor = cursors[cursor_target];
-            for (uint8_t char_i = 0; char_i < character_amount; char_i++) {
-                set_character(cursor.cursor_x, cursor.cursor_y, characters[char_i], 
+            size_t index = 0;
+            while(characters[index] != '\0'){
+                set_character(cursor.cursor_x, cursor.cursor_y, characters[index], 
                     color_to_pixel(cursor.cursor_color));
 
                 // If the cursor is about to go out of bounds, return.
@@ -154,6 +154,7 @@ namespace r2d2::display {
                 } else {
                     return;
                 }
+                index++;
             }
         }
 
