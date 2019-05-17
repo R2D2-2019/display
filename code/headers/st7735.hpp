@@ -51,8 +51,10 @@ namespace r2d2::display {
         constexpr static uint8_t _GMCTRN1 = 0xE1;
 
         // since it uses a generic driver the display has a offset
-        constexpr static uint8_t x_offset = 0; // 26
-        constexpr static uint8_t y_offset = 0; // 1
+        // When using the small screen, x_offset is 26;
+        constexpr static uint8_t x_offset = 0; 
+        // When using the small screen, y_offset is 1;
+        constexpr static uint8_t y_offset = 0;
 
         // display bus
         hwlib::spi_bus &bus;
