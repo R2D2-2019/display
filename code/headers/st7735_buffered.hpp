@@ -7,9 +7,20 @@
 
 namespace r2d2::display {
 
-    class st7735_buffered_c : public st7735_c {
+    /**
+     * Class st7735_buffered is an interface for the st7735 chip
+     *
+     * Implements hwlib::window to easily use text and drawing functions that
+     * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
+     *
+     * The template paramters are required for the parent class
+     */
+    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
+              uint8_t DisplaySizeHeight>
+    class st7735_buffered_c
+        : public st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
     protected:
-        uint16_t buffer[width * height] = {};
+        uint16_t buffer[DisplaySizeWidth * DisplaySizeHeight] = {};
 
     public:
         /**
@@ -21,7 +32,10 @@ namespace r2d2::display {
          * @param reset
          */
         st7735_buffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
-                          hwlib::pin_out &dc, hwlib::pin_out &reset);
+                          hwlib::pin_out &dc, hwlib::pin_out &reset)
+            : st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+                  bus, cs, dc, reset) {
+        }
 
         /**
          * @brief Directly write a pixel to the screen
@@ -30,19 +44,38 @@ namespace r2d2::display {
          * @param y
          * @param data
          */
-        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override;
+        void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
+
+            const uint16_t t =
+                __REV16(data); // make a copy and reverse byte order
+
+            // write pixel data to the buffer
+            this->buffer[x + (y * this->width)] = t;
+        }
 
         /**
-         * @brief Directly write multiple pixels to the screen
+         * @brief Directly write multiple pixels to the screen. This effectively
+         * draws a rectangle based on given location and size.
+         *
          *
          * @param x
          * @param y
          * @param width
          * @param height
-         * @param data
+         * @param data Data is a pointer to the color of the pixel
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-                        const uint16_t *data) override;
+                        const uint16_t *data) override {
+            // unfortunaly the arduino due is little endian otherwise we could
+            // put all the data directly to the buffer
+            for (std::size_t v = 0; v < height; v++) {
+                for (std::size_t t = 0; t < width; t++) {
+                    const uint16_t g = __REV16(data[(v * width) + t]);
+
+                    buffer[(x + t) + ((y + v) * this->width)] = g;
+                }
+            }
+        }
 
         /**
          * @brief Directly fill multiple pixels with the same color to the
@@ -52,16 +85,35 @@ namespace r2d2::display {
          * @param y
          * @param width
          * @param height
-         * @param data
+         * @param data Data is the color of all pixels
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
-                        const uint16_t data) override;
+                        const uint16_t data) override {
+
+            uint16_t g = __REV16(data); // make a copy and reverse byte order
+
+            for (std::size_t v = 0; v < height; v++) {
+                for (std::size_t t = 0; t < width; t++) {
+                    buffer[(x + t) + ((y + v) * this->width)] = g;
+                }
+            }
+        }
 
         /**
          * @brief Flushes the display
-         * 
+         *
          */
-        void flush() override;
+        void flush() override {
+            st7735_buffered_c::set_cursor(0, 0, this->width - 1,
+                                          this->height - 1);
+
+            // write to ram
+            st7735_buffered_c::write_command(st7735_buffered_c::_RAMWR);
+
+            // write data to display
+            st7735_buffered_c::write_data((uint8_t *)buffer,
+                                          this->width * this->height * 2);
+        }
     };
 
 } // namespace r2d2::display
