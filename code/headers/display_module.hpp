@@ -25,10 +25,10 @@ namespace r2d2::display {
             // Set up listeners
             comm.listen_for_frames(
                 {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
-                r2d2::frame_type::DISPLAY_8x8_CHARACTER,
-                r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER,
-                r2d2::frame_type::CURSOR_POSITION,
-                r2d2::frame_type::CURSOR_COLOR});
+                 r2d2::frame_type::DISPLAY_8x8_CHARACTER,
+                 r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER,
+                 r2d2::frame_type::CURSOR_POSITION,
+                 r2d2::frame_type::CURSOR_COLOR});
         }
 
         /**
@@ -83,6 +83,7 @@ namespace r2d2::display {
                 case r2d2::frame_type::CURSOR_COLOR: {
                     const auto data =
                         frame.as_frame_type<frame_type::CURSOR_COLOR>();
+
                     display.set_cursor_color(
                         data.cursor_id,
                         hwlib::color(data.red, data.green, data.blue));
