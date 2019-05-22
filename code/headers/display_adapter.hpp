@@ -152,7 +152,7 @@ namespace r2d2::display {
                 set_character(x, y, character[index], pixel_color);
 
                 // If the cursor is about to go out of bounds, return.
-                if (x + 8 >= DisplaySizeWidth) {
+                if (x + 8 < DisplaySizeWidth) {
                     x += 8;
                 } else {
                     return;
