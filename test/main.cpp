@@ -21,7 +21,7 @@ TEST_CASE("Display shows the correct character", "[display_module]") {
 
     // Create a frame
     auto frame = mock_bus.create_frame<
-        frame_type::DISPLAY_8x8_CHARACTER
+        frame_type::DISPLAY_8X8_CHARACTER
     >();
 
     // Display should display a character
@@ -33,14 +33,14 @@ TEST_CASE("Display shows the correct character", "[display_module]") {
     // 
     // Please note that this data is not copied, it is a non-owning reference to the frame
     // created earlier. 
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().x = 100;
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().y = 100;
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().x = 100;
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().y = 100;
     
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().red = 100;
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().green = 100;
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().blue = 100;
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().red = 100;
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().green = 100;
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().blue = 100;
 
-    frame.as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>().characters[243] = [1, 50];
+    frame.as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>().characters[243] = [1, 50];
 
     
     // Actually place the frame on the bus, so the module 
@@ -131,7 +131,7 @@ TEST_CASE("Display shows the correct character via cursor", "[display_module]") 
 
     // Create a frame
     auto frame3 = mock_bus.create_frame<
-        frame_type::frame_display_8x8_character_via_cursor_s
+        frame_type::frame_DISPLAY_8X8_CHARACTER_via_cursor_s
     >();
 
     // Display should display a character
@@ -145,8 +145,8 @@ TEST_CASE("Display shows the correct character via cursor", "[display_module]") 
     // created earlier. 
 
     // Frames for writing a character to a cursor position.
-    frame3.as_frame_type<frame_type::frame_display_8x8_character_via_cursor_s>().cursor_id = 1;
-    frame3.as_frame_type<frame_type::frame_display_8x8_character_via_cursor_s>().characters[247] = 100;
+    frame3.as_frame_type<frame_type::frame_DISPLAY_8X8_CHARACTER_via_cursor_s>().cursor_id = 1;
+    frame3.as_frame_type<frame_type::frame_DISPLAY_8X8_CHARACTER_via_cursor_s>().characters[247] = 100;
     
     // Actually place the frame on the bus, so the module 
     // can see and process it.
