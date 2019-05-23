@@ -117,7 +117,7 @@ namespace r2d2::display {
          * @brief inits the display
          *
          */
-        void init() {
+        virtual void init() {
             // reset the display
             reset.write(true);
             hwlib::wait_ms(5);
@@ -167,7 +167,7 @@ namespace r2d2::display {
             write_command(_VMCTR1);
             write_data(0x0E);
 
-            // display inversion on, memory direction control
+            // display inversion off, memory direction control
             write_command(
                 _INVOFF,
                 _MADCTL);
