@@ -171,8 +171,7 @@ namespace r2d2::display {
             write_command(
                 _INVOFF,
                 _MADCTL);
-            write_data(0xC8); // we need the rgb to be inversed since it is
-                              // inversed with the hardware pin we cant access
+            write_data(0xC0);
             hwlib::wait_ms(20);
 
             // set screen in 8 bit bus mode with 16 bit color
