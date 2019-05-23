@@ -74,3 +74,60 @@ TEST_CASE("Manipulate cursor position through frame",
     REQUIRE(curs.cursor_x == 50);
     REQUIRE(curs.cursor_y == 75);
 }
+
+TEST_CASE("Manipulate cursor position through character writing",
+          "[cursor, internal_communication]") {
+    // The bus itself doesn't take any constructor arguments
+    r2d2::mock_comm_c mock_bus;
+
+    // Dummy display does nothing in set_pixel
+    r2d2::display::display_dummy_c<
+        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
+        128, 160>
+        test_display;
+    /*
+     * The Display module.
+     * The module constructor receives a base_comm_c& and an hwlib::pin_out&.
+     * As you can see, using the constructor to receive interfaces on your
+     * module really helps with testing and abstraction!
+     */
+    r2d2::display::module_c module(mock_bus, test_display);
+
+    // Send the cursor to 50,75
+    auto frame_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), 
+        50,
+        75});
+
+    // Actually place the frame on the bus, so the module
+    // can see and process it.
+    mock_bus.accept_frame(frame_pos);
+
+    // Manually call the process function on the module
+    // to allow it to process everything.
+    module.process();
+
+    auto curs_pre = test_display.get_cursor(
+        static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+
+    REQUIRE(curs_pre.cursor_x == 50);
+    REQUIRE(curs_pre.cursor_y == 75);
+
+    auto frame_char = mock_bus.create_frame<
+            r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR
+        >({
+            static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR),
+            "Test!"
+        });
+
+    mock_bus.accept_frame(frame_char);
+    module.process();
+
+    auto curs_post = test_display.get_cursor(
+        static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+
+    REQUIRE(curs_post.cursor_x == 90);
+    REQUIRE(curs_post.cursor_y == 75);
+
+
+}
