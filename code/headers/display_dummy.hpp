@@ -1,6 +1,7 @@
 #pragma once
 
 #include <hwlib.hpp>
+#include <display_cursor.hpp>
 #include <display_adapter.hpp>
 
 namespace r2d2::display{
@@ -31,8 +32,8 @@ namespace r2d2::display{
              */
             virtual void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {};
 
-            display_cursor_s get_cursor(uint8_t cursor_id){
+            r2d2::display::display_cursor_s get_cursor(uint8_t cursor_id){
                 return this->cursors[cursor_id];
-            }
+            };
     };
 }
