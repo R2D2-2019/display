@@ -169,10 +169,8 @@ namespace r2d2::display {
 
             // display inversion on, memory direction control
             write_command(
-                _INVON,
-                _MADCTL); // for some reason we need the inversion on. It
-                          // somehow desided that 0xFFFF is black and 0x0000 is
-                          // white so we reverse this back thanks to the invert
+                _INVOFF,
+                _MADCTL);
             write_data(0xC8); // we need the rgb to be inversed since it is
                               // inversed with the hardware pin we cant access
             hwlib::wait_ms(20);
