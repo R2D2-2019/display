@@ -27,6 +27,8 @@ namespace r2d2::display {
                 {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
                 r2d2::frame_type::DISPLAY_8x8_CHARACTER,
                 r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER,
+                r2d2::frame_type::DISPLAY_FILLED_CIRCLE,
+                r2d2::frame_type::DISPLAY_HOLLOW_CIRCLE,
                 r2d2::frame_type::CURSOR_POSITION,
                 r2d2::frame_type::CURSOR_COLOR});
         }
