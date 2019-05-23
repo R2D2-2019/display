@@ -194,6 +194,22 @@ namespace r2d2::display {
         }
 
         /**
+         * @brief Fill multiple pixels in a circle shape with the same color to the
+         * screen
+         *
+         * @param x
+         * @param y
+         * @param radius
+         * @param filled
+         * @param data
+         */
+        virtual void set_pixels_circle(uint16_t x, uint16_t y, uint16_t radius,
+                                bool filled, const uint16_t data) {
+            
+            //TODO
+        }
+
+        /**
          * @brief Sets the targeted cursor to the given position. Can't go out
          * of the size of the window. It will stop before that. Any characters
          * written to be out of bounds will be drawn over each other.

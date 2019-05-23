@@ -27,8 +27,7 @@ namespace r2d2::display {
                 {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
                 r2d2::frame_type::DISPLAY_8x8_CHARACTER,
                 r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER,
-                r2d2::frame_type::DISPLAY_FILLED_CIRCLE,
-                r2d2::frame_type::DISPLAY_HOLLOW_CIRCLE,
+                r2d2::frame_type::DISPLAY_CIRCLE,
                 r2d2::frame_type::CURSOR_POSITION,
                 r2d2::frame_type::CURSOR_COLOR});
         }
@@ -73,6 +72,18 @@ namespace r2d2::display {
                     const auto data = frame.as_frame_type<
                         frame_type::DISPLAY_8x8_CURSOR_CHARACTER>();
                     display.set_character(data.cursor_id, data.characters);
+                } break;
+
+                case r2d2::frame_type::DISPLAY_CIRCLE: {
+                    // Get the data from the frame
+                    const auto data = frame.as_frame_type<
+                        frame_type::DISPLAY_CIRCLE>();
+
+                    display.set_pixels_circle(data.x, data.y, data.radius, data.filled,
+                                       display.color_to_pixel(hwlib::color(
+                                           data.red, data.green, data.blue)));
+
+                    display.flush();
                 } break;
 
                 case r2d2::frame_type::CURSOR_POSITION: {
