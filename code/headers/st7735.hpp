@@ -117,7 +117,7 @@ namespace r2d2::display {
          * @brief inits the display
          *
          */
-        void init() {
+        virtual void init() {
             // reset the display
             reset.write(true);
             hwlib::wait_ms(5);
@@ -167,14 +167,11 @@ namespace r2d2::display {
             write_command(_VMCTR1);
             write_data(0x0E);
 
-            // display inversion on, memory direction control
+            // display inversion off, memory direction control
             write_command(
-                _INVON,
-                _MADCTL); // for some reason we need the inversion on. It
-                          // somehow desided that 0xFFFF is black and 0x0000 is
-                          // white so we reverse this back thanks to the invert
-            write_data(0xC8); // we need the rgb to be inversed since it is
-                              // inversed with the hardware pin we cant access
+                _INVOFF,
+                _MADCTL);
+            write_data(0xC0);
             hwlib::wait_ms(20);
 
             // set screen in 8 bit bus mode with 16 bit color
