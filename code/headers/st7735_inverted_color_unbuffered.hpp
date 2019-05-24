@@ -2,15 +2,13 @@
 
 #include <hwlib.hpp>
 #include <type_traits>
-
-#include "st7735_inverted_color.hpp"
+#include <st7735_inverted_color.hpp>
 
 namespace r2d2::display {
 
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
+    template <std::size_t CursorCount, class DisplayScreen>
     class st7735_inverted_color_unbuffered_c
-        : public st7735_inverted_color_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
+        : public st7735_inverted_color_c<CursorCount, DisplayScreen> {
     public:
         /**
          * @brief Construct a new st7735 unbuffered c object
@@ -22,7 +20,7 @@ namespace r2d2::display {
          */
         st7735_inverted_color_unbuffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                             hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_inverted_color_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+            : st7735_inverted_color_c<CursorCount, DisplayScreen>(
                   bus, cs, dc, reset) {
         }
 

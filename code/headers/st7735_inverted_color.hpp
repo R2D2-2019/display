@@ -6,14 +6,13 @@
 
 namespace r2d2::display {
 
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
+    template <std::size_t CursorCount, class DisplayScreen>
     class st7735_inverted_color_c
-        : public st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
+        : public st7735_c<CursorCount, DisplayScreen> {
     protected:
         st7735_inverted_color_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                                 hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
+            : st7735_c<CursorCount, DisplayScreen>(
                   bus, cs, dc, reset) {
             this->init();
             // display inversion on, memory direction control

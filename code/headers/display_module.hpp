@@ -6,11 +6,10 @@
 
 namespace r2d2::display {
 
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
+    template <std::size_t CursorCount, class DisplayScreen>
     class module_c : public base_module_c {
     protected:
-        display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> &display;
+        display_c<CursorCount, DisplayScreen> &display;
 
     public:
         /**
@@ -18,7 +17,7 @@ namespace r2d2::display {
          * @param led
          */
         module_c(base_comm_c &comm,
-                 display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>
+                 display_c<CursorCount, DisplayScreen>
                      &display)
             : base_module_c(comm), display(display) {
 

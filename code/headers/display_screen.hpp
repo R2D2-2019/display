@@ -2,10 +2,25 @@
 #include <cstdint>
 
 namespace r2d2::display {
-    struct display_screen_s {
-        uint8_t screen_height;
-        uint8_t screen_width;
-        uint8_t screen_x_offset;
-        uint8_t screen_y_offset;
+    struct st7735_128x160 {
+        constexpr static uint8_t width = 128;
+        constexpr static uint8_t height = 160;
+        constexpr static uint8_t x_offset = 0;
+        constexpr static uint8_t y_offset = 0;
+    };
+
+    struct st7735_80x160 {
+        constexpr static uint8_t width = 80;
+        constexpr static uint8_t height = 160;
+        constexpr static uint8_t x_offset = 26;
+        constexpr static uint8_t y_offset = 1;
+    };
+
+    struct ssd1306_128x64 {
+        constexpr static uint8_t width = 128;
+        constexpr static uint8_t height = 64;
+        constexpr static uint8_t x_offset = 0;
+        constexpr static uint8_t y_offset = 0;
     };
 } // namespace r2d2::display
+
