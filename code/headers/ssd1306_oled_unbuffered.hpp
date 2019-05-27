@@ -63,7 +63,7 @@ namespace r2d2::display {
             }
 
             // write pixel byte to screen
-            pixels_byte_write(hwlib::xy(x, y / 8), buffer[t_index]);
+            this->pixels_byte_write(hwlib::xy(x, y / 8), buffer[t_index]);
         }
 
         /**
