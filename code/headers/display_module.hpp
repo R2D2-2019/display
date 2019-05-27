@@ -59,7 +59,7 @@ namespace r2d2::display {
                 case r2d2::frame_type::DISPLAY_8X8_CHARACTER: {
                     const auto data =
                         frame
-                            .as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>();
+                            .as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>();
                     display.set_character(
                         data.x, data.y, data.characters,
                         display.color_to_pixel(
