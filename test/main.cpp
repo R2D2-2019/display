@@ -60,8 +60,8 @@ TEST_CASE("Manipulate cursor positon", "[cursor]") {
 }
 
 /*
- * When a character is written, the cursor has to move 8 pixels in order to 
- * write the new character. This means that the cursor position can be 
+ * When a character is written, the cursor has to move 8 pixels in order to
+ * write the new character. This means that the cursor position can be
  * calculated according to starting position and number of characters moved.
  *
  * When a character would overwrite the current bounds, the cursor won't move
@@ -160,17 +160,18 @@ TEST_CASE("Manipulate cursor position through character writing",
         auto cursor_post = test_display.get_cursor(
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
-        REQUIRE(cursor_post.cursor_x == (start_x + ((width - start_x) / 8) * 8));
+        REQUIRE(cursor_post.cursor_x ==
+                (start_x + ((width - start_x) / 8) * 8));
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 }
 
 /*
  * The cursor also stores color, and thus has to be be able to be changed.
- * The test will take a color, change it to red, green, blue and white. 
+ * The test will take a color, change it to red, green, blue and white.
  */
 
-TEST_CASE("Change cursor color", "[cursor, internal_communication]"){
+TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     // The bus itself doesn't take any constructor arguments
     r2d2::mock_comm_c mock_bus;
 
@@ -181,7 +182,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]"){
         test_display;
 
     r2d2::display::module_c module(mock_bus, test_display);
-    SECTION("To red"){
+    SECTION("To red") {
         uint8_t red = 255;
         uint8_t green = 0;
         uint8_t blue = 0;
@@ -209,7 +210,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]"){
         REQUIRE(cursor_color.blue == blue);
     }
 
-    SECTION("To green"){
+    SECTION("To green") {
         uint8_t red = 0;
         uint8_t green = 255;
         uint8_t blue = 0;
@@ -237,7 +238,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]"){
         REQUIRE(cursor_color.blue == blue);
     }
 
-    SECTION("To blue"){
+    SECTION("To blue") {
         uint8_t red = 0;
         uint8_t green = 0;
         uint8_t blue = 255;
@@ -265,7 +266,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]"){
         REQUIRE(cursor_color.blue == blue);
     }
 
-    SECTION("To white"){
+    SECTION("To white") {
         uint8_t red = 255;
         uint8_t green = 255;
         uint8_t blue = 255;
