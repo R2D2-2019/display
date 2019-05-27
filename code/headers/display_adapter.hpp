@@ -236,32 +236,84 @@ namespace r2d2::display {
                 }
             }
 
-                /**
-                 * @brief Sets the targeted cursor to the given position. Can't go out
-                 * of the size of the window. It will stop before that. Any characters
-                 * written to be out of bounds will be drawn over each other.
-                 *
-                 * @param cursor_target This targets which cursor to move
-                 *
-                 * @param x new X position of the cursor
-                 *
-                 * @param y new Y position of the cursor
-                 */
-                virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
-                                                uint8_t y) {
-                    // Checks if the given cursor is not out of bounds
-                    if (cursor_target >= CursorCount) {
-                        return;
-                    }
+        /**
+         * @brief Fill multiple pixels in a circle shape with the same color to the
+         * screen using the cursor
+         *
+         * @param x x-coordinate of the midpoint of the circle
+         * @param y y-coordinate of the midpoint of the circle
+         * @param radius the radius of the circle in pixels
+         * @param filled a boolean which if true will create a filled circle and if false it will create a hollow circle
+         * @param data
+         */
+        virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
+                                bool filled, const uint16_t data) {
+            // Checks if the given cursor is not out of bounds
+            if (cursor_target >= CursorCount) {
+                return;
+            }
+            display_cursor_s &cursor = cursors[cursor_target];
 
-                    // prevents out of bounds width
-                    if (x < DisplaySizeWidth) {
-                        cursors[cursor_target].cursor_x = x;
+            int x = cursor.cursor_x;
+            int y = cursor.cursor_y;
+
+            if( filled == true){
+                //TODO
+            }
+            else{
+                int t_x = radius;
+                int t_y = 0;
+                int err = 0;
+            
+                while (t_x >= t_y) {
+                    set_pixel(x + t_x, y + t_y, data);
+                    set_pixel(x + t_y, y + t_x, data);
+                    set_pixel(x - t_y, y + t_x, data);
+                    set_pixel(x - t_x, y + t_y, data);
+                    set_pixel(x - t_x, y - t_y, data);
+                    set_pixel(x - t_y, y - t_x, data);
+                    set_pixel(x + t_y, y - t_x, data);
+                    set_pixel(x + t_x, y - t_y, data);
+                
+                    if (err <= 0) {
+                        t_y += 1;
+                        err += 2*t_y + 1;
                     }
-                    // prevents out of bounds height
-                    if (y < DisplaySizeHeight) {
-                        cursors[cursor_target].cursor_y = y;
+                
+                    if (err > 0) {
+                        t_x -= 1;
+                        err -= 2*t_x + 1;
                     }
+                }
+                }
+            }
+
+            /**
+             * @brief Sets the targeted cursor to the given position. Can't go out
+             * of the size of the window. It will stop before that. Any characters
+             * written to be out of bounds will be drawn over each other.
+             *
+             * @param cursor_target This targets which cursor to move
+             *
+             * @param x new X position of the cursor
+             *
+             * @param y new Y position of the cursor
+             */
+            virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
+                                            uint8_t y) {
+                // Checks if the given cursor is not out of bounds
+                if (cursor_target >= CursorCount) {
+                    return;
+                }
+
+                // prevents out of bounds width
+                if (x < DisplaySizeWidth) {
+                    cursors[cursor_target].cursor_x = x;
+                }
+                // prevents out of bounds height
+                if (y < DisplaySizeHeight) {
+                    cursors[cursor_target].cursor_y = y;
+                }
         }
 
         /**
