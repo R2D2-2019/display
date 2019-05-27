@@ -37,16 +37,16 @@ int main() {
 
     auto scl = hwlib::target::pin_oc(hwlib::target::pins::scl1);
     auto sda = hwlib::target::pin_oc(hwlib::target::pins::sda1);
-    using i2c_bus = r2d2::i2c::i2c_bus_c;
 
     // create the bus we want to use
+    using i2c_bus = r2d2::i2c::i2c_bus_c;
     i2c_bus bus(i2c_bus::interface::interface_1, 100'000);
 
     // use pin_dummy becouse chip select(cs) is controlled by the hardware spi
     r2d2::display::ssd1306_oled_buffered_c<
             static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
             r2d2::display::ssd1306_128x64_s> 
-        oled_display(i2c_bus, uint8_t addr = 0x3C);
+        oled_display(bus, 0x3C);
 
     r2d2::comm_c comm;
 
