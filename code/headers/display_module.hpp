@@ -24,8 +24,8 @@ namespace r2d2::display {
             // Set up listeners
             comm.listen_for_frames(
                 {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
-                r2d2::frame_type::DISPLAY_8x8_CHARACTER,
-                r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER,
+                r2d2::frame_type::DISPLAY_8X8_CHARACTER,
+                r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR,
                 r2d2::frame_type::CURSOR_POSITION,
                 r2d2::frame_type::CURSOR_COLOR});
         }
@@ -55,10 +55,10 @@ namespace r2d2::display {
                     display.flush();
                 } break;
 
-                case r2d2::frame_type::DISPLAY_8x8_CHARACTER: {
+                case r2d2::frame_type::DISPLAY_8X8_CHARACTER: {
                     const auto data =
                         frame
-                            .as_frame_type<frame_type::DISPLAY_8x8_CHARACTER>();
+                            .as_frame_type<frame_type::DISPLAY_8X8_CHARACTER>();
                     display.set_character(
                         data.x, data.y, data.characters,
                         display.color_to_pixel(
@@ -66,9 +66,9 @@ namespace r2d2::display {
                     display.flush();
                 } break;
 
-                case r2d2::frame_type::DISPLAY_8x8_CURSOR_CHARACTER: {
+                case r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR: {
                     const auto data = frame.as_frame_type<
-                        frame_type::DISPLAY_8x8_CURSOR_CHARACTER>();
+                        frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR>();
                     display.set_character(data.cursor_id, data.characters);
                 } break;
 
