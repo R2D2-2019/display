@@ -1,9 +1,9 @@
 #pragma once
 
-#include <hwlib.hpp>
-
 #include <display_adapter.hpp>
+#include <hwlib.hpp>
 #include <i2c_bus.hpp>
+
 
 namespace r2d2::display {
     class ssd1306_c {
@@ -94,11 +94,9 @@ namespace r2d2::display {
             (uint8_t)ssd1306_command::display_on};
     };
 
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
-    class ssd1306_i2c_c
-        : protected ssd1306_c,
-          public display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
+    template <std::size_t CursorCount, class DisplayScreen>
+    class ssd1306_i2c_c : protected ssd1306_c,
+                          public display_c<CursorCount, DisplayScreen> {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
@@ -110,8 +108,7 @@ namespace r2d2::display {
 
         // construct by providing the i2c channel
         ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address)
-            : display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
-                  hwlib::xy(width, height), hwlib::white, hwlib::black),
+            : display_c<CursorCount, DisplayScreen>(hwlib::xy(width, height)),
               bus(bus),
               address(address),
               cursor(255, 255) {
@@ -177,13 +174,13 @@ namespace r2d2::display {
          * @brief width of display
          *
          */
-        constexpr static uint8_t width = DisplaySizeWidth;
+        constexpr static uint8_t width = DisplayScreen::width;
 
         /**
          * @brief height of display
          *
          */
-        constexpr static uint8_t height = DisplaySizeHeight;
+        constexpr static uint8_t height = DisplayScreen::height;
 
         /**
          * @brief converts a hwlib::color to the pixel data for the screen with

@@ -1,7 +1,9 @@
 #pragma once
 
 #include <display_cursor.hpp>
+#include <display_screen.hpp>
 #include <hwlib.hpp>
+
 
 namespace r2d2::display {
     /**
@@ -11,15 +13,11 @@ namespace r2d2::display {
      * @tparam CursorCount is the amount of cursors to store. Most of the time
      * this is equal to the number claimed cursors in the display_cursor enum.
      *
-     * @tparam DisplaySizeWidth is an uint8_t representing the width of the
-     * display
-     *
-     * @tparam DisplaySizeHeight is an uint8_t representing the height of the
-     * display
+     * @tparam DisplayScreen is a struct which has contains information of the
+     * screen which will be used.
      *
      */
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
+    template <std::size_t CursorCount, class DisplayScreen>
     class display_c : public hwlib::window {
     protected:
         /**
@@ -152,7 +150,7 @@ namespace r2d2::display {
                 set_character(x, y, character[index], pixel_color);
 
                 // If the cursor is about to go out of bounds, return.
-                if (x + 8 < DisplaySizeWidth) {
+                if (x + 8 < DisplayScreen::width) {
                     x += 8;
                 } else {
                     return;
@@ -183,7 +181,7 @@ namespace r2d2::display {
                               color_to_pixel(cursor.cursor_color));
 
                 // If the cursor is about to go out of bounds, return.
-                if (cursor.cursor_x + 8 < DisplaySizeWidth) {
+                if (cursor.cursor_x + 8 < DisplayScreen::width) {
                     set_cursor_positon(cursor_target, cursor.cursor_x + 8,
                                        cursor.cursor_y);
                 } else {
@@ -212,11 +210,11 @@ namespace r2d2::display {
             }
 
             // prevents out of bounds width
-            if (x < DisplaySizeWidth) {
+            if (x < DisplayScreen::width) {
                 cursors[cursor_target].cursor_x = x;
             }
             // prevents out of bounds height
-            if (y < DisplaySizeHeight) {
+            if (y < DisplayScreen::height) {
                 cursors[cursor_target].cursor_y = y;
             }
         }

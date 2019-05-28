@@ -1,9 +1,8 @@
 #pragma once
 
 #include <hwlib.hpp>
+#include <st7735.hpp>
 #include <type_traits>
-
-#include "st7735.hpp"
 
 namespace r2d2::display {
 
@@ -11,16 +10,14 @@ namespace r2d2::display {
      * Class st7735_buffered is an interface for the st7735 chip
      *
      * Implements hwlib::window to easily use text and drawing functions that
-     * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
+     * are already implemented. Extends from r2d2::display::st7735_c
      *
      * The template paramters are required for the parent class
      */
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
-    class st7735_buffered_c
-        : public st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
+    template <std::size_t CursorCount, class DisplayScreen>
+    class st7735_buffered_c : public st7735_c<CursorCount, DisplayScreen> {
     protected:
-        uint16_t buffer[DisplaySizeWidth * DisplaySizeHeight] = {};
+        uint16_t buffer[DisplayScreen.width * DisplayScreen.height] = {};
 
     public:
         /**

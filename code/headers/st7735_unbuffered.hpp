@@ -1,16 +1,20 @@
 #pragma once
 
 #include <hwlib.hpp>
+#include <st7735.hpp>
 #include <type_traits>
 
-#include "st7735.hpp"
-
 namespace r2d2::display {
-
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
-    class st7735_unbuffered_c
-        : public st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight> {
+    /**
+     * Class st7735_unbuffered is an interface for the st7735 chip
+     *
+     * Implements hwlib::window to easily use text and drawing functions that
+     * are already implemented. Extends from r2d2::display::st7735_c
+     *
+     * The template paramters are required for the parent class
+     */
+    template <std::size_t CursorCount, class DisplayScreen>
+    class st7735_unbuffered_c : public st7735_c<CursorCount, DisplayScreen> {
     public:
         /**
          * @brief Construct a new st7735 unbuffered c object
@@ -22,8 +26,7 @@ namespace r2d2::display {
          */
         st7735_unbuffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                             hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(
-                  bus, cs, dc, reset) {
+            : st7735_c<CursorCount, DisplayScreen>(bus, cs, dc, reset) {
         }
 
         /**
