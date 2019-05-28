@@ -102,11 +102,11 @@ TEST_CASE("Manipulate cursor position through character writing",
         module.process();
 
         // Sanity check
-        auto corsor_pre = test_display.get_cursor(
+        auto cursor_pre = test_display.get_cursor(
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
-        REQUIRE(corsor_pre.cursor_x == start_x);
-        REQUIRE(corsor_pre.cursor_y == start_y);
+        REQUIRE(cursor_pre.cursor_x == start_x);
+        REQUIRE(cursor_pre.cursor_y == start_y);
 
         auto frame_char = mock_bus.create_frame<
             r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR>(
