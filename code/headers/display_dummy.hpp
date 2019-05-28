@@ -1,16 +1,15 @@
 #pragma once
 
 #include <hwlib.hpp>
-#include <display_cursor.hpp>
 #include <display_adapter.hpp>
 
 namespace r2d2::display{
 
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth, uint8_t DisplaySizeHeight>
-    class display_dummy_c : public display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>{
+    template <std::size_t CursorCount, class DisplayScreen>
+    class display_dummy_c : public display_c<CursorCount, DisplayScreen>{
         public:
             display_dummy_c():
-                display_c<CursorCount, DisplaySizeWidth, DisplaySizeHeight>(hwlib::xy(DisplaySizeWidth, DisplaySizeHeight)){
+                display_c<CursorCount, DisplayScreen>(hwlib::xy(DisplayScreen::width, DisplayScreen::height)){
 
             }
             /**

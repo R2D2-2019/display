@@ -13,9 +13,10 @@
  */
 TEST_CASE("Default cursor initialization", "[cursor]") {
     // Dummy display does nothing in set_pixel
+    // The chosen screen defines the dimensions it has
     r2d2::display::display_dummy_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
-        128, 160>
+        r2d2::display::st7735_128x160_s>
         test_display;
     auto curs = test_display.get_cursor(
         static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
@@ -34,7 +35,7 @@ TEST_CASE("Manipulate cursor positon", "[cursor]") {
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
-        128, 160>
+        r2d2::display::st7735_128x160_s>
         test_display;
 
     SECTION("To 50,75") {
@@ -72,12 +73,11 @@ TEST_CASE("Manipulate cursor position through character writing",
     // The bus itself doesn't take any constructor arguments
     r2d2::mock_comm_c mock_bus;
 
-    constexpr uint8_t width = 128;
-    constexpr uint8_t height = 160;
+    
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
-        width, height>
+        r2d2::display::st7735_128x160_s>
         test_display;
 
     r2d2::display::module_c module(mock_bus, test_display);
@@ -161,7 +161,7 @@ TEST_CASE("Manipulate cursor position through character writing",
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
         REQUIRE(cursor_post.cursor_x ==
-                (start_x + ((width - start_x) / 8) * 8));
+                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 }
@@ -178,7 +178,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
-        128, 160>
+        r2d2::display::st7735_128x160_s>
         test_display;
 
     r2d2::display::module_c module(mock_bus, test_display);
