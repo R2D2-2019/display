@@ -1,8 +1,9 @@
 #pragma once
 
-#include <hwlib.hpp>
 #include <base_module.hpp>
 #include <display_adapter.hpp>
+#include <hwlib.hpp>
+
 
 namespace r2d2::display {
 
@@ -17,17 +18,16 @@ namespace r2d2::display {
          * @param led
          */
         module_c(base_comm_c &comm,
-                 display_c<CursorCount, DisplayScreen>
-                     &display)
+                 display_c<CursorCount, DisplayScreen> &display)
             : base_module_c(comm), display(display) {
 
             // Set up listeners
             comm.listen_for_frames(
                 {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
-                r2d2::frame_type::DISPLAY_8X8_CHARACTER,
-                r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR,
-                r2d2::frame_type::CURSOR_POSITION,
-                r2d2::frame_type::CURSOR_COLOR});
+                 r2d2::frame_type::DISPLAY_8X8_CHARACTER,
+                 r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR,
+                 r2d2::frame_type::CURSOR_POSITION,
+                 r2d2::frame_type::CURSOR_COLOR});
         }
 
         /**

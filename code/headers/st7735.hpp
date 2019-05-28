@@ -1,13 +1,13 @@
 #pragma once
 
-#include <hwlib.hpp>
 #include <display_adapter.hpp>
+#include <hwlib.hpp>
+
 
 namespace r2d2::display {
 
     template <std::size_t CursorCount, class DisplayScreen>
-    class st7735_c
-        : public display_c<CursorCount, DisplayScreen> {
+    class st7735_c : public display_c<CursorCount, DisplayScreen> {
     protected:
         // all the commands for the display
         constexpr static uint8_t _NOP = 0x00;
@@ -50,7 +50,7 @@ namespace r2d2::display {
 
         // since it uses a generic driver the display has a offset
         // When using the small screen, x_offset is 26;
-        constexpr static uint8_t x_offset = DisplayScreen::x_offset; 
+        constexpr static uint8_t x_offset = DisplayScreen::x_offset;
         // When using the small screen, y_offset is 1;
         constexpr static uint8_t y_offset = DisplayScreen::y_offset;
 
@@ -166,9 +166,7 @@ namespace r2d2::display {
             write_data(0x0E);
 
             // display inversion off, memory direction control
-            write_command(
-                _INVOFF,
-                _MADCTL);
+            write_command(_INVOFF, _MADCTL);
             write_data(0xC0);
             hwlib::wait_ms(20);
 
@@ -235,8 +233,7 @@ namespace r2d2::display {
          */
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
-            : display_c<CursorCount, DisplayScreen>(
-                  hwlib::xy(width, height)),
+            : display_c<CursorCount, DisplayScreen>(hwlib::xy(width, height)),
               bus(bus),
               cs(cs),
               dc(dc),

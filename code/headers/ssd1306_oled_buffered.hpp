@@ -21,7 +21,8 @@ namespace r2d2::display {
          * The first byte is used for the data-prefix that the display driver
          * requires to be sent when sending pixel data.
          */
-        uint8_t buffer[(DisplayScreen::width * DisplayScreen::height / 8) + 1] = {};
+        uint8_t buffer[(DisplayScreen::width * DisplayScreen::height / 8) + 1] =
+            {};
 
     public:
         /**
@@ -30,8 +31,7 @@ namespace r2d2::display {
          */
         ssd1306_oled_buffered_c(r2d2::i2c::i2c_bus_c &bus,
                                 const uint8_t &address)
-            : ssd1306_i2c_c<CursorCount, DisplayScreen>(
-                  bus, address) {
+            : ssd1306_i2c_c<CursorCount, DisplayScreen>(bus, address) {
             // set the command for writing to the screen
             buffer[0] = this->ssd1306_data_prefix;
 
@@ -45,8 +45,8 @@ namespace r2d2::display {
          *
          * @param x
          * @param y
-         * @param data Colour of the pixel to write. data != 0 will set the pixel
-         * Data = 0 will clear the pixel
+         * @param data Colour of the pixel to write. data != 0 will set the
+         * pixel Data = 0 will clear the pixel
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
             // calculate the index of the pixel

@@ -1,8 +1,9 @@
 #pragma once
 
-#include <hwlib.hpp>
 #include <display_adapter.hpp>
+#include <hwlib.hpp>
 #include <i2c_bus.hpp>
+
 
 namespace r2d2::display {
     class ssd1306_c {
@@ -94,9 +95,8 @@ namespace r2d2::display {
     };
 
     template <std::size_t CursorCount, class DisplayScreen>
-    class ssd1306_i2c_c
-        : protected ssd1306_c,
-          public display_c<CursorCount, DisplayScreen> {
+    class ssd1306_i2c_c : protected ssd1306_c,
+                          public display_c<CursorCount, DisplayScreen> {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;

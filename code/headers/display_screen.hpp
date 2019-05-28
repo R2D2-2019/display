@@ -24,4 +24,3 @@ namespace r2d2::display {
         constexpr static uint8_t y_offset = 0;
     };
 } // namespace r2d2::display
-
