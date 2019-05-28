@@ -217,13 +217,13 @@ namespace r2d2::display {
                 {
                     for (int i = x - t_x; i <= x + t_x; i++)
                     {
-                        SetPixel(i, y + t_y);
-                        SetPixel(i, y - t_y);
+                        set_pixel(i, y + t_y);
+                        set_pixel(i, y - t_y);
                     }
                     for (int i = x - t_y; i <= x + t_y; i++)
                     {
-                        SetPixel(i, y + t_x);
-                        SetPixel(i, y - t_x);
+                        set_pixel(i, y + t_x);
+                        set_pixel(i, y - t_x);
                     }
 
                     t_y++;
@@ -237,7 +237,7 @@ namespace r2d2::display {
                     }
                 }
             }
-            
+
             else{
                 while (t_x >= t_y) {
                     set_pixel(x + t_x, y + t_y, data);
