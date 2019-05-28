@@ -24,7 +24,7 @@ namespace r2d2::display {
 
             // Set up listeners
             comm.listen_for_frames(
-                {r2d2::frame_type::DISPLAY_FILLED_RECTANGLE,
+                {r2d2::frame_type::DISPLAY_RECTANGLE,
                 r2d2::frame_type::DISPLAY_8X8_CHARACTER,
                 r2d2::frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR,
                 r2d2::frame_type::DISPLAY_CIRCLE,
@@ -46,10 +46,10 @@ namespace r2d2::display {
                 }
 
                 switch (frame.type) {
-                case r2d2::frame_type::DISPLAY_FILLED_RECTANGLE: {
+                case r2d2::frame_type::DISPLAY_RECTANGLE: {
                     // Get the data from the frame
                     const auto data = frame.as_frame_type<
-                        frame_type::DISPLAY_FILLED_RECTANGLE>();
+                        frame_type::DISPLAY_RECTANGLE>();
 
                     display.set_pixels(data.x, data.y, data.width, data.height,
                                        display.color_to_pixel(hwlib::color(
@@ -92,9 +92,7 @@ namespace r2d2::display {
                     const auto data = frame.as_frame_type<
                         frame_type::DISPLAY_CIRCLE_VIA_CURSOR>();
 
-                    display.set_pixels_circle(data.cursor_id, data.radius, data.filled,
-                                       display.color_to_pixel(hwlib::color(
-                                           data.red, data.green, data.blue)));
+                    display.set_pixels_circle(data.cursor_id, data.radius, data.filled);
 
                     display.flush();
                 } break;
