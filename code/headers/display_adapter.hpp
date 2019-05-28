@@ -205,14 +205,40 @@ namespace r2d2::display {
          */
         virtual void set_pixels_circle(uint16_t x, uint16_t y, uint16_t radius,
                                 bool filled, const uint16_t data) {
-            if( filled == true){
-                //TODO
-            }
-            else{
-                int t_x = radius;
-                int t_y = 0;
-                int err = 0;
+            int t_x = radius;
+            int t_y = 0;
+            int err = 0;
             
+            if( filled == true){
+                int xChange = 1 - (radius << 1);
+                int yChange = 0;
+
+                while (t_x >= t_y)
+                {
+                    for (int i = x - t_x; i <= x + t_x; i++)
+                    {
+                        SetPixel(i, y + t_y);
+                        SetPixel(i, y - t_y);
+                    }
+                    for (int i = x - t_y; i <= x + t_y; i++)
+                    {
+                        SetPixel(i, y + t_x);
+                        SetPixel(i, y - t_x);
+                    }
+
+                    t_y++;
+                    err += yChange;
+                    yChange += 2;
+                    if (((err << 1) + xChange) > 0)
+                    {
+                        t_x--;
+                        err += xChange;
+                        xChange += 2;
+                    }
+                }
+            }
+            
+            else{
                 while (t_x >= t_y) {
                     set_pixel(x + t_x, y + t_y, data);
                     set_pixel(x + t_y, y + t_x, data);
@@ -247,7 +273,7 @@ namespace r2d2::display {
          * @param data
          */
         virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
-                                bool filled, const uint16_t data) {
+                                bool filled) {
             // Checks if the given cursor is not out of bounds
             if (cursor_target >= CursorCount) {
                 return;
