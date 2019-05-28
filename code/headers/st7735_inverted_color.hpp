@@ -1,7 +1,7 @@
 #pragma once
 
-#include <display_adapter.hpp>
 #include <hwlib.hpp>
+#include <display_adapter.hpp>
 #include <st7735.hpp>
 
 namespace r2d2::display {

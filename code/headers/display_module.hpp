@@ -1,8 +1,8 @@
 #pragma once
 
+#include <hwlib.hpp>
 #include <base_module.hpp>
 #include <display_adapter.hpp>
-#include <hwlib.hpp>
 
 namespace r2d2::display {
 

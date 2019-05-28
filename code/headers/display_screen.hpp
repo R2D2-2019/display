@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdint>
 
 namespace r2d2::display {

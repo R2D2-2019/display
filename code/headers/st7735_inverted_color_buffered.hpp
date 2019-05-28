@@ -1,8 +1,8 @@
 #pragma once
 
 #include <hwlib.hpp>
-#include <type_traits>
 #include <st7735_inverted_color.hpp>
+#include <type_traits>
 
 namespace r2d2::display {
 

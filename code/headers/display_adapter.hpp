@@ -1,8 +1,8 @@
 #pragma once
 
+#include <hwlib.hpp>
 #include <display_cursor.hpp>
 #include <display_screen.hpp>
-#include <hwlib.hpp>
 
 namespace r2d2::display {
     /**

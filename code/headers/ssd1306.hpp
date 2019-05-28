@@ -1,7 +1,6 @@
 #pragma once
 
 #include <hwlib.hpp>
-
 #include <display_adapter.hpp>
 #include <i2c_bus.hpp>
 
