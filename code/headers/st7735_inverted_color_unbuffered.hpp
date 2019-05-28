@@ -6,6 +6,15 @@
 
 namespace r2d2::display {
 
+    /**
+     * Class st7735_inverted_color_unbuffered is an interface for the st7735 chip
+     * where the display has its colors inverted.
+     *
+     * Implements hwlib::window to easily use text and drawing functions that
+     * are already implemented. Extends from r2d2::display::st7735_inverted_color_c
+     *
+     * The template paramters are required for the parent class
+     */
     template <std::size_t CursorCount, class DisplayScreen>
     class st7735_inverted_color_unbuffered_c
         : public st7735_inverted_color_c<CursorCount, DisplayScreen> {

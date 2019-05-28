@@ -10,7 +10,7 @@ namespace r2d2::display {
      * Class st7735_buffered is an interface for the st7735 chip
      *
      * Implements hwlib::window to easily use text and drawing functions that
-     * are already implemented. Extends from r2d2::display::ssd1306_i2c_c
+     * are already implemented. Extends from r2d2::display::st7735_c
      *
      * The template paramters are required for the parent class
      */
