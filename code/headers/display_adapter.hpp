@@ -119,8 +119,8 @@ namespace r2d2::display {
                                    uint16_t pixel_color) {
             // Loops through all rows of the character
             const hwlib::image &character_image = display_font[character];
-            for (int image_y = 0; image_y < 8; image_y++) {
-                for (int image_x = 0; image_x < 8; image_x++) {
+            for (uint16_t image_y = 0; image_y < 8; image_y++) {
+                for (uint16_t image_x = 0; image_x < 8; image_x++) {
                     // Check if the pixel needs to be drawn.
                     // If the pixel color is anything other than white, draw it
                     hwlib::color character_pixel_color =
@@ -205,22 +205,22 @@ namespace r2d2::display {
          */
         virtual void set_pixels_circle(uint16_t x, uint16_t y, uint16_t radius,
                                 bool filled, const uint16_t data) {
-            int t_x = radius;
-            int t_y = 0;
-            int err = 0;
+            uint16_t t_x = radius;
+            uint16_t t_y = 0;
+            uint16_t err = 0;
             
             if( filled == true){
-                int xChange = 1 - (radius << 1);
-                int yChange = 0;
+                uint16_t xChange = 1 - (radius << 1);
+                uint16_t yChange = 0;
 
                 while (t_x >= t_y)
                 {
-                    for (int i = x - t_x; i <= x + t_x; i++)
+                    for (uint16_t i = x - t_x; i <= x + t_x; i++)
                     {
                         set_pixel(i, y + t_y, data);
                         set_pixel(i, y - t_y, data);
                     }
-                    for (int i = x - t_y; i <= x + t_y; i++)
+                    for (uint16_t i = x - t_y; i <= x + t_y; i++)
                     {
                         set_pixel(i, y + t_x, data);
                         set_pixel(i, y - t_x, data);
@@ -270,7 +270,6 @@ namespace r2d2::display {
          * @param y y-coordinate of the midpoint of the circle
          * @param radius the radius of the circle in pixels
          * @param filled a boolean which if true will create a filled circle and if false it will create a hollow circle
-         * @param data
          */
         virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
                                 bool filled) {
@@ -280,26 +279,27 @@ namespace r2d2::display {
             }
             display_cursor_s &cursor = cursors[cursor_target];
 
-            int x = cursor.cursor_x;
-            int y = cursor.cursor_y;
+            uint16_t x = cursor.cursor_x;
+            uint16_t y = cursor.cursor_y;
+            uint16_t color = color_to_pixel(cursor.cursor_color);
 
             if( filled == true){
                 //TODO
             }
             else{
-                int t_x = radius;
-                int t_y = 0;
-                int err = 0;
+                uint16_t t_x = radius;
+                uint16_t t_y = 0;
+                uint16_t err = 0;
             
                 while (t_x >= t_y) {
-                    set_pixel(x + t_x, y + t_y, data);
-                    set_pixel(x + t_y, y + t_x, data);
-                    set_pixel(x - t_y, y + t_x, data);
-                    set_pixel(x - t_x, y + t_y, data);
-                    set_pixel(x - t_x, y - t_y, data);
-                    set_pixel(x - t_y, y - t_x, data);
-                    set_pixel(x + t_y, y - t_x, data);
-                    set_pixel(x + t_x, y - t_y, data);
+                    set_pixel(x + t_x, y + t_y, color);
+                    set_pixel(x + t_y, y + t_x, color);
+                    set_pixel(x - t_y, y + t_x, color);
+                    set_pixel(x - t_x, y + t_y, color);
+                    set_pixel(x - t_x, y - t_y, color);
+                    set_pixel(x - t_y, y - t_x, color);
+                    set_pixel(x + t_y, y - t_x, color);
+                    set_pixel(x + t_x, y - t_y, color);
                 
                     if (err <= 0) {
                         t_y += 1;
