@@ -283,13 +283,39 @@ namespace r2d2::display {
             uint16_t y = cursor.cursor_y;
             uint16_t color = color_to_pixel(cursor.cursor_color);
 
+            uint16_t t_x = radius;
+            uint16_t t_y = 0;
+            uint16_t err = 0;
+
             if( filled == true){
-                //TODO
+                uint16_t xChange = 1 - (radius << 1);
+                uint16_t yChange = 0;
+
+                while (t_x >= t_y)
+                {
+                    for (uint16_t i = x - t_x; i <= x + t_x; i++)
+                    {
+                        set_pixel(i, y + t_y, color);
+                        set_pixel(i, y - t_y, color);
+                    }
+                    for (uint16_t i = x - t_y; i <= x + t_y; i++)
+                    {
+                        set_pixel(i, y + t_x, color);
+                        set_pixel(i, y - t_x, color);
+                    }
+
+                    t_y++;
+                    err += yChange;
+                    yChange += 2;
+                    if (((err << 1) + xChange) > 0)
+                    {
+                        t_x--;
+                        err += xChange;
+                        xChange += 2;
+                    }
+                }
             }
             else{
-                uint16_t t_x = radius;
-                uint16_t t_y = 0;
-                uint16_t err = 0;
             
                 while (t_x >= t_y) {
                     set_pixel(x + t_x, y + t_y, color);
