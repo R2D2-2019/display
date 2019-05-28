@@ -205,22 +205,22 @@ namespace r2d2::display {
          */
         virtual void set_pixels_circle(uint16_t x, uint16_t y, uint16_t radius,
                                 bool filled, const uint16_t data) {
-            uint16_t t_x = radius;
-            uint16_t t_y = 0;
-            uint16_t err = 0;
+            int t_x = radius;
+            int t_y = 0;
+            int err = 0;
             
             if( filled == true){
-                uint16_t xChange = 1 - (radius << 1);
-                uint16_t yChange = 0;
+                int xChange = 1 - (radius << 1);
+                int yChange = 0;
 
                 while (t_x >= t_y)
                 {
-                    for (uint16_t i = x - t_x; i <= x + t_x; i++)
+                    for (int i = x - t_x; i <= x + t_x; i++)
                     {
                         set_pixel(i, y + t_y, data);
                         set_pixel(i, y - t_y, data);
                     }
-                    for (uint16_t i = x - t_y; i <= x + t_y; i++)
+                    for (int i = x - t_y; i <= x + t_y; i++)
                     {
                         set_pixel(i, y + t_x, data);
                         set_pixel(i, y - t_x, data);
@@ -277,28 +277,28 @@ namespace r2d2::display {
             if (cursor_target >= CursorCount) {
                 return;
             }
-            display_cursor_s &cursor = cursors[cursor_target];
+            display_cursor_s cursor = cursors[cursor_target];
 
-            uint16_t x = cursor.cursor_x;
-            uint16_t y = cursor.cursor_y;
-            uint16_t color = color_to_pixel(cursor.cursor_color);
+            int x = cursor.cursor_x;
+            int y = cursor.cursor_y;
+            int color = color_to_pixel(cursor.cursor_color);
 
-            uint16_t t_x = radius;
-            uint16_t t_y = 0;
-            uint16_t err = 0;
+            int t_x = radius;
+            int t_y = 0;
+            int err = 0;
 
             if( filled == true){
-                uint16_t xChange = 1 - (radius << 1);
-                uint16_t yChange = 0;
+                int xChange = 1 - (radius << 1);
+                int yChange = 0;
 
                 while (t_x >= t_y)
                 {
-                    for (uint16_t i = x - t_x; i <= x + t_x; i++)
+                    for (int i = x - t_x; i <= x + t_x; i++)
                     {
                         set_pixel(i, y + t_y, color);
                         set_pixel(i, y - t_y, color);
                     }
-                    for (uint16_t i = x - t_y; i <= x + t_y; i++)
+                    for (int i = x - t_y; i <= x + t_y; i++)
                     {
                         set_pixel(i, y + t_x, color);
                         set_pixel(i, y - t_x, color);
