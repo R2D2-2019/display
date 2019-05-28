@@ -1,23 +1,26 @@
 #pragma once
 
 #include <hwlib.hpp>
-#include <st7735.hpp>
+#include <st7735_inverted_color.hpp>
 #include <type_traits>
 
 namespace r2d2::display {
 
     /**
-     * Class st7735_buffered is an interface for the st7735 chip
+     * Class st7735_inverted_color_buffered is an interface for the st7735 chip
+     * where the display has its colors inverted.
      *
      * Implements hwlib::window to easily use text and drawing functions that
-     * are already implemented. Extends from r2d2::display::st7735_c
+     * are already implemented. Extends from
+     * r2d2::display::st7735_inverted_color_c
      *
      * The template paramters are required for the parent class
      */
     template <std::size_t CursorCount, class DisplayScreen>
-    class st7735_buffered_c : public st7735_c<CursorCount, DisplayScreen> {
+    class st7735_inverted_color_buffered_c
+        : public st7735_inverted_color_c<CursorCount, DIsplayScreen> {
     protected:
-        uint16_t buffer[DisplayScreen::width * DisplayScreen::height] = {};
+        uint16_t buffer[DisplayScreen.width * DisplayScreen.height] = {};
 
     public:
         /**
@@ -28,10 +31,11 @@ namespace r2d2::display {
          * @param dc
          * @param reset
          */
-        st7735_buffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
-                          hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_c<CursorCount, DisplayScreen>(
-                  bus, cs, dc, reset) {
+        st7735_inverted_color_buffered_c(hwlib::spi_bus &bus,
+                                         hwlib::pin_out &cs, hwlib::pin_out &dc,
+                                         hwlib::pin_out &reset)
+            : st7735_inverted_color_c<CursorCount, DisplayScreen>(bus, cs, dc,
+                                                                  reset) {
         }
 
         /**
@@ -101,15 +105,16 @@ namespace r2d2::display {
          *
          */
         void flush() override {
-            st7735_buffered_c::set_cursor(0, 0, this->width - 1,
-                                          this->height - 1);
+            st7735_inverted_color_buffered_c::set_cursor(0, 0, this->width - 1,
+                                                         this->height - 1);
 
             // write to ram
-            st7735_buffered_c::write_command(st7735_buffered_c::_RAMWR);
+            st7735_inverted_color_buffered_c::write_command(
+                st7735_inverted_color_buffered_c::_RAMWR);
 
             // write data to display
-            st7735_buffered_c::write_data((uint8_t *)buffer,
-                                          this->width * this->height * 2);
+            st7735_inverted_color_buffered_c::write_data(
+                (uint8_t *)buffer, this->width * this->height * 2);
         }
     };
 

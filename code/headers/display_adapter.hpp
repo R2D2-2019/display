@@ -1,6 +1,7 @@
 #pragma once
 
 #include <display_cursor.hpp>
+#include <display_screen.hpp>
 #include <hwlib.hpp>
 
 namespace r2d2::display {
@@ -11,15 +12,11 @@ namespace r2d2::display {
      * @tparam CursorCount is the amount of cursors to store. Most of the time
      * this is equal to the number claimed cursors in the display_cursor enum.
      *
-     * @tparam DisplaySizeWidth is an uint8_t representing the width of the
-     * display
-     *
-     * @tparam DisplaySizeHeight is an uint8_t representing the height of the
-     * display
+     * @tparam DisplayScreen is a struct which has contains information of the
+     * screen which will be used.
      *
      */
-    template <std::size_t CursorCount, uint8_t DisplaySizeWidth,
-              uint8_t DisplaySizeHeight>
+    template <std::size_t CursorCount, class DisplayScreen>
     class display_c : public hwlib::window {
     protected:
         /**
@@ -152,7 +149,7 @@ namespace r2d2::display {
                 set_character(x, y, character[index], pixel_color);
 
                 // If the cursor is about to go out of bounds, return.
-                if (x + 8 >= DisplaySizeWidth) {
+                if (x + 8 < DisplayScreen::width) {
                     x += 8;
                 } else {
                     return;
@@ -183,7 +180,7 @@ namespace r2d2::display {
                               color_to_pixel(cursor.cursor_color));
 
                 // If the cursor is about to go out of bounds, return.
-                if (cursor.cursor_x + 8 < DisplaySizeWidth) {
+                if (cursor.cursor_x + 8 < DisplayScreen::width) {
                     set_cursor_positon(cursor_target, cursor.cursor_x + 8,
                                        cursor.cursor_y);
                 } else {
@@ -194,34 +191,32 @@ namespace r2d2::display {
         }
 
         /**
-         * @brief Fill multiple pixels in a circle shape with the same color to the
-         * screen
+         * @brief Fill multiple pixels in a circle shape with the same color to
+         * the screen
          *
          * @param x x-coordinate of the midpoint of the circle
          * @param y y-coordinate of the midpoint of the circle
          * @param radius the radius of the circle in pixels
-         * @param filled a boolean which if true will create a filled circle and if false it will create a hollow circle
+         * @param filled a boolean which if true will create a filled circle and
+         * if false it will create a hollow circle
          * @param data
          */
         virtual void set_pixels_circle(uint16_t x, uint16_t y, uint16_t radius,
-                                bool filled, const uint16_t data) {
+                                       bool filled, const uint16_t data) {
             int t_x = radius;
             int t_y = 0;
             int err = 0;
-            
-            if( filled == true){
+
+            if (filled == true) {
                 int xChange = 1 - (radius << 1);
                 int yChange = 0;
 
-                while (t_x >= t_y)
-                {
-                    for (int i = x - t_x; i <= x + t_x; i++)
-                    {
+                while (t_x >= t_y) {
+                    for (int i = x - t_x; i <= x + t_x; i++) {
                         set_pixel(i, y + t_y, data);
                         set_pixel(i, y - t_y, data);
                     }
-                    for (int i = x - t_y; i <= x + t_y; i++)
-                    {
+                    for (int i = x - t_y; i <= x + t_y; i++) {
                         set_pixel(i, y + t_x, data);
                         set_pixel(i, y - t_x, data);
                     }
@@ -229,16 +224,13 @@ namespace r2d2::display {
                     t_y++;
                     err += yChange;
                     yChange += 2;
-                    if (((err << 1) + xChange) > 0)
-                    {
+                    if (((err << 1) + xChange) > 0) {
                         t_x--;
                         err += xChange;
                         xChange += 2;
                     }
                 }
-            }
-
-            else{
+            } else {
                 while (t_x >= t_y) {
                     set_pixel(x + t_x, y + t_y, data);
                     set_pixel(x + t_y, y + t_x, data);
@@ -248,31 +240,32 @@ namespace r2d2::display {
                     set_pixel(x - t_y, y - t_x, data);
                     set_pixel(x + t_y, y - t_x, data);
                     set_pixel(x + t_x, y - t_y, data);
-                
+
                     if (err <= 0) {
                         t_y += 1;
-                        err += 2*t_y + 1;
+                        err += 2 * t_y + 1;
                     }
-                
+
                     if (err > 0) {
                         t_x -= 1;
-                        err -= 2*t_x + 1;
+                        err -= 2 * t_x + 1;
                     }
                 }
-                }
             }
+        }
 
         /**
-         * @brief Fill multiple pixels in a circle shape with the same color to the
-         * screen using the cursor
+         * @brief Fill multiple pixels in a circle shape with the same color to
+         * the screen using the cursor
          *
          * @param x x-coordinate of the midpoint of the circle
          * @param y y-coordinate of the midpoint of the circle
          * @param radius the radius of the circle in pixels
-         * @param filled a boolean which if true will create a filled circle and if false it will create a hollow circle
+         * @param filled a boolean which if true will create a filled circle and
+         * if false it will create a hollow circle
          */
         virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
-                                bool filled) {
+                                       bool filled) {
             // Checks if the given cursor is not out of bounds
             if (cursor_target >= CursorCount) {
                 return;
@@ -287,19 +280,16 @@ namespace r2d2::display {
             int t_y = 0;
             int err = 0;
 
-            if( filled == true){
+            if (filled == true) {
                 int xChange = 1 - (radius << 1);
                 int yChange = 0;
 
-                while (t_x >= t_y)
-                {
-                    for (int i = x - t_x; i <= x + t_x; i++)
-                    {
+                while (t_x >= t_y) {
+                    for (int i = x - t_x; i <= x + t_x; i++) {
                         set_pixel(i, y + t_y, color);
                         set_pixel(i, y - t_y, color);
                     }
-                    for (int i = x - t_y; i <= x + t_y; i++)
-                    {
+                    for (int i = x - t_y; i <= x + t_y; i++) {
                         set_pixel(i, y + t_x, color);
                         set_pixel(i, y - t_x, color);
                     }
@@ -307,16 +297,14 @@ namespace r2d2::display {
                     t_y++;
                     err += yChange;
                     yChange += 2;
-                    if (((err << 1) + xChange) > 0)
-                    {
+                    if (((err << 1) + xChange) > 0) {
                         t_x--;
                         err += xChange;
                         xChange += 2;
                     }
                 }
-            }
-            else{
-            
+            } else {
+
                 while (t_x >= t_y) {
                     set_pixel(x + t_x, y + t_y, color);
                     set_pixel(x + t_y, y + t_x, color);
@@ -326,46 +314,47 @@ namespace r2d2::display {
                     set_pixel(x - t_y, y - t_x, color);
                     set_pixel(x + t_y, y - t_x, color);
                     set_pixel(x + t_x, y - t_y, color);
-                
+
                     if (err <= 0) {
                         t_y += 1;
-                        err += 2*t_y + 1;
+                        err += 2 * t_y + 1;
                     }
-                
+
                     if (err > 0) {
                         t_x -= 1;
-                        err -= 2*t_x + 1;
+                        err -= 2 * t_x + 1;
                     }
                 }
-                }
+            }
+        }
+
+        /**
+         * @brief Sets the targeted cursor to the given position. Can't go
+         * out of the size of the window. It will stop before that. Any
+         * characters written to be out of bounds will be drawn over each
+         * other.
+         *
+         * @param cursor_target This targets which cursor to move
+         *
+         * @param x new X position of the cursor
+         *
+         * @param y new Y position of the cursor
+         */
+        virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
+                                        uint8_t y) {
+            // Checks if the given cursor is not out of bounds
+            if (cursor_target >= CursorCount) {
+                return;
             }
 
-            /**
-             * @brief Sets the targeted cursor to the given position. Can't go out
-             * of the size of the window. It will stop before that. Any characters
-             * written to be out of bounds will be drawn over each other.
-             *
-             * @param cursor_target This targets which cursor to move
-             *
-             * @param x new X position of the cursor
-             *
-             * @param y new Y position of the cursor
-             */
-            virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
-                                            uint8_t y) {
-                // Checks if the given cursor is not out of bounds
-                if (cursor_target >= CursorCount) {
-                    return;
-                }
-
-                // prevents out of bounds width
-                if (x < DisplaySizeWidth) {
-                    cursors[cursor_target].cursor_x = x;
-                }
-                // prevents out of bounds height
-                if (y < DisplaySizeHeight) {
-                    cursors[cursor_target].cursor_y = y;
-                }
+            // prevents out of bounds width
+            if (x < DisplayScreen::width) {
+                cursors[cursor_target].cursor_x = x;
+            }
+            // prevents out of bounds height
+            if (y < DisplayScreen::height) {
+                cursors[cursor_target].cursor_y = y;
+            }
         }
 
         /**
@@ -385,8 +374,8 @@ namespace r2d2::display {
         };
 
         /**
-         * @brief Override for hwlib::window the class doesn't need to implement
-         * a flush if not needed
+         * @brief Override for hwlib::window the class doesn't need to
+         * implement a flush if not needed
          *
          */
         virtual void flush() override {
