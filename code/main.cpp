@@ -19,7 +19,7 @@ int main() {
     auto rst = hwlib::target::pin_out(hwlib::target::pins::d8);
 
 
-    // use pin_dummy becouse chip select(cs) is controlled by the hardware spi
+    // use pin_dummy because chip select(cs) is controlled by the hardware spi
     r2d2::display::st7735_buffered_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
         r2d2::display::st7735_128x160_s>

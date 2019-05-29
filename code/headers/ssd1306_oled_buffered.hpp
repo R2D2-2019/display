@@ -61,7 +61,7 @@ namespace r2d2::display {
         }
         /**
          * This clears the display this overrides the default clear of hwlib
-         * becouse it is realy inefficient for this screen.
+         * because it is realy inefficient for this screen.
          */
         void clear(hwlib::color col) override {
             // get a the data for the screen
@@ -75,7 +75,7 @@ namespace r2d2::display {
 
         /**
          * This clears the display this overrides the default clear of hwlib
-         * becouse it is realy inefficient for this screen.
+         * because it is realy inefficient for this screen.
          */
         void clear() override {
             // clear the screen with the background
