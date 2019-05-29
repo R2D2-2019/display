@@ -47,7 +47,7 @@ namespace r2d2::display {
          *
          * @param c
          */
-        virtual uint16_t color_to_pixel(const hwlib::color &c) = 0;
+        virtual uint16_t color_to_pixel(const hwlib::color &col) = 0;
 
         /**
          * @brief Write a pixel to the screen
@@ -352,12 +352,12 @@ namespace r2d2::display {
          * @param color The new color
          */
         virtual void set_cursor_color(uint8_t cursor_target,
-                                      hwlib::color color) {
+                                      hwlib::color col) {
             // Checks if the given cursor is not out of bounds
             if (cursor_target >= CursorCount) {
                 return;
             }
-            cursors[cursor_target].cursor_color = color;
+            cursors[cursor_target].cursor_color = col;
         };
 
         /**

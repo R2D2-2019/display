@@ -261,10 +261,10 @@ namespace r2d2::display {
          * @param c
          * @return constexpr uint16_t
          */
-        uint16_t color_to_pixel(const hwlib::color &c) override {
-            return (uint16_t(c.red) * 0x1F / 0xFF) << 11 |
-                   (uint16_t(c.green) * 0x3F / 0xFF) << 5 |
-                   (uint16_t(c.blue) * 0x1F / 0xFF);
+        uint16_t color_to_pixel(const hwlib::color &col) override {
+            return (uint16_t(col.red) * 0x1F / 0xFF) << 11 |
+                   (uint16_t(col.green) * 0x3F / 0xFF) << 5 |
+                   (uint16_t(col.blue) * 0x1F / 0xFF);
         }
     };
 } // namespace r2d2::display
