@@ -115,18 +115,18 @@ namespace r2d2::display {
         }
 
         /// send a command without data
-        void command(ssd1306_command c) {
+        void command(ssd1306_command command) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c};
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command};
 
             // write command to the bus
             bus.write(address, data, sizeof(data) / sizeof(uint8_t));
         }
 
         /// send a command with one data byte
-        void command(ssd1306_command c, uint8_t d0) {
+        void command(ssd1306_command command, uint8_t d0) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c,
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command,
                               ssd1306_cmd_prefix, d0};
 
             // write command to the bus
@@ -134,9 +134,9 @@ namespace r2d2::display {
         }
 
         /// send a command with two data bytes
-        void command(ssd1306_command c, uint8_t d0, uint8_t d1) {
+        void command(ssd1306_command command, uint8_t d0, uint8_t d1) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c,
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command,
                               ssd1306_cmd_prefix, d0,
                               ssd1306_cmd_prefix, d1};
 
