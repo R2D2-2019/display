@@ -21,7 +21,7 @@ namespace r2d2::display {
         : public st7735_inverted_color_c<CursorCount, DisplayScreen> {
     public:
         /**
-         * @brief Construct a new st7735 unbuffered c object
+         * @brief Construct a new st7735_unbuffered_c object
          *
          * @param bus
          * @param cs

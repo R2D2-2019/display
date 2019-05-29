@@ -24,7 +24,7 @@ namespace r2d2::display {
 
     public:
         /**
-         * @brief Construct a new st7735 unbuffered c object
+         * @brief Construct a new st7735_unbuffered_c object
          *
          * @param bus
          * @param cs

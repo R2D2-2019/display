@@ -65,11 +65,11 @@ namespace r2d2::display {
          */
         void clear(hwlib::color col) override {
             // get a the data for the screen
-            const uint8_t d = (col == hwlib::white) ? 0xFF : 0x00;
+            const uint8_t clear_col = (col == hwlib::white) ? 0xFF : 0x00;
 
             // set all values to the color of the data
-            for (uint_fast16_t x = 1; x < sizeof(buffer); ++x) {
-                buffer[x] = d;
+            for (uint_fast16_t i = 1; i < sizeof(buffer); ++i) {
+                buffer[i] = clear_col;
             }
         }
 

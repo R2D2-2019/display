@@ -45,7 +45,7 @@ namespace r2d2::display {
          * @brief Converts a hwlib::color to the pixel data for the screen with
          * a maximum of two bytes for every pixel
          *
-         * @param c
+         * @param col
          */
         virtual uint16_t color_to_pixel(const hwlib::color &col) = 0;
 

@@ -258,7 +258,7 @@ namespace r2d2::display {
          * @brief Converst a hwlib::color to a uint16_t in the format the screen
          * wants
          *
-         * @param c
+         * @param col
          * @return constexpr uint16_t
          */
         uint16_t color_to_pixel(const hwlib::color &col) override {
