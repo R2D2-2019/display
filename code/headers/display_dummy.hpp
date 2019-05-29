@@ -24,7 +24,7 @@ namespace r2d2::display{
              *
              * @param col
              */
-            virtual uint16_t color_to_pixel(const hwlib::color &col) override {
+            virtual uint16_t color_to_pixel(hwlib::color col) override {
                 return 0;
             };
 

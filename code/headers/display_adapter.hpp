@@ -47,7 +47,7 @@ namespace r2d2::display {
          *
          * @param col
          */
-        virtual uint16_t color_to_pixel(const hwlib::color &col) = 0;
+        virtual uint16_t color_to_pixel(hwlib::color col) = 0;
 
         /**
          * @brief Write a pixel to the screen

@@ -188,7 +188,7 @@ namespace r2d2::display {
          *
          * @param col
          */
-        uint16_t color_to_pixel(const hwlib::color &col) override {
+        uint16_t color_to_pixel(hwlib::color col) override {
             // return as bool because we only need bools for the display
             return (col == hwlib::white);
         }

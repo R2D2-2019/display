@@ -261,7 +261,7 @@ namespace r2d2::display {
          * @param col
          * @return constexpr uint16_t
          */
-        uint16_t color_to_pixel(const hwlib::color &col) override {
+        uint16_t color_to_pixel(hwlib::color col) override {
             return (uint16_t(col.red) * 0x1F / 0xFF) << 11 |
                    (uint16_t(col.green) * 0x3F / 0xFF) << 5 |
                    (uint16_t(col.blue) * 0x1F / 0xFF);
