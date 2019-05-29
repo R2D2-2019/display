@@ -18,9 +18,9 @@ namespace r2d2::display {
      */
     template <std::size_t CursorCount, class DisplayScreen>
     class st7735_inverted_color_buffered_c
-        : public st7735_inverted_color_c<CursorCount, DIsplayScreen> {
+        : public st7735_inverted_color_c<CursorCount, DisplayScreen> {
     protected:
-        uint16_t buffer[DisplayScreen.width * DisplayScreen.height] = {};
+        uint16_t buffer[DisplayScreen::width * DisplayScreen::height] = {};
 
     public:
         /**
