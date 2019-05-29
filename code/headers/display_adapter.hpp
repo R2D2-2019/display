@@ -72,7 +72,7 @@ namespace r2d2::display {
             // set the data to the correct pixel
             for (std::size_t t_y = 0; t_y < width; t_y++) {
                 for (std::size_t t_x = 0; t_x < width; t_x++) {
-                    // set the pixel with data at location of t_x + t_y * w
+                    // set the pixel with data at location of t_x + t_y * width
                     set_pixel(x + t_x, y + t_y, data[t_x + (t_y * width)]);
                 }
             }
@@ -103,14 +103,9 @@ namespace r2d2::display {
          * @brief Sets character in a single color
          *
          * @param x x-coordinate of the character (x=0 is the leftmost collumn)
-         *
          * @param y y-coordinate of the character (y=0 is the highest row)
-         *
          * @param character The un-extended (0-127) ascii value of the character
-         *
-         *
          * @param pixel_color The color of the character
-         *
          */
         virtual void set_character(uint16_t x, uint16_t y, char character,
                                    uint16_t pixel_color) {
@@ -133,13 +128,9 @@ namespace r2d2::display {
          * @brief Sets characters in a single color
          *
          * @param x x-coordinate of the first character
-         *
          * @param y y-coordinate of the first character
-         *
          * @param characters Array of characters to draw
-         *
          * @param pixel_color The color of all characters
-         *
          */
         virtual void set_character(uint16_t x, uint16_t y,
                                    const char *character,
@@ -163,7 +154,6 @@ namespace r2d2::display {
          * character drawn this way, the cursor will move 8 pixels.
          *
          * @param cursor_target This targets the cursor with which to draw
-         *
          * @param characters Array of characters to draw
          */
         virtual void set_character(uint8_t cursor_target,
@@ -335,9 +325,7 @@ namespace r2d2::display {
          * other.
          *
          * @param cursor_target This targets which cursor to move
-         *
          * @param x new X position of the cursor
-         *
          * @param y new Y position of the cursor
          */
         virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
@@ -361,7 +349,6 @@ namespace r2d2::display {
          * @brief Sets the targeted cursor to the given color
          *
          * @param cursor_target This targets which cursor to change colors
-         *
          * @param color The new color
          */
         virtual void set_cursor_color(uint8_t cursor_target,
@@ -376,7 +363,6 @@ namespace r2d2::display {
         /**
          * @brief Override for hwlib::window the class doesn't need to
          * implement a flush if not needed
-         *
          */
         virtual void flush() override {
         }
