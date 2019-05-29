@@ -15,10 +15,9 @@ namespace r2d2::display{
     template <std::size_t CursorCount, class DisplayScreen>
     class display_dummy_c : public display_c<CursorCount, DisplayScreen>{
         public:
-            display_dummy_c():
-                display_c<CursorCount, DisplayScreen>(hwlib::xy(DisplayScreen::width, DisplayScreen::height)){
-
-            }
+            display_dummy_c()
+                : display_c<CursorCount, DisplayScreen>
+                    (hwlib::xy(DisplayScreen::width, DisplayScreen::height)) {}
             /**
              * @brief Converts a hwlib::color to the pixel data for the screen with
              * a maximum of two bytes for every pixel
