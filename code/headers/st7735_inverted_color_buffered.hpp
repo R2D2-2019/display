@@ -47,11 +47,11 @@ namespace r2d2::display {
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
 
-            const uint16_t current_width =
+            const uint16_t inverted_data =
                 __REV16(data); // make a copy and reverse byte order
 
             // write pixel data to the buffer
-            this->buffer[x + (y * this->width)] = current_width;
+            this->buffer[x + (y * this->width)] = inverted_data;
         }
 
         /**

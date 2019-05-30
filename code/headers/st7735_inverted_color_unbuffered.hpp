@@ -51,11 +51,11 @@ namespace r2d2::display {
             st7735_inverted_color_unbuffered_c::write_command(
                 st7735_inverted_color_unbuffered_c::_RAMWR);
 
-            const uint16_t t =
+            const uint16_t inverted_data =
                 __REV16(data); // make a copy and reverse byte order
 
             // write pixel data to the screeen
-            st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&t, 2);
+            st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&inverted_data, 2);
         }
 
         /**
@@ -80,9 +80,9 @@ namespace r2d2::display {
             // unfortunaly the arduino due is little endian otherwise we could
             // put all the data directly to the write_data function
             for (std::size_t i = 0; i < width * height; i++) {
-                const uint16_t t = __REV16(data[i]);
+                const uint16_t inverted_data = __REV16(data[i]);
 
-                st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&t,
+                st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&inverted_data,
                                                                2);
             }
         }
@@ -106,12 +106,12 @@ namespace r2d2::display {
             st7735_inverted_color_unbuffered_c::write_command(
                 st7735_inverted_color_unbuffered_c::_RAMWR);
 
-            const uint16_t t =
+            const uint16_t inverted_data =
                 __REV16(data); // make a copy and reverse byte order
 
             for (std::size_t i = 0; i < std::size_t((width + 1) * (height + 1));
                  i++) {
-                st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&t,
+                st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&inverted_data,
                                                                2);
             }
         }
