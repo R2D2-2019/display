@@ -120,7 +120,7 @@ namespace r2d2::display {
                             frame_type::CURSOR_POSITION
                         >();
 
-                        display.set_cursor_positon(
+                        display.set_cursor_position(
                             data.cursor_id, data.cursor_x, data.cursor_y
                         );
 

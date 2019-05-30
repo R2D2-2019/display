@@ -171,7 +171,7 @@ namespace r2d2::display {
 
                 // If the cursor is about to go out of bounds, return.
                 if (cursor.cursor_x + 8 < DisplayScreen::width) {
-                    set_cursor_positon(cursor_target, cursor.cursor_x + 8,
+                    set_cursor_position(cursor_target, cursor.cursor_x + 8,
                                        cursor.cursor_y);
                 } else {
                     return;
@@ -278,7 +278,7 @@ namespace r2d2::display {
          * @param x new X position of the cursor
          * @param y new Y position of the cursor
          */
-        virtual void set_cursor_positon(uint8_t cursor_target, uint8_t x,
+        virtual void set_cursor_postion(uint8_t cursor_target, uint8_t x,
                                         uint8_t y) {
             // Checks if the given cursor is not out of bounds
             if (cursor_target >= CursorCount) {

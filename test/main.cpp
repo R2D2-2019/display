@@ -31,7 +31,7 @@ TEST_CASE("Default cursor initialization", "[cursor]") {
  *
  * The test will move the cursor to 50,75 and then to 125,30
  */
-TEST_CASE("Manipulate cursor positon", "[cursor]") {
+TEST_CASE("Manipulate cursor position", "[cursor]") {
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
         static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
@@ -39,7 +39,7 @@ TEST_CASE("Manipulate cursor positon", "[cursor]") {
         test_display;
 
     SECTION("To 50,75") {
-        test_display.set_cursor_positon(
+        test_display.set_cursor_position(
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), 50,
             75);
 
@@ -50,7 +50,7 @@ TEST_CASE("Manipulate cursor positon", "[cursor]") {
     }
 
     SECTION("To 125,30") {
-        test_display.set_cursor_positon(
+        test_display.set_cursor_position(
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR),
             125, 30);
         auto cursor_second = test_display.get_cursor(
