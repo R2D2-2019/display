@@ -107,8 +107,8 @@ namespace r2d2::display {
                             frame_type::DISPLAY_CIRCLE_VIA_CURSOR
                         >();
 
-                        display.set_pixels_circle(data.cursor_id, data.radius,
-                            data.filled
+                        display.set_pixels_circle(
+                            data.cursor_id, data.radius, data.filled
                         );
 
                         display.flush();
@@ -120,8 +120,8 @@ namespace r2d2::display {
                             frame_type::CURSOR_POSITION
                         >();
 
-                        display.set_cursor_positon(data.cursor_id, data.cursor_x,
-                            data.cursor_y
+                        display.set_cursor_position(
+                            data.cursor_id, data.cursor_x, data.cursor_y
                         );
 
                     } break;

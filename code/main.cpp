@@ -3,8 +3,12 @@
 
 #include <display_module.hpp>
 #include <st7735_buffered.hpp>
+#include <st7735_unbuffered.hpp>
+#include <st7735_inverted_color_buffered.hpp>
+#include <st7735_inverted_color_unbuffered.hpp>
 #include <display_screen.hpp>
 #include <ssd1306_oled_buffered.hpp>
+#include <ssd1306_oled_unbuffered.hpp>
 
 int main() {
     // kill the watchdog

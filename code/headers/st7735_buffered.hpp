@@ -43,11 +43,9 @@ namespace r2d2::display {
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
 
-            const uint16_t t =
-                __REV16(data); // make a copy and reverse byte order
-
             // write pixel data to the buffer
-            this->buffer[x + (y * this->width)] = t;
+            this->buffer[x + (y * this->width)] = __REV16(data); 
+
         }
 
         /**
@@ -65,11 +63,11 @@ namespace r2d2::display {
                         const uint16_t *data) override {
             // unfortunaly the arduino due is little endian otherwise we could
             // put all the data directly to the buffer
-            for (std::size_t v = 0; v < height; v++) {
-                for (std::size_t t = 0; t < width; t++) {
-                    const uint16_t g = __REV16(data[(v * width) + t]);
+            for (std::size_t current_height = 0; current_height < height; current_height++) {
+                for (std::size_t current_width = 0; current_width < width; current_width++) {
+                    const uint16_t inverted_data = __REV16(data[(current_height * width) + current_width]);
 
-                    buffer[(x + t) + ((y + v) * this->width)] = g;
+                    buffer[(x + current_width) + ((y + current_height) * this->width)] = inverted_data;
                 }
             }
         }
@@ -87,11 +85,12 @@ namespace r2d2::display {
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
                         const uint16_t data) override {
 
-            uint16_t g = __REV16(data); // make a copy and reverse byte order
+            // make a copy and reverse byte order
+            uint16_t inverted_data = __REV16(data); 
 
-            for (std::size_t v = 0; v < height; v++) {
-                for (std::size_t t = 0; t < width; t++) {
-                    buffer[(x + t) + ((y + v) * this->width)] = g;
+            for (std::size_t current_height = 0; current_height < height; current_height++) {
+                for (std::size_t current_width = 0; current_width < width; current_width++) {
+                    buffer[(x + current_width) + ((y + current_height) * this->width)] = inverted_data;
                 }
             }
         }
@@ -105,7 +104,7 @@ namespace r2d2::display {
                                           this->height - 1);
 
             // write to ram
-            st7735_buffered_c::write_command(st7735_buffered_c::_RAMWR);
+            st7735_buffered_c::write_command(st7735_buffered_c::RAMWR);
 
             // write data to display
             st7735_buffered_c::write_data((uint8_t *)buffer,

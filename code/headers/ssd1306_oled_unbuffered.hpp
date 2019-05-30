@@ -30,7 +30,7 @@ namespace r2d2::display {
          * the address of the display.
          */
         ssd1306_oled_unbuffered_c(r2d2::i2c::i2c_bus_c &bus,
-                                  const uint8_t &address)
+                                  uint8_t address)
             : ssd1306_i2c_c<CursorCount, DisplayScreen>(bus, address) {
 
             // set the command for writing to the screen
