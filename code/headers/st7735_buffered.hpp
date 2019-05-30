@@ -67,7 +67,7 @@ namespace r2d2::display {
             // put all the data directly to the buffer
             for (std::size_t current_height = 0; current_height < height; current_height++) {
                 for (std::size_t current_width = 0; current_width < width; current_width++) {
-                    const uint16_t inveted_data = __REV16(data[(current_height * width) + current_width]);
+                    const uint16_t inverted_data = __REV16(data[(current_height * width) + current_width]);
 
                     buffer[(x + current_width) + ((y + current_height) * this->width)] = inverted_data;
                 }

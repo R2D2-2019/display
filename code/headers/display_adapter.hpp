@@ -265,57 +265,7 @@ namespace r2d2::display {
             int x = cursor.cursor_x;
             int y = cursor.cursor_y;
             int color = color_to_pixel(cursor.cursor_color);
-
-            int t_x = radius;
-            int t_y = 0;
-            int err = 0;
-
-            if (filled == true) {
-                int xChange = 1 - (radius << 1);
-                int yChange = 0;
-
-                while (t_x >= t_y) {
-                    for (int i = x - t_x; i <= x + t_x; i++) {
-                        set_pixel(i, y + t_y, color);
-                        set_pixel(i, y - t_y, color);
-                    }
-                    for (int i = x - t_y; i <= x + t_y; i++) {
-                        set_pixel(i, y + t_x, color);
-                        set_pixel(i, y - t_x, color);
-                    }
-
-                    t_y++;
-                    err += yChange;
-                    yChange += 2;
-                    if (((err << 1) + xChange) > 0) {
-                        t_x--;
-                        err += xChange;
-                        xChange += 2;
-                    }
-                }
-            } else {
-
-                while (t_x >= t_y) {
-                    set_pixel(x + t_x, y + t_y, color);
-                    set_pixel(x + t_y, y + t_x, color);
-                    set_pixel(x - t_y, y + t_x, color);
-                    set_pixel(x - t_x, y + t_y, color);
-                    set_pixel(x - t_x, y - t_y, color);
-                    set_pixel(x - t_y, y - t_x, color);
-                    set_pixel(x + t_y, y - t_x, color);
-                    set_pixel(x + t_x, y - t_y, color);
-
-                    if (err <= 0) {
-                        t_y += 1;
-                        err += 2 * t_y + 1;
-                    }
-
-                    if (err > 0) {
-                        t_x -= 1;
-                        err -= 2 * t_x + 1;
-                    }
-                }
-            }
+            set_pixels_circle(x,y,radius,filled,color);
         }
 
         /**
