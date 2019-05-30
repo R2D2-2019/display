@@ -86,7 +86,7 @@ namespace r2d2::display {
          */
         void set_pixels(uint16_t x, uint16_t y, uint16_t width, uint16_t height,
                         const uint16_t data) override {
-                            
+
             // make a copy and reverse byte order
             uint16_t inverted_data = __REV16(data); 
 
@@ -106,7 +106,7 @@ namespace r2d2::display {
                                           this->height - 1);
 
             // write to ram
-            st7735_buffered_c::write_command(st7735_buffered_c::_RAMWR);
+            st7735_buffered_c::write_command(st7735_buffered_c::RAMWR);
 
             // write data to display
             st7735_buffered_c::write_data((uint8_t *)buffer,
