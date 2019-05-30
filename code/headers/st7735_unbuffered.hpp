@@ -17,7 +17,7 @@ namespace r2d2::display {
     class st7735_unbuffered_c : public st7735_c<CursorCount, DisplayScreen> {
     public:
         /**
-         * @brief Construct a new st7735 unbuffered c object
+         * @brief Construct a new st7735_unbuffered_c object
          *
          * @param bus
          * @param cs

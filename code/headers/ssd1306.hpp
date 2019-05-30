@@ -115,18 +115,18 @@ namespace r2d2::display {
         }
 
         /// send a command without data
-        void command(ssd1306_command c) {
+        void command(ssd1306_command command) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c};
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command};
 
             // write command to the bus
             bus.write(address, data, sizeof(data) / sizeof(uint8_t));
         }
 
         /// send a command with one data byte
-        void command(ssd1306_command c, uint8_t d0) {
+        void command(ssd1306_command command, uint8_t d0) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c,
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command,
                               ssd1306_cmd_prefix, d0};
 
             // write command to the bus
@@ -134,9 +134,9 @@ namespace r2d2::display {
         }
 
         /// send a command with two data bytes
-        void command(ssd1306_command c, uint8_t d0, uint8_t d1) {
+        void command(ssd1306_command command, uint8_t d0, uint8_t d1) {
             // create command packet
-            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)c,
+            uint8_t data[] = {ssd1306_cmd_prefix, (uint8_t)command,
                               ssd1306_cmd_prefix, d0,
                               ssd1306_cmd_prefix, d1};
 
@@ -145,16 +145,16 @@ namespace r2d2::display {
         }
 
         /// send one byte of data
-        void data(uint8_t d) {
+        void send_byte(uint8_t byte) {
             // create data packet
-            uint8_t data[] = {ssd1306_data_prefix, d};
+            uint8_t data[] = {ssd1306_data_prefix, byte};
 
             // write data to the bus
             bus.write(address, data, sizeof(data) / sizeof(uint8_t));
         }
 
-        /// write the pixel byte d at column x page y
-        void pixels_byte_write(hwlib::xy location, uint8_t d) {
+        /// write the pixel byte data at column x page y
+        void pixels_byte_write(hwlib::xy location, uint8_t data) {
             // check if we need to update the current cursor of the screen
             if (location != cursor) {
                 command(ssd1306_command::column_addr, location.x, 127);
@@ -163,7 +163,7 @@ namespace r2d2::display {
             }
 
             // write data to the screen
-            data(d);
+            send_byte(data);
 
             // update the local cursor
             cursor.x++; // TODO: cursor fallthrough
@@ -186,11 +186,11 @@ namespace r2d2::display {
          * @brief converts a hwlib::color to the pixel data for the screen with
          * a maximum of two bytes for every pixel
          *
-         * @param c
+         * @param col
          */
-        uint16_t color_to_pixel(const hwlib::color &c) override {
+        uint16_t color_to_pixel(hwlib::color col) override {
             // return as bool because we only need bools for the display
-            return (c == hwlib::white);
+            return (col == hwlib::white);
         }
     };
 

@@ -67,15 +67,15 @@ namespace r2d2::display {
 
         /**
          * This clears the display this overrides the default clear of hwlib
-         * becouse it is realy inefficient for this screen.
+         * because it is realy inefficient for this screen.
          */
         void clear(hwlib::color col) override {
             // get a the data for the screen
-            const uint8_t d = (col == hwlib::white) ? 0xFF : 0x00;
+            const uint8_t clear_color = (col == hwlib::white) ? 0xFF : 0x00;
 
             // clear the internal buffer with the screen color
             for (uint16_t i = 1; i < sizeof(buffer); i++) {
-                buffer[i] = d;
+                buffer[i] = clear_color;
             }
 
             // update cursor of the display
@@ -94,7 +94,7 @@ namespace r2d2::display {
 
         /**
          * This clears the display this overrides the default clear of hwlib
-         * becouse it is realy inefficient for this screen.
+         * because it is realy inefficient for this screen.
          */
         void clear() override {
             // clear the display
