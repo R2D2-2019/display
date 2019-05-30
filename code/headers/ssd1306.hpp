@@ -107,7 +107,7 @@ namespace r2d2::display {
         hwlib::xy cursor;
 
         // construct by providing the i2c channel
-        ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, const uint8_t &address)
+        ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, uint8_t address)
             : display_c<CursorCount, DisplayScreen>(hwlib::xy(width, height)),
               bus(bus),
               address(address),
