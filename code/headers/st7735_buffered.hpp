@@ -43,11 +43,11 @@ namespace r2d2::display {
          */
         void set_pixel(uint16_t x, uint16_t y, const uint16_t data) override {
 
-            const uint16_t t =
+            const uint16_t current_width =
                 __REV16(data); // make a copy and reverse byte order
 
             // write pixel data to the buffer
-            this->buffer[x + (y * this->width)] = t;
+            this->buffer[x + (y * this->width)] = current_width;
         }
 
         /**
@@ -65,11 +65,11 @@ namespace r2d2::display {
                         const uint16_t *data) override {
             // unfortunaly the arduino due is little endian otherwise we could
             // put all the data directly to the buffer
-            for (std::size_t v = 0; v < height; v++) {
-                for (std::size_t t = 0; t < width; t++) {
-                    const uint16_t g = __REV16(data[(v * width) + t]);
+            for (std::size_t current_height = 0; current_height < height; current_height++) {
+                for (std::size_t current_width = 0; current_width < width; current_width++) {
+                    const uint16_t g = __REV16(data[(current_height * width) + current_width]);
 
-                    buffer[(x + t) + ((y + v) * this->width)] = g;
+                    buffer[(x + current_width) + ((y + current_height) * this->width)] = g;
                 }
             }
         }
@@ -89,9 +89,9 @@ namespace r2d2::display {
 
             uint16_t g = __REV16(data); // make a copy and reverse byte order
 
-            for (std::size_t v = 0; v < height; v++) {
-                for (std::size_t t = 0; t < width; t++) {
-                    buffer[(x + t) + ((y + v) * this->width)] = g;
+            for (std::size_t current_height = 0; current_height < height; current_height++) {
+                for (std::size_t current_width = 0; current_width < width; current_width++) {
+                    buffer[(x + current_width) + ((y + current_height) * this->width)] = g;
                 }
             }
         }
