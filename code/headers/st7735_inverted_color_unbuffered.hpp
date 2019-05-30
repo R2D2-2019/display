@@ -50,9 +50,8 @@ namespace r2d2::display {
             // write to ram
             st7735_inverted_color_unbuffered_c::write_command(
                 st7735_inverted_color_unbuffered_c::_RAMWR);
-
-            const uint16_t inverted_data =
-                __REV16(data); // make a copy and reverse byte order
+            // make a copy and reverse byte order
+            const uint16_t inverted_data = __REV16(data);
 
             // write pixel data to the screeen
             st7735_inverted_color_unbuffered_c::write_data((uint8_t *)&inverted_data, 2);
@@ -105,9 +104,8 @@ namespace r2d2::display {
             // write to ram
             st7735_inverted_color_unbuffered_c::write_command(
                 st7735_inverted_color_unbuffered_c::_RAMWR);
-
-            const uint16_t inverted_data =
-                __REV16(data); // make a copy and reverse byte order
+            // make a copy and reverse byte order
+            const uint16_t inverted_data = __REV16(data);
 
             for (std::size_t i = 0; i < std::size_t((width + 1) * (height + 1));
                  i++) {
