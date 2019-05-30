@@ -41,7 +41,7 @@ namespace r2d2::display {
             st7735_unbuffered_c::set_cursor(x, y, x, y);
 
             // write to ram
-            st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
+            st7735_unbuffered_c::write_command(st7735_unbuffered_c::RAMWR);
 
             // make a copy and reverse byte order
             const uint16_t inverted_data = __REV16(data); 
@@ -65,7 +65,7 @@ namespace r2d2::display {
             st7735_unbuffered_c::set_cursor(x, y, x + width, y + height);
 
             // write to ram
-            st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
+            st7735_unbuffered_c::write_command(st7735_unbuffered_c::RAMWR);
 
             // unfortunaly the arduino due is little endian otherwise we could
             // put all the data directly to the write_data function
@@ -91,7 +91,7 @@ namespace r2d2::display {
             st7735_unbuffered_c::set_cursor(x, y, x + width, y + height);
 
             // write to ram
-            st7735_unbuffered_c::write_command(st7735_unbuffered_c::_RAMWR);
+            st7735_unbuffered_c::write_command(st7735_unbuffered_c::RAMWR);
             // make a copy and reverse byte order
             const uint16_t inverted_data = __REV16(data); 
 
