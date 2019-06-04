@@ -214,13 +214,13 @@ namespace r2d2::display {
 
             // set the min and max row
             write_command(CASET);
-            write_data(uint8_t(x_min >> 8), uint8_t(x_min & 0xFF),
-                       uint8_t(x_max >> 8), uint8_t(x_max & 0xFF));
+            write_data(static_cast<uint8_t>(x_min >> 8), static_cast<uint8_t>(x_min),
+                       static_cast<uint8_t>(x_max >> 8), static_cast<uint8_t>(x_max));
 
             // set the min and max column
             write_command(RASET);
-            write_data(uint8_t(y_min >> 8), uint8_t(y_min & 0xFF),
-                       uint8_t(y_max >> 8), uint8_t(y_max & 0xFF));
+            write_data(static_cast<uint8_t>(y_min >> 8), static_cast<uint8_t>(y_min),
+                       static_cast<uint8_t>(y_max >> 8), static_cast<uint8_t>(y_max));
         }
 
         /**
