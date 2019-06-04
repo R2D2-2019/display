@@ -14,8 +14,8 @@ namespace r2d2::display {
      *
      * The template paramters are required for the parent class
      */
-    template <std::size_t CursorCount, class DisplayScreen>
-    class st7735_buffered_c : public st7735_c<CursorCount, DisplayScreen> {
+    template <class DisplayScreen>
+    class st7735_buffered_c : public st7735_c<DisplayScreen> {
     protected:
         uint16_t buffer[DisplayScreen::width * DisplayScreen::height] = {};
 
@@ -30,7 +30,7 @@ namespace r2d2::display {
          */
         st7735_buffered_c(hwlib::spi_bus &bus, hwlib::pin_out &cs,
                           hwlib::pin_out &dc, hwlib::pin_out &reset)
-            : st7735_c<CursorCount, DisplayScreen>(
+            : st7735_c<DisplayScreen>(
                   bus, cs, dc, reset) {
         }
 

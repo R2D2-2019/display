@@ -12,9 +12,9 @@ namespace r2d2::display {
      *
      * The template parameters are used for the parent class.
      */
-    template <std::size_t CursorCount, class DisplayScreen>
+    template <class DisplayScreen>
     class ssd1306_oled_buffered_c
-        : public ssd1306_i2c_c<CursorCount, DisplayScreen> {
+        : public ssd1306_i2c_c<DisplayScreen> {
     private:
         /**
          * The buffer with the pixel data
@@ -31,7 +31,7 @@ namespace r2d2::display {
          */
         ssd1306_oled_buffered_c(r2d2::i2c::i2c_bus_c &bus,
                                 uint8_t &address)
-            : ssd1306_i2c_c<CursorCount, DisplayScreen>(bus, address) {
+            : ssd1306_i2c_c<DisplayScreen>(bus, address) {
             // set the command for writing to the screen
             buffer[0] = this->ssd1306_data_prefix;
 

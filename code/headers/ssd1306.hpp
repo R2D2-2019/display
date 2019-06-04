@@ -94,9 +94,9 @@ namespace r2d2::display {
             (uint8_t)ssd1306_command::display_on};
     };
 
-    template <std::size_t CursorCount, class DisplayScreen>
+    template <class DisplayScreen>
     class ssd1306_i2c_c : protected ssd1306_c,
-                          public display_c<CursorCount, DisplayScreen> {
+                          public display_c<DisplayScreen> {
     protected:
         /// The I2C bus
         r2d2::i2c::i2c_bus_c bus;
@@ -108,7 +108,7 @@ namespace r2d2::display {
 
         // construct by providing the i2c channel
         ssd1306_i2c_c(r2d2::i2c::i2c_bus_c &bus, uint8_t address)
-            : display_c<CursorCount, DisplayScreen>(hwlib::xy(width, height)),
+            : display_c<DisplayScreen>(hwlib::xy(width, height)),
               bus(bus),
               address(address),
               cursor(255, 255) {
