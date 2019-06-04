@@ -158,10 +158,6 @@ namespace r2d2::display {
          */
         virtual void set_character(uint8_t cursor_target,
                                    const char *characters) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             display_cursor_s &cursor = cursors[cursor_target];
             std::size_t index = 0;
             while (characters[index] != '\0') {
@@ -256,10 +252,6 @@ namespace r2d2::display {
          */
         virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
                                        bool filled) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             display_cursor_s cursor = cursors[cursor_target];
 
             int x = cursor.cursor_x;
@@ -280,11 +272,6 @@ namespace r2d2::display {
          */
         virtual void set_cursor_position(uint8_t cursor_target, uint8_t x,
                                         uint8_t y) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
-
             // prevents out of bounds width
             if (x < DisplayScreen::width) {
                 cursors[cursor_target].cursor_x = x;
@@ -303,10 +290,6 @@ namespace r2d2::display {
          */
         virtual void set_cursor_color(uint8_t cursor_target,
                                       hwlib::color col) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             cursors[cursor_target].cursor_color = col;
         };
 

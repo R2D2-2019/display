@@ -79,6 +79,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR
                         >();
+                        if (data.cursor_id >= CursorCount) {
+                            return;
+                        }
 
                         display.set_character(data.cursor_id, data.characters);
 
@@ -106,6 +109,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::DISPLAY_CIRCLE_VIA_CURSOR
                         >();
+                        if (data.cursor_id >= CursorCount) {
+                            return;
+                        }
 
                         display.set_pixels_circle(
                             data.cursor_id, data.radius, data.filled
@@ -119,7 +125,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::CURSOR_POSITION
                         >();
-
+                        if (data.cursor_id >= CursorCount) {
+                            return;
+                        }
                         display.set_cursor_position(
                             data.cursor_id, data.cursor_x, data.cursor_y
                         );
@@ -130,6 +138,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::CURSOR_COLOR
                         >();
+                        if (data.cursor_id >= CursorCount) {
+                            return;
+                        }
 
                         display.set_cursor_color(data.cursor_id,
                             hwlib::color(data.red, data.green, data.blue)
