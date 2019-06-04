@@ -15,7 +15,7 @@ TEST_CASE("Default cursor initialization", "[cursor]") {
     // Dummy display does nothing in set_pixel
     // The chosen screen defines the dimensions it has
     r2d2::display::display_dummy_c<
-        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
+        
         r2d2::display::st7735_128x160_s>
         test_display;
     auto curs = test_display.get_cursor(
@@ -34,7 +34,6 @@ TEST_CASE("Default cursor initialization", "[cursor]") {
 TEST_CASE("Manipulate cursor position", "[cursor]") {
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
-        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
         r2d2::display::st7735_128x160_s>
         test_display;
 
@@ -76,7 +75,6 @@ TEST_CASE("Manipulate cursor position through character writing",
     
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
-        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
         r2d2::display::st7735_128x160_s>
         test_display;
 
@@ -177,7 +175,6 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
 
     // Dummy display does nothing in set_pixel
     r2d2::display::display_dummy_c<
-        static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT),
         r2d2::display::st7735_128x160_s>
         test_display;
 

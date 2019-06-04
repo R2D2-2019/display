@@ -6,10 +6,10 @@
 #include <hwlib.hpp>
 
 namespace r2d2::display {
-    template <std::size_t CursorCount, class DisplayScreen>
+    template <class DisplayScreen>
     class module_c : public base_module_c {
     protected:
-        display_c<CursorCount, DisplayScreen> &display;
+        display_c<DisplayScreen> &display;
 
     public:
         /**
@@ -17,7 +17,7 @@ namespace r2d2::display {
          * @param led
          */
         module_c(base_comm_c &comm,
-                 display_c<CursorCount, DisplayScreen> &display)
+                 display_c<DisplayScreen> &display)
             : base_module_c(comm), display(display) {
 
             // Set up listeners
@@ -79,6 +79,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::DISPLAY_8X8_CHARACTER_VIA_CURSOR
                         >();
+                        if (data.cursor_id >= static_cast<const uint8_t>(r2d2::claimed_display_cursor::CURSORS_COUNT)) {
+                            return;
+                        }
 
                         display.set_character(data.cursor_id, data.characters);
 
@@ -106,6 +109,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::DISPLAY_CIRCLE_VIA_CURSOR
                         >();
+                        if (data.cursor_id >= static_cast<const uint8_t>(r2d2::claimed_display_cursor::CURSORS_COUNT)) {
+                            return;
+                        }
 
                         display.set_pixels_circle(
                             data.cursor_id, data.radius, data.filled
@@ -119,7 +125,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::CURSOR_POSITION
                         >();
-
+                        if (data.cursor_id >= static_cast<const uint8_t>(r2d2::claimed_display_cursor::CURSORS_COUNT)) {
+                            return;
+                        }
                         display.set_cursor_position(
                             data.cursor_id, data.cursor_x, data.cursor_y
                         );
@@ -130,6 +138,9 @@ namespace r2d2::display {
                         const auto data = frame.as_frame_type<
                             frame_type::CURSOR_COLOR
                         >();
+                        if (data.cursor_id >= static_cast<const uint8_t>(r2d2::claimed_display_cursor::CURSORS_COUNT)) {
+                            return;
+                        }
 
                         display.set_cursor_color(data.cursor_id,
                             hwlib::color(data.red, data.green, data.blue)

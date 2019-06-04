@@ -9,14 +9,12 @@ namespace r2d2::display {
      * Class display_c is the base class for all displays in R2D2. It inherits
      * from hwlib::window.
      *
-     * @tparam CursorCount is the amount of cursors to store. Most of the time
-     * this is equal to the number claimed cursors in the display_cursor enum.
      *
      * @tparam DisplayScreen is a struct which has contains information of the
      * screen which will be used.
      *
      */
-    template <std::size_t CursorCount, class DisplayScreen>
+    template <class DisplayScreen>
     class display_c : public hwlib::window {
     protected:
         /**
@@ -33,7 +31,7 @@ namespace r2d2::display {
         hwlib::font_default_8x8 display_font = hwlib::font_default_8x8();
 
         // Keeps track of cursors
-        r2d2::display::display_cursor_s cursors[CursorCount];
+        r2d2::display::display_cursor_s cursors[static_cast<std::size_t>(r2d2::claimed_display_cursor::CURSORS_COUNT)];
 
     public:
         display_c(hwlib::xy size, hwlib::color foreground = hwlib::white,
@@ -158,10 +156,6 @@ namespace r2d2::display {
          */
         virtual void set_character(uint8_t cursor_target,
                                    const char *characters) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             display_cursor_s &cursor = cursors[cursor_target];
             std::size_t index = 0;
             while (characters[index] != '\0') {
@@ -256,10 +250,6 @@ namespace r2d2::display {
          */
         virtual void set_pixels_circle(uint8_t cursor_target, uint16_t radius,
                                        bool filled) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             display_cursor_s cursor = cursors[cursor_target];
 
             int x = cursor.cursor_x;
@@ -280,11 +270,6 @@ namespace r2d2::display {
          */
         virtual void set_cursor_position(uint8_t cursor_target, uint8_t x,
                                         uint8_t y) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
-
             // prevents out of bounds width
             if (x < DisplayScreen::width) {
                 cursors[cursor_target].cursor_x = x;
@@ -303,10 +288,6 @@ namespace r2d2::display {
          */
         virtual void set_cursor_color(uint8_t cursor_target,
                                       hwlib::color col) {
-            // Checks if the given cursor is not out of bounds
-            if (cursor_target >= CursorCount) {
-                return;
-            }
             cursors[cursor_target].cursor_color = col;
         };
 

@@ -9,14 +9,13 @@ namespace r2d2::display {
      * This class inherits from the display_c class, and implements set_pixel
      * to do nothing. This is primarily used for testing purposes.
      *
-     * @tparam CursorCount The total number of cursors currently available
      * @tparam DisplayScreen One of the display structs from display_screen.hpp
      */
-    template <std::size_t CursorCount, class DisplayScreen>
-    class display_dummy_c : public display_c<CursorCount, DisplayScreen> {
+    template <class DisplayScreen>
+    class display_dummy_c : public display_c<DisplayScreen> {
     public:
         display_dummy_c()
-            : display_c<CursorCount, DisplayScreen>(
+            : display_c<DisplayScreen>(
                   hwlib::xy(DisplayScreen::width, DisplayScreen::height)) {
         }
         /**

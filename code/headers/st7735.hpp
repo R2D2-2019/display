@@ -6,8 +6,8 @@
 
 namespace r2d2::display {
 
-    template <std::size_t CursorCount, class DisplayScreen>
-    class st7735_c : public display_c<CursorCount, DisplayScreen> {
+    template <class DisplayScreen>
+    class st7735_c : public display_c<DisplayScreen> {
     protected:
         // all the commands for the display
         constexpr static uint8_t SWRESET = 0x01;
@@ -233,7 +233,7 @@ namespace r2d2::display {
          */
         st7735_c(hwlib::spi_bus &bus, hwlib::pin_out &cs, hwlib::pin_out &dc,
                  hwlib::pin_out &reset)
-            : display_c<CursorCount, DisplayScreen>(hwlib::xy(width, height)),
+            : display_c<DisplayScreen>(hwlib::xy(width, height)),
               bus(bus),
               cs(cs),
               dc(dc),
