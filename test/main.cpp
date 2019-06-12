@@ -129,6 +129,36 @@ TEST_CASE("Manipulate cursor position out of bounds",
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 
+        SECTION("X and Y out of bounds"){
+        constexpr uint8_t start_x = 50;
+        constexpr uint8_t start_y = 75;
+        // Send the cursor to 50,75
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+
+        // Actually place the frame on the bus, so the module
+        // can see and process it.
+        mock_bus.accept_frame(frame_start_pos);
+
+        module.process();
+
+        //send cursor to 130,180
+        //130 and 180 being out of bounds.
+        constexpr uint8_t new_x = 130;
+        constexpr uint8_t new_y = 180;
+
+        auto frame_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), new_x, new_y});
+
+        mock_bus.accept_frame(frame_pos);
+
+        module.process();
+
+        auto cursor_post = test_display.get_cursor(static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+        REQUIRE(cursor_post.cursor_x == start_x);
+        REQUIRE(cursor_post.cursor_y == start_y);
+    }
+
 }
 
 
