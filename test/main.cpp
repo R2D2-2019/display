@@ -26,7 +26,7 @@ TEST_CASE("Default cursor initialization", "[cursor]") {
 }
 
 /*
- * Testing the cursor position manipulation using the set_cursor_position frame
+ * Testing the cursor position manipulation using the set_cursor_position function
  * The cursor used is the open_cursor
  *
  * The test will move the cursor to 50,75 and then to 125,30
@@ -59,6 +59,15 @@ TEST_CASE("Manipulate cursor position", "[cursor]") {
     }
 }
 
+/*
+ * Testing the cursor position manipulation using the set_cursor_position frame
+ * The cursor used is the open_cursor 
+ * The test consists of 3 parts testing both X,Y out of bounds and each seperatly.
+ *
+ * The test will try to move the cursor to (130,50),(50,180),(130,180)
+ * since either X,Y or both are out of bounds the cursor,
+ * will remain on the start position for the out of bounds position
+ */
 TEST_CASE("Manipulate cursor position out of bounds", 
           "[cursor, position, internal_communication]") {
 
