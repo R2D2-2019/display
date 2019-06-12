@@ -125,7 +125,7 @@ TEST_CASE("Manipulate cursor position through character writing",
         constexpr uint8_t start_x = 100;
         constexpr uint8_t start_y = 75;
 
-        // Send the cursor to 50,75
+        // Send the cursor to 100,75
         auto frame_pos =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
                 {static_cast<uint8_t>(
@@ -159,7 +159,7 @@ TEST_CASE("Manipulate cursor position through character writing",
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
         REQUIRE(cursor_post.cursor_x ==
-                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));
+                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));//124
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 }
@@ -211,7 +211,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
         uint8_t red = 0;
         uint8_t green = 255;
         uint8_t blue = 0;
-        // Change the color to red
+        // Change the color to green
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
@@ -239,7 +239,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
         uint8_t red = 0;
         uint8_t green = 0;
         uint8_t blue = 255;
-        // Change the color to red
+        // Change the color to blue
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
@@ -267,7 +267,7 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
         uint8_t red = 255;
         uint8_t green = 255;
         uint8_t blue = 255;
-        // Change the color to red
+        // Change the color to white
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
