@@ -283,9 +283,9 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
 
     r2d2::display::module_c module(mock_bus, test_display);
     SECTION("To red") {
-        uint8_t red = 255;
-        uint8_t green = 0;
-        uint8_t blue = 0;
+        constexpr uint8_t red = 255;
+        constexpr uint8_t green = 0;
+        constexpr uint8_t blue = 0;
         // Change the color to red
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
@@ -311,9 +311,9 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To green") {
-        uint8_t red = 0;
-        uint8_t green = 255;
-        uint8_t blue = 0;
+        constexpr uint8_t red = 0;
+        constexpr uint8_t green = 255;
+        constexpr uint8_t blue = 0;
         // Change the color to green
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
@@ -339,9 +339,9 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To blue") {
-        uint8_t red = 0;
-        uint8_t green = 0;
-        uint8_t blue = 255;
+        constexpr uint8_t red = 0;
+        constexpr uint8_t green = 0;
+        constexpr uint8_t blue = 255;
         // Change the color to blue
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
@@ -367,9 +367,9 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To white") {
-        uint8_t red = 255;
-        uint8_t green = 255;
-        uint8_t blue = 255;
+        constexpr uint8_t red = 255;
+        constexpr uint8_t green = 255;
+        constexpr uint8_t blue = 255;
         // Change the color to white
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
