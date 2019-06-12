@@ -26,7 +26,7 @@ TEST_CASE("Default cursor initialization", "[cursor]") {
 }
 
 /*
- * Testing the cursor position manipulation using the set_cursor_position frame
+ * Testing the cursor position manipulation using the set_cursor_position function
  * The cursor used is the open_cursor
  *
  * The test will move the cursor to 50,75 and then to 125,30
@@ -58,6 +58,118 @@ TEST_CASE("Manipulate cursor position", "[cursor]") {
         REQUIRE(cursor_second.cursor_y == 30);
     }
 }
+
+/*
+ * Testing the cursor position manipulation using the set_cursor_position frame
+ * The cursor used is the open_cursor 
+ * The test consists of 3 parts testing both X,Y out of bounds and each seperatly.
+ *
+ * The test will try to move the cursor to (130,50),(50,180),(130,180)
+ * since either X,Y or both are out of bounds the cursor,
+ * will remain on the start position for the out of bounds position
+ */
+TEST_CASE("Manipulate cursor position out of bounds", 
+          "[cursor, position, internal_communication]") {
+
+    // The bus itself doesn't take any constructor arguments
+    r2d2::mock_comm_c mock_bus;
+    // Dummy display does nothing in set_pixel
+    r2d2::display::display_dummy_c<r2d2::display::st7735_128x160_s> test_display;
+
+    r2d2::display::module_c module(mock_bus, test_display);
+
+    SECTION("X out of bounds"){
+        constexpr uint8_t start_x = 50;
+        constexpr uint8_t start_y = 75;
+        // Send the cursor to 50,75
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+
+        // Actually place the frame on the bus, so the module
+        // can see and process it.
+        mock_bus.accept_frame(frame_start_pos);
+
+        module.process();
+
+        //send cursor to 130,50
+        //130 being out of bounds 50 is within bounds.
+        constexpr uint8_t new_x = 130;
+        constexpr uint8_t new_y = 50;
+
+        auto frame_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), new_x, new_y});
+
+        mock_bus.accept_frame(frame_pos);
+
+        module.process();
+
+        auto cursor_post = test_display.get_cursor(static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+        REQUIRE(cursor_post.cursor_x == start_x);
+        REQUIRE(cursor_post.cursor_y == new_y);
+    }
+
+    SECTION("Y out of bounds"){
+        constexpr uint8_t start_x = 50;
+        constexpr uint8_t start_y = 75;
+        // Send the cursor to 50,75
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+
+        // Actually place the frame on the bus, so the module
+        // can see and process it.
+        mock_bus.accept_frame(frame_start_pos);
+
+        module.process();
+
+        //send cursor to 50,180
+        //180 being out of bounds 50 is within bounds.
+        constexpr uint8_t new_x = 50;
+        constexpr uint8_t new_y = 180;
+
+        auto frame_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), new_x, new_y});
+
+        mock_bus.accept_frame(frame_pos);
+
+        module.process();
+
+        auto cursor_post = test_display.get_cursor(static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+        REQUIRE(cursor_post.cursor_x == new_x);
+        REQUIRE(cursor_post.cursor_y == start_y);
+    }
+
+        SECTION("X and Y out of bounds"){
+        constexpr uint8_t start_x = 50;
+        constexpr uint8_t start_y = 75;
+        // Send the cursor to 50,75
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+
+        // Actually place the frame on the bus, so the module
+        // can see and process it.
+        mock_bus.accept_frame(frame_start_pos);
+
+        module.process();
+
+        //send cursor to 130,180
+        //130 and 180 being out of bounds.
+        constexpr uint8_t new_x = 130;
+        constexpr uint8_t new_y = 180;
+
+        auto frame_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
+        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), new_x, new_y});
+
+        mock_bus.accept_frame(frame_pos);
+
+        module.process();
+
+        auto cursor_post = test_display.get_cursor(static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
+        REQUIRE(cursor_post.cursor_x == start_x);
+        REQUIRE(cursor_post.cursor_y == start_y);
+    }
+
+}
+
 
 /*
  * When a character is written, the cursor has to move 8 pixels in order to
@@ -125,7 +237,7 @@ TEST_CASE("Manipulate cursor position through character writing",
         constexpr uint8_t start_x = 100;
         constexpr uint8_t start_y = 75;
 
-        // Send the cursor to 50,75
+        // Send the cursor to 100,75
         auto frame_pos =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
                 {static_cast<uint8_t>(
@@ -159,7 +271,7 @@ TEST_CASE("Manipulate cursor position through character writing",
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
         REQUIRE(cursor_post.cursor_x ==
-                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));
+                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));//124
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 }
@@ -180,9 +292,9 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
 
     r2d2::display::module_c module(mock_bus, test_display);
     SECTION("To red") {
-        uint8_t red = 255;
-        uint8_t green = 0;
-        uint8_t blue = 0;
+        constexpr uint8_t red = 255;
+        constexpr uint8_t green = 0;
+        constexpr uint8_t blue = 0;
         // Change the color to red
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
@@ -208,10 +320,10 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To green") {
-        uint8_t red = 0;
-        uint8_t green = 255;
-        uint8_t blue = 0;
-        // Change the color to red
+        constexpr uint8_t red = 0;
+        constexpr uint8_t green = 255;
+        constexpr uint8_t blue = 0;
+        // Change the color to green
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
@@ -236,10 +348,10 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To blue") {
-        uint8_t red = 0;
-        uint8_t green = 0;
-        uint8_t blue = 255;
-        // Change the color to red
+        constexpr uint8_t red = 0;
+        constexpr uint8_t green = 0;
+        constexpr uint8_t blue = 255;
+        // Change the color to blue
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
@@ -264,10 +376,10 @@ TEST_CASE("Change cursor color", "[cursor, internal_communication]") {
     }
 
     SECTION("To white") {
-        uint8_t red = 255;
-        uint8_t green = 255;
-        uint8_t blue = 255;
-        // Change the color to red
+        constexpr uint8_t red = 255;
+        constexpr uint8_t green = 255;
+        constexpr uint8_t blue = 255;
+        // Change the color to white
         auto frame_color =
             mock_bus.create_frame<r2d2::frame_type::CURSOR_COLOR>(
                 {static_cast<uint8_t>(
