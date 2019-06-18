@@ -82,8 +82,9 @@ TEST_CASE("Manipulate cursor position out of bounds",
         constexpr uint8_t start_x = 50;
         constexpr uint8_t start_y = 75;
         // Send the cursor to 50,75
-        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
-        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>({
+            static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y
+        });
 
         // Actually place the frame on the bus, so the module
         // can see and process it.
@@ -112,8 +113,9 @@ TEST_CASE("Manipulate cursor position out of bounds",
         constexpr uint8_t start_x = 50;
         constexpr uint8_t start_y = 75;
         // Send the cursor to 50,75
-        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
-        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>({
+            static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y
+        });
 
         // Actually place the frame on the bus, so the module
         // can see and process it.
@@ -138,12 +140,13 @@ TEST_CASE("Manipulate cursor position out of bounds",
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 
-        SECTION("X and Y out of bounds"){
+    SECTION("X and Y out of bounds"){
         constexpr uint8_t start_x = 50;
         constexpr uint8_t start_y = 75;
         // Send the cursor to 50,75
-        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>(
-        {static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y});
+        auto frame_start_pos = mock_bus.create_frame<r2d2::frame_type::CURSOR_POSITION>({
+            static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR), start_x, start_y
+        });
 
         // Actually place the frame on the bus, so the module
         // can see and process it.
@@ -271,7 +274,7 @@ TEST_CASE("Manipulate cursor position through character writing",
             static_cast<uint8_t>(r2d2::claimed_display_cursor::OPEN_CURSOR));
 
         REQUIRE(cursor_post.cursor_x ==
-                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));//124
+                (start_x + ((r2d2::display::st7735_128x160_s::width - start_x) / 8) * 8));//due to int rounding in c++ this will result in 124
         REQUIRE(cursor_post.cursor_y == start_y);
     }
 }
