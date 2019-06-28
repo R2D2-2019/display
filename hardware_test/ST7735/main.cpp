@@ -34,7 +34,7 @@ int main() {
     // Loop to print the ascii characters starting with: !(33) ending with: ~(126). 
     for (char c=33; c <=126; c++){
         color_display.clear(); 
-        for (unsigned int row=0; row <= 130; row+=10){
+        for (unsigned int row=0; row <= 128; row+=10){
             for(unsigned int colum=0; colum <=160; colum+=10){
                 color_display.set_character(row,colum,c,color_display.color_to_pixel(hwlib::white)); 
             }
@@ -47,27 +47,27 @@ int main() {
     // Starting small in the upper left corner of the screen and it will expand till the screen is full. 
     for (unsigned int i=0; i<=160; i++){
         color_display.clear(); 
-        color_display.set_pixels(0,0,i,i,color_display.color_to_pixel(hwlib::white));
+        color_display.set_pixels(0,0,128,i,color_display.color_to_pixel(hwlib::white));
         color_display.flush();
         hwlib::wait_ms(100); 
     }
 
     // A loop to make the screen red, green, blue and white with a puase of 500 ms. 
     color_display.clear();
-    color_display.set_pixels(0,0,130,180,color_display.color_to_pixel(hwlib::red)); 
+    color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::red)); 
     color_display.flush(); 
-    hwlib::wait_ms(500); 
+    hwlib::wait_ms(2000); 
     color_display.clear();
-    color_display.set_pixels(0,0,130,180,color_display.color_to_pixel(hwlib::green)); 
+    color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::green)); 
     color_display.flush(); 
-    hwlib::wait_ms(500);
+    hwlib::wait_ms(2000);
     color_display.clear();
-    color_display.set_pixels(0,0,130,180,color_display.color_to_pixel(hwlib::blue)); 
+    color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::blue)); 
     color_display.flush(); 
-    hwlib::wait_ms(500);
+    hwlib::wait_ms(2000);
     color_display.clear();
-    color_display.set_pixels(0,0,130,180,color_display.color_to_pixel(hwlib::white)); 
+    color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::white)); 
     color_display.flush(); 
 
-    //End of test program. 
+    //End of test program.
 }
