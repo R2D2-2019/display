@@ -117,6 +117,8 @@ namespace r2d2::display {
                         character_image[hwlib::xy(image_x, image_y)];
                     if (character_pixel_color != hwlib::white) {
                         set_pixel(x + image_x, y + image_y, pixel_color);
+                    } else {
+                        set_pixel(x + image_x, y + image_y, color_to_pixel(background));
                     }
                 }
             }
