@@ -40,7 +40,7 @@ int main() {
             }
         }
         color_display.flush(); 
-        hwlib::wait_ms(2000); 
+        hwlib::wait_ms(500); 
     }
 
     //A white sqaure will be drawed on the screen.
@@ -49,25 +49,37 @@ int main() {
         color_display.clear(); 
         color_display.set_pixels(0,0,128,i,color_display.color_to_pixel(hwlib::white));
         color_display.flush();
-        hwlib::wait_ms(100); 
     }
 
-    // A loop to make the screen red, green, blue and white with a puase of 500 ms. 
+    for (unsigned int j=0; j <=128; j++){
+        color_display.clear(); 
+        color_display.set_pixels(0,0,j,160,color_display.color_to_pixel(hwlib::white)); 
+        color_display.flush(); 
+    }
+
+    // A loop to make the screen red, green, blue and white with a puase of 1000 ms. 
     color_display.clear();
     color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::red)); 
     color_display.flush(); 
-    hwlib::wait_ms(2000); 
+    hwlib::wait_ms(1000); 
     color_display.clear();
     color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::green)); 
     color_display.flush(); 
-    hwlib::wait_ms(2000);
+    hwlib::wait_ms(1000);
     color_display.clear();
     color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::blue)); 
     color_display.flush(); 
-    hwlib::wait_ms(2000);
+    hwlib::wait_ms(1000);
     color_display.clear();
     color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::white)); 
     color_display.flush(); 
+    hwlib::wait_ms(1000); 
 
+    //Write 'end' on the screen so user know test is completed. 
+    color_display.clear();
+    color_display.set_character(50,80,'E',color_display.color_to_pixel(hwlib::white)); 
+    color_display.set_character(60,80,'N',color_display.color_to_pixel(hwlib::white));
+    color_display.set_character(70,80,'D',color_display.color_to_pixel(hwlib::white));
+    color_display.flush();
     //End of test program.
 }
