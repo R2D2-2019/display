@@ -4,11 +4,7 @@
 #include <display_module.hpp>
 #include <display_screen.hpp>
 #include <st7735_buffered.hpp>
-#include <st7735_inverted_color_buffered.hpp>
-#include <st7735_inverted_color_unbuffered.hpp>
 #include <st7735_unbuffered.hpp>
-//#include <ssd1306_oled_buffered.hpp>
-//#include <ssd1306_oled_unbuffered.hpp>
 
 int main() {
     // kill the watchdog
@@ -34,7 +30,9 @@ int main() {
     // Loop to print the ascii characters starting with: !(33) ending with: ~(126). 
     for (char c=33; c <=126; c++){
         color_display.clear(); 
+        //128 is used because the screen has a resolution of 160 x 128
         for (unsigned int row=0; row <= 128; row+=10){
+            //160 is used because the screen has a resolution of 160 x 128
             for(unsigned int colum=0; colum <=160; colum+=10){
                 color_display.set_character(row,colum,c,color_display.color_to_pixel(hwlib::white)); 
             }
@@ -44,20 +42,25 @@ int main() {
     }
 
     //A white horzontal line will be drawed on the screen and will grow to a screen filling square.
+    //160 is used because the screen has a resolution of 160 x 128
     for (unsigned int i=0; i<=160; i++){
         color_display.clear(); 
+        //128 is used because the screen has a resolution of 160 x 128
         color_display.set_pixels(0,0,128,i,color_display.color_to_pixel(hwlib::white));
         color_display.flush();
     }
 
     //A white vertical line will be drawed on the screen and will grow to a screen filling square.
+    //128 is used because the screen has a resolution of 160 x 128
     for (unsigned int j=0; j <=128; j++){
         color_display.clear(); 
+        //160 is used because the screen has a resolution of 160 x 128
         color_display.set_pixels(0,0,j,160,color_display.color_to_pixel(hwlib::white)); 
         color_display.flush(); 
     }
 
     // A loop to make the screen red, green, blue and white with a puase of 1000 ms. 
+    // The screen has a resolution of 160 by 128 pixels this is why the values 128 and 160 are used. 
     color_display.clear();
     color_display.set_pixels(0,0,128,160,color_display.color_to_pixel(hwlib::red)); 
     color_display.flush(); 
