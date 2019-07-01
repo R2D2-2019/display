@@ -43,14 +43,14 @@ int main() {
         hwlib::wait_ms(500); 
     }
 
-    //A white sqaure will be drawed on the screen.
-    // Starting small in the upper left corner of the screen and it will expand till the screen is full. 
+    //A white horzontal line will be drawed on the screen and will grow to a screen filling square.
     for (unsigned int i=0; i<=160; i++){
         color_display.clear(); 
         color_display.set_pixels(0,0,128,i,color_display.color_to_pixel(hwlib::white));
         color_display.flush();
     }
 
+    //A white vertical line will be drawed on the screen and will grow to a screen filling square.
     for (unsigned int j=0; j <=128; j++){
         color_display.clear(); 
         color_display.set_pixels(0,0,j,160,color_display.color_to_pixel(hwlib::white)); 
